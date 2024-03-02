@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace KBBWinForms
+{
+    public partial class SubirArchivo : Form
+    {
+        #region Variables
+        Archivos archivo = new Archivos();
+        #endregion
+
+        #region Constructores
+        public SubirArchivo()
+        {
+            InitializeComponent();
+        }
+        #endregion
+
+        #region btnExaminar_Click
+
+        private void btnExaminar_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.InitialDirectory =
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            openFileDialog1.FileName = string.Empty;
+
+            openFileDialog1.Filter =
+                "Archivos de Word|*.doc;*.docx|" +
+                "Archivos de Excel|*.xls;*.xlsx|" +
+                "Archivos de Power Point|*.ppt;*.pptx;*.pps;*.ppsx|" +
+                "Archivos PDF|*.pdf|" +
+                "Archivos de imagen|*.jpg;*.jpeg;*.png|" +
+                "Archivos de texto|*.txt|" +
+                "Archivos de audio|*.mp3|" +
+                "Archivos de vídeo|*.mp4;*.wmv";
+
+            openFileDialog1.FilterIndex = 1;
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtRutaArchivo.Text = openFileDialog1.FileName;
+                txtTituloArchivo.Text = openFileDialog1.SafeFileName;
+            }
+        }
+        #endregion
+
+        #region btnGuardar_Click
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            byte[] data = null;
+
+            Stream stream = openFileDialog1.OpenFile();
+
+            MemoryStream memoryStream = new MemoryStream();
+
+            stream.CopyTo(memoryStream);
+
+            data = memoryStream.ToArray();
+
+            archivo.Nombre = txtTituloArchivo.Text;
+            archivo.Archivo = data;
+            archivo.Extension = openFileDialog1.SafeFileName;
+
+            MessageBox.Show(archivo.AgregarDocumento());
+        }
+        #endregion
+    }
+}
