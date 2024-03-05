@@ -104,6 +104,7 @@
             txtPagina.Size = new Size(87, 27);
             txtPagina.TabIndex = 5;
             txtPagina.Text = "1";
+            txtPagina.Click += txtPagina_Click;
             txtPagina.TextChanged += txtPagina_TextChanged;
             txtPagina.KeyPress += txtPagina_KeyPress;
             // 
@@ -225,6 +226,7 @@
             Controls.Add(btnAgregar);
             Controls.Add(dgvDocumentos);
             Name = "ControlArchivos";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Control Archivos";
             Load += ControlArchivos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();

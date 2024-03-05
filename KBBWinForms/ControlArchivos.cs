@@ -194,8 +194,13 @@ namespace KBBWinForms
 
                 ControlBotonesPaginado();
             }
+            else
+            {
+                btnSiguiente.Enabled = false;
+                btnAnterior.Enabled = false;
+            }
 
-            txtPagina.Select(txtPagina.Text.Length, 0);
+            txtPagina.Select(0, txtPagina.Text.Length);
             txtPagina.Focus();
         }
         #endregion
@@ -242,6 +247,13 @@ namespace KBBWinForms
         {
             var blankContextMenu = new ContextMenuStrip();
             txtPagina.ContextMenuStrip = blankContextMenu;
+        }
+        #endregion
+
+        #region txtPagina_Click
+        private void txtPagina_Click(object sender, EventArgs e)
+        {
+            txtPagina.Select(0, txtPagina.Text.Length);
         }
         #endregion
     }

@@ -94,7 +94,7 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(672, 222);
+            btnGuardar.Location = new Point(672, 422);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(94, 29);
             btnGuardar.TabIndex = 6;
@@ -104,7 +104,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(782, 222);
+            btnCancelar.Location = new Point(782, 422);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(94, 29);
             btnCancelar.TabIndex = 7;
@@ -119,7 +119,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(888, 288);
+            ClientSize = new Size(888, 463);
             Controls.Add(btnCancelar);
             Controls.Add(btnGuardar);
             Controls.Add(btnExaminar);
@@ -129,6 +129,7 @@
             Controls.Add(lblRutaArchivo);
             Controls.Add(lblSeleccionArchivo);
             Name = "SubirArchivo";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Subir Archivo";
             ResumeLayout(false);
             PerformLayout();
