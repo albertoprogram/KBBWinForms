@@ -72,5 +72,14 @@ namespace KBBWinForms
             MessageBox.Show(archivo.AgregarDocumento());
         }
         #endregion
+
+        #region btnCategorias_Click
+        private void btnCategorias_Click(object sender, EventArgs e)
+        {
+            Categorias categorias = new Categorias();
+
+            categorias.ShowDialog();
+        }
+        #endregion
     }
 }

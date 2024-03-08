@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             lblCategoria = new Label();
-            textBox1 = new TextBox();
+            txtCategoria = new TextBox();
             btnGuardarCategoria = new Button();
             dgvCategorias = new DataGridView();
+            Seleccion = new DataGridViewCheckBoxColumn();
+            IdCategoria = new DataGridViewTextBoxColumn();
+            Categoria = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
             // 
@@ -44,12 +47,13 @@
             lblCategoria.TabIndex = 0;
             lblCategoria.Text = "Categoría";
             // 
-            // textBox1
+            // txtCategoria
             // 
-            textBox1.Location = new Point(136, 73);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(561, 27);
-            textBox1.TabIndex = 1;
+            txtCategoria.Location = new Point(136, 73);
+            txtCategoria.MaxLength = 350;
+            txtCategoria.Name = "txtCategoria";
+            txtCategoria.Size = new Size(561, 27);
+            txtCategoria.TabIndex = 1;
             // 
             // btnGuardarCategoria
             // 
@@ -59,15 +63,44 @@
             btnGuardarCategoria.TabIndex = 2;
             btnGuardarCategoria.Text = "Guardar";
             btnGuardarCategoria.UseVisualStyleBackColor = true;
+            btnGuardarCategoria.Click += btnGuardarCategoria_Click;
             // 
             // dgvCategorias
             // 
+            dgvCategorias.AllowUserToAddRows = false;
+            dgvCategorias.AllowUserToDeleteRows = false;
             dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { Seleccion, IdCategoria, Categoria });
             dgvCategorias.Location = new Point(12, 179);
             dgvCategorias.Name = "dgvCategorias";
+            dgvCategorias.ReadOnly = true;
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.Size = new Size(776, 385);
             dgvCategorias.TabIndex = 3;
+            // 
+            // Seleccion
+            // 
+            Seleccion.HeaderText = "Selección";
+            Seleccion.MinimumWidth = 6;
+            Seleccion.Name = "Seleccion";
+            Seleccion.ReadOnly = true;
+            Seleccion.Width = 125;
+            // 
+            // IdCategoria
+            // 
+            IdCategoria.HeaderText = "ID Categoría";
+            IdCategoria.MinimumWidth = 6;
+            IdCategoria.Name = "IdCategoria";
+            IdCategoria.ReadOnly = true;
+            IdCategoria.Width = 125;
+            // 
+            // Categoria
+            // 
+            Categoria.HeaderText = "Categoría";
+            Categoria.MinimumWidth = 6;
+            Categoria.Name = "Categoria";
+            Categoria.ReadOnly = true;
+            Categoria.Width = 125;
             // 
             // Categorias
             // 
@@ -76,7 +109,7 @@
             ClientSize = new Size(800, 576);
             Controls.Add(dgvCategorias);
             Controls.Add(btnGuardarCategoria);
-            Controls.Add(textBox1);
+            Controls.Add(txtCategoria);
             Controls.Add(lblCategoria);
             Name = "Categorias";
             Text = "Categorias";
@@ -88,8 +121,11 @@
         #endregion
 
         private Label lblCategoria;
-        private TextBox textBox1;
+        private TextBox txtCategoria;
         private Button btnGuardarCategoria;
         private DataGridView dgvCategorias;
+        private DataGridViewCheckBoxColumn Seleccion;
+        private DataGridViewTextBoxColumn IdCategoria;
+        private DataGridViewTextBoxColumn Categoria;
     }
 }
