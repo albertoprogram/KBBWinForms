@@ -113,6 +113,7 @@
             Controls.Add(lblCategoria);
             Name = "Categorias";
             Text = "Categorias";
+            Load += Categorias_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();
             ResumeLayout(false);
             PerformLayout();

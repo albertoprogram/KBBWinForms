@@ -45,5 +45,38 @@ namespace KBBWinForms
             }
         }
         #endregion
+
+        #region Categorias_Load
+        private void Categorias_Load(object sender, EventArgs e)
+        {
+            CargarCategorias();
+        }
+        #endregion
+
+        #region CargarCategorias
+        private void CargarCategorias()
+        {
+            string query = "SELECT ID, Categoria FROM Categorias ORDER BY Categoria";
+
+            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                dgvCategorias.Rows.Add(false,reader[0].ToString(), reader[1].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }
