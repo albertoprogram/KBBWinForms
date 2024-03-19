@@ -18,6 +18,10 @@ namespace KBBWinForms
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
 
+        #region Propiedades
+        public IContract Contrato { get; set; }
+        #endregion
+
         #region Constructores
         public Categorias()
         {
@@ -70,12 +74,33 @@ namespace KBBWinForms
                         {
                             while (reader.Read())
                             {
-                                dgvCategorias.Rows.Add(false,reader[0].ToString(), reader[1].ToString());
+                                dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
                             }
                         }
                     }
                 }
             }
+        }
+        #endregion
+
+        #region btnEnviar_Click
+        private void btnEnviar_Click(object sender, EventArgs e)
+        {
+            List<(int, string)> tuplas = new List<(int, string)>();
+
+            foreach (DataGridViewRow row in dgvCategorias.Rows)
+            {
+                DataGridViewCheckBoxCell cell = row.Cells["Seleccion"] as DataGridViewCheckBoxCell;
+
+                if (cell != null && (bool)cell.Value == true)
+                {
+                    tuplas.Add((Convert.ToInt32(row.Cells["IdCategoria"].Value), row.Cells["Categoria"].Value.ToString()));
+                }
+            }
+
+            Contrato.Compartir(tuplas);
+
+            this.Close();
         }
         #endregion
     }

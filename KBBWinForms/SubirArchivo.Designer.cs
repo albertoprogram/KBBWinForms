@@ -38,6 +38,7 @@
             btnCancelar = new Button();
             openFileDialog1 = new OpenFileDialog();
             btnCategorias = new Button();
+            lbCategorias = new ListBox();
             SuspendLayout();
             // 
             // lblSeleccionArchivo
@@ -126,11 +127,20 @@
             btnCategorias.UseVisualStyleBackColor = true;
             btnCategorias.Click += btnCategorias_Click;
             // 
+            // lbCategorias
+            // 
+            lbCategorias.FormattingEnabled = true;
+            lbCategorias.Location = new Point(198, 208);
+            lbCategorias.Name = "lbCategorias";
+            lbCategorias.Size = new Size(568, 124);
+            lbCategorias.TabIndex = 9;
+            // 
             // SubirArchivo
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(888, 463);
+            Controls.Add(lbCategorias);
             Controls.Add(btnCategorias);
             Controls.Add(btnCancelar);
             Controls.Add(btnGuardar);
@@ -159,5 +169,6 @@
         private Button btnCancelar;
         private OpenFileDialog openFileDialog1;
         private Button btnCategorias;
+        private ListBox lbCategorias;
     }
 }

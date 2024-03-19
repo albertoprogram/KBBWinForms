@@ -35,6 +35,7 @@
             Seleccion = new DataGridViewCheckBoxColumn();
             IdCategoria = new DataGridViewTextBoxColumn();
             Categoria = new DataGridViewTextBoxColumn();
+            btnEnviar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
             // 
@@ -73,7 +74,6 @@
             dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { Seleccion, IdCategoria, Categoria });
             dgvCategorias.Location = new Point(12, 179);
             dgvCategorias.Name = "dgvCategorias";
-            dgvCategorias.ReadOnly = true;
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.Size = new Size(776, 385);
             dgvCategorias.TabIndex = 3;
@@ -83,7 +83,6 @@
             Seleccion.HeaderText = "Selección";
             Seleccion.MinimumWidth = 6;
             Seleccion.Name = "Seleccion";
-            Seleccion.ReadOnly = true;
             Seleccion.Width = 125;
             // 
             // IdCategoria
@@ -102,11 +101,22 @@
             Categoria.ReadOnly = true;
             Categoria.Width = 125;
             // 
+            // btnEnviar
+            // 
+            btnEnviar.Location = new Point(603, 588);
+            btnEnviar.Name = "btnEnviar";
+            btnEnviar.Size = new Size(94, 29);
+            btnEnviar.TabIndex = 4;
+            btnEnviar.Text = "Enviar";
+            btnEnviar.UseVisualStyleBackColor = true;
+            btnEnviar.Click += btnEnviar_Click;
+            // 
             // Categorias
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 576);
+            ClientSize = new Size(801, 641);
+            Controls.Add(btnEnviar);
             Controls.Add(dgvCategorias);
             Controls.Add(btnGuardarCategoria);
             Controls.Add(txtCategoria);
@@ -128,5 +138,6 @@
         private DataGridViewCheckBoxColumn Seleccion;
         private DataGridViewTextBoxColumn IdCategoria;
         private DataGridViewTextBoxColumn Categoria;
+        private Button btnEnviar;
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace KBBWinForms
 {
-    public partial class SubirArchivo : Form
+    public partial class SubirArchivo : Form, IContract
     {
         #region Variables
         Archivos archivo = new Archivos();
@@ -78,8 +78,23 @@ namespace KBBWinForms
         {
             Categorias categorias = new Categorias();
 
+            categorias.Contrato = this;
+
             categorias.ShowDialog();
         }
         #endregion
+
+        #region Compartir
+        public void Compartir(List<(int, string)> values)
+        {
+            lbCategorias.Items.Clear();
+
+            foreach (var item in values)
+            {
+                lbCategorias.Items.Add(item.Item1.ToString() + "-" + item.Item2.ToString());
+            }
+        }
+        #endregion
+
     }
 }
