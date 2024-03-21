@@ -87,6 +87,7 @@ namespace KBBWinForms
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             List<(int, string)> tuplas = new List<(int, string)>();
+            bool controlCategorias = false;
 
             foreach (DataGridViewRow row in dgvCategorias.Rows)
             {
@@ -94,13 +95,22 @@ namespace KBBWinForms
 
                 if (cell != null && (bool)cell.Value == true)
                 {
+                    controlCategorias = true;
                     tuplas.Add((Convert.ToInt32(row.Cells["IdCategoria"].Value), row.Cells["Categoria"].Value.ToString()));
                 }
             }
 
-            Contrato.Compartir(tuplas);
+            if (controlCategorias == true)
+            {
+                Contrato.Compartir(tuplas);
 
-            this.Close();
+                Close();
+            }
+            else
+            {
+                MessageBox.Show("Debe seleccionar al menos una categoría", Configuraciones.nombreSistema,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
         #endregion
     }
