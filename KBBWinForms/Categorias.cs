@@ -47,6 +47,8 @@ namespace KBBWinForms
 
                 conexionDB.Close();
             }
+
+            CargarCategorias();
         }
         #endregion
 
@@ -60,7 +62,39 @@ namespace KBBWinForms
         #region CargarCategorias
         private void CargarCategorias()
         {
+            dgvCategorias.Rows.Clear();
+
             string query = "SELECT ID, Categoria FROM Categorias ORDER BY Categoria";
+
+            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region CargarCategoriasConFiltro
+        private void CargarCategoriasConFiltro()
+        {
+            dgvCategorias.Rows.Clear();
+
+            string query = "SELECT ID, Categoria FROM Categorias " +
+                "WHERE Categoria LIKE '%" + txtFiltroCategorias.Text + "%' " +
+                "ORDER BY Categoria";
 
             using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
             {
@@ -111,6 +145,13 @@ namespace KBBWinForms
                 MessageBox.Show("Debe seleccionar al menos una categoría", Configuraciones.nombreSistema,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        #endregion
+
+        #region txtFiltroCategorias_TextChanged
+        private void txtFiltroCategorias_TextChanged(object sender, EventArgs e)
+        {
+            CargarCategoriasConFiltro();
         }
         #endregion
     }

@@ -36,13 +36,15 @@
             IdCategoria = new DataGridViewTextBoxColumn();
             Categoria = new DataGridViewTextBoxColumn();
             btnEnviar = new Button();
+            txtFiltroCategorias = new TextBox();
+            lblFiltroCategorias = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).BeginInit();
             SuspendLayout();
             // 
             // lblCategoria
             // 
             lblCategoria.AutoSize = true;
-            lblCategoria.Location = new Point(56, 76);
+            lblCategoria.Location = new Point(56, 42);
             lblCategoria.Name = "lblCategoria";
             lblCategoria.Size = new Size(74, 20);
             lblCategoria.TabIndex = 0;
@@ -50,7 +52,7 @@
             // 
             // txtCategoria
             // 
-            txtCategoria.Location = new Point(136, 73);
+            txtCategoria.Location = new Point(136, 35);
             txtCategoria.MaxLength = 350;
             txtCategoria.Name = "txtCategoria";
             txtCategoria.Size = new Size(561, 27);
@@ -58,7 +60,7 @@
             // 
             // btnGuardarCategoria
             // 
-            btnGuardarCategoria.Location = new Point(603, 122);
+            btnGuardarCategoria.Location = new Point(603, 68);
             btnGuardarCategoria.Name = "btnGuardarCategoria";
             btnGuardarCategoria.Size = new Size(94, 29);
             btnGuardarCategoria.TabIndex = 2;
@@ -72,7 +74,7 @@
             dgvCategorias.AllowUserToDeleteRows = false;
             dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { Seleccion, IdCategoria, Categoria });
-            dgvCategorias.Location = new Point(12, 179);
+            dgvCategorias.Location = new Point(12, 197);
             dgvCategorias.Name = "dgvCategorias";
             dgvCategorias.RowHeadersWidth = 51;
             dgvCategorias.Size = new Size(776, 385);
@@ -111,11 +113,30 @@
             btnEnviar.UseVisualStyleBackColor = true;
             btnEnviar.Click += btnEnviar_Click;
             // 
+            // txtFiltroCategorias
+            // 
+            txtFiltroCategorias.Location = new Point(445, 131);
+            txtFiltroCategorias.Name = "txtFiltroCategorias";
+            txtFiltroCategorias.Size = new Size(252, 27);
+            txtFiltroCategorias.TabIndex = 5;
+            txtFiltroCategorias.TextChanged += txtFiltroCategorias_TextChanged;
+            // 
+            // lblFiltroCategorias
+            // 
+            lblFiltroCategorias.AutoSize = true;
+            lblFiltroCategorias.Location = new Point(396, 134);
+            lblFiltroCategorias.Name = "lblFiltroCategorias";
+            lblFiltroCategorias.Size = new Size(43, 20);
+            lblFiltroCategorias.TabIndex = 6;
+            lblFiltroCategorias.Text = "Filtro";
+            // 
             // Categorias
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(801, 641);
+            Controls.Add(lblFiltroCategorias);
+            Controls.Add(txtFiltroCategorias);
             Controls.Add(btnEnviar);
             Controls.Add(dgvCategorias);
             Controls.Add(btnGuardarCategoria);
@@ -139,5 +160,7 @@
         private DataGridViewTextBoxColumn IdCategoria;
         private DataGridViewTextBoxColumn Categoria;
         private Button btnEnviar;
+        private TextBox txtFiltroCategorias;
+        private Label lblFiltroCategorias;
     }
 }
