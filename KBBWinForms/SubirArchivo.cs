@@ -68,6 +68,7 @@ namespace KBBWinForms
             archivo.Nombre = txtTituloArchivo.Text;
             archivo.Archivo = data;
             archivo.Extension = openFileDialog1.SafeFileName;
+            archivo.Observaciones = txtObservaciones.Text;
 
             MessageBox.Show(archivo.AgregarDocumento());
         }

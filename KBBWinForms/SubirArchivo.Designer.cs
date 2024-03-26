@@ -39,6 +39,9 @@
             openFileDialog1 = new OpenFileDialog();
             btnCategorias = new Button();
             lbCategorias = new ListBox();
+            lblCategorias = new Label();
+            lblObservaciones = new Label();
+            txtObservaciones = new TextBox();
             SuspendLayout();
             // 
             // lblSeleccionArchivo
@@ -73,7 +76,7 @@
             txtRutaArchivo.Location = new Point(198, 95);
             txtRutaArchivo.Name = "txtRutaArchivo";
             txtRutaArchivo.ReadOnly = true;
-            txtRutaArchivo.Size = new Size(568, 27);
+            txtRutaArchivo.Size = new Size(708, 27);
             txtRutaArchivo.TabIndex = 3;
             // 
             // txtTituloArchivo
@@ -81,12 +84,12 @@
             txtTituloArchivo.Location = new Point(198, 149);
             txtTituloArchivo.Name = "txtTituloArchivo";
             txtTituloArchivo.ReadOnly = true;
-            txtTituloArchivo.Size = new Size(568, 27);
+            txtTituloArchivo.Size = new Size(708, 27);
             txtTituloArchivo.TabIndex = 4;
             // 
             // btnExaminar
             // 
-            btnExaminar.Location = new Point(782, 93);
+            btnExaminar.Location = new Point(929, 94);
             btnExaminar.Name = "btnExaminar";
             btnExaminar.Size = new Size(94, 29);
             btnExaminar.TabIndex = 5;
@@ -96,7 +99,7 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(672, 422);
+            btnGuardar.Location = new Point(929, 580);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(94, 29);
             btnGuardar.TabIndex = 6;
@@ -106,7 +109,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(782, 422);
+            btnCancelar.Location = new Point(829, 580);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(94, 29);
             btnCancelar.TabIndex = 7;
@@ -119,7 +122,7 @@
             // 
             // btnCategorias
             // 
-            btnCategorias.Location = new Point(782, 244);
+            btnCategorias.Location = new Point(929, 254);
             btnCategorias.Name = "btnCategorias";
             btnCategorias.Size = new Size(94, 29);
             btnCategorias.TabIndex = 8;
@@ -132,14 +135,43 @@
             lbCategorias.FormattingEnabled = true;
             lbCategorias.Location = new Point(198, 208);
             lbCategorias.Name = "lbCategorias";
-            lbCategorias.Size = new Size(568, 124);
+            lbCategorias.Size = new Size(708, 124);
             lbCategorias.TabIndex = 9;
+            // 
+            // lblCategorias
+            // 
+            lblCategorias.AutoSize = true;
+            lblCategorias.Location = new Point(44, 244);
+            lblCategorias.Name = "lblCategorias";
+            lblCategorias.Size = new Size(80, 20);
+            lblCategorias.TabIndex = 10;
+            lblCategorias.Text = "Categorías";
+            // 
+            // lblObservaciones
+            // 
+            lblObservaciones.AutoSize = true;
+            lblObservaciones.Location = new Point(44, 362);
+            lblObservaciones.Name = "lblObservaciones";
+            lblObservaciones.Size = new Size(207, 20);
+            lblObservaciones.TabIndex = 11;
+            lblObservaciones.Text = "Breve Reseña / Observaciones";
+            // 
+            // txtObservaciones
+            // 
+            txtObservaciones.Location = new Point(44, 401);
+            txtObservaciones.Multiline = true;
+            txtObservaciones.Name = "txtObservaciones";
+            txtObservaciones.Size = new Size(862, 160);
+            txtObservaciones.TabIndex = 12;
             // 
             // SubirArchivo
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(888, 463);
+            ClientSize = new Size(1035, 621);
+            Controls.Add(txtObservaciones);
+            Controls.Add(lblObservaciones);
+            Controls.Add(lblCategorias);
             Controls.Add(lbCategorias);
             Controls.Add(btnCategorias);
             Controls.Add(btnCancelar);
@@ -170,5 +202,8 @@
         private OpenFileDialog openFileDialog1;
         private Button btnCategorias;
         private ListBox lbCategorias;
+        private Label lblCategorias;
+        private Label lblObservaciones;
+        private TextBox txtObservaciones;
     }
 }

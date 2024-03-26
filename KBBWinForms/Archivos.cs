@@ -15,6 +15,7 @@ namespace KBBWinForms
         private string nombre;
         private byte[] archivo;
         private string extension;
+        private string observaciones;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
@@ -24,6 +25,7 @@ namespace KBBWinForms
         public string Nombre { get => nombre; set => nombre = value; }
         public byte[] Archivo { get => archivo; set => archivo = value; }
         public string Extension { get => extension; set => extension = value; }
+        public string Observaciones { get => observaciones; set => observaciones = value; }
         #endregion
 
         #region AgregarDocumento
@@ -34,13 +36,14 @@ namespace KBBWinForms
                 comandoSql.CommandType = CommandType.Text;
                 comandoSql.CommandText =
                     "INSERT INTO Archivos " +
-                    "(Nombre,Archivo,Extension) " +
-                    "VALUES (@Nombre,@Archivo,@Extension)";
+                    "(Nombre,Archivo,Extension,Observaciones) " +
+                    "VALUES (@Nombre,@Archivo,@Extension,@Observaciones)";
                 comandoSql.Connection = conexionDB;
 
                 comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
                 comandoSql.Parameters.AddWithValue("@Archivo", Archivo);
                 comandoSql.Parameters.AddWithValue("@Extension", Extension);
+                comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
 
                 conexionDB.Open();
 
