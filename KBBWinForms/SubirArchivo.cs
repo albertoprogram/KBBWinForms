@@ -70,7 +70,14 @@ namespace KBBWinForms
             archivo.Extension = openFileDialog1.SafeFileName;
             archivo.Observaciones = txtObservaciones.Text;
 
-            MessageBox.Show(archivo.AgregarDocumento());
+            short[] categorias = new short[lbCategorias.Items.Count];
+
+            for (int i = 0;i < categorias.Length; i++)
+            {
+                categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0,1));
+            }
+
+            MessageBox.Show(archivo.AgregarDocumento(categorias));
         }
         #endregion
 

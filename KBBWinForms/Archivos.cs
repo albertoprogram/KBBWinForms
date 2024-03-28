@@ -29,7 +29,7 @@ namespace KBBWinForms
         #endregion
 
         #region AgregarDocumento
-        public string AgregarDocumento()
+        public string AgregarDocumento(short[] categorias)
         {
             using (SqlCommand comandoSql = new SqlCommand())
             {
