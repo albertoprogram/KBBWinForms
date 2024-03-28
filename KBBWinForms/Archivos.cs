@@ -37,7 +37,8 @@ namespace KBBWinForms
                 comandoSql.CommandText =
                     "INSERT INTO Archivos " +
                     "(Nombre,Archivo,Extension,Observaciones) " +
-                    "VALUES (@Nombre,@Archivo,@Extension,@Observaciones)";
+                    "VALUES (@Nombre,@Archivo,@Extension,@Observaciones); " +
+                    "SELECT SCOPE_IDENTITY();";
                 comandoSql.Connection = conexionDB;
 
                 comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
@@ -47,7 +48,22 @@ namespace KBBWinForms
 
                 conexionDB.Open();
 
-                comandoSql.ExecuteNonQuery();
+                int identityValue = Convert.ToInt32(comandoSql.ExecuteScalar());
+
+                foreach (short categoria in categorias)
+                {
+                    comandoSql.CommandText =
+                    "INSERT INTO ArchivosCategorias " +
+                    "(ArchivoID,CategoriaID) " +
+                    "VALUES (@ArchivoID,@CategoriaID)";
+
+                    comandoSql.Parameters.Clear();
+
+                    comandoSql.Parameters.AddWithValue("@ArchivoID", identityValue);
+                    comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
+
+                    comandoSql.ExecuteNonQuery();
+                }
 
                 conexionDB.Close();
             }
