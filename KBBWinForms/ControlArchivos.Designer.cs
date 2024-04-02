@@ -44,24 +44,25 @@
             cmbCantidadRegistrosXPagina = new ComboBox();
             btnInicio = new Button();
             btnFin = new Button();
+            tvCategorias = new TreeView();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
             // dgvDocumentos
             // 
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Location = new Point(45, 33);
+            dgvDocumentos.Location = new Point(324, 12);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.ReadOnly = true;
             dgvDocumentos.RowHeadersWidth = 51;
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1059, 442);
+            dgvDocumentos.Size = new Size(1059, 560);
             dgvDocumentos.TabIndex = 0;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(810, 594);
+            btnAgregar.Location = new Point(1089, 691);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(94, 29);
             btnAgregar.TabIndex = 1;
@@ -71,7 +72,7 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(910, 594);
+            btnEditar.Location = new Point(1189, 691);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(94, 29);
             btnEditar.TabIndex = 2;
@@ -80,7 +81,7 @@
             // 
             // btnVer
             // 
-            btnVer.Location = new Point(1010, 594);
+            btnVer.Location = new Point(1289, 691);
             btnVer.Name = "btnVer";
             btnVer.Size = new Size(94, 29);
             btnVer.TabIndex = 3;
@@ -91,7 +92,7 @@
             // lblPagina
             // 
             lblPagina.AutoSize = true;
-            lblPagina.Location = new Point(45, 484);
+            lblPagina.Location = new Point(324, 581);
             lblPagina.Name = "lblPagina";
             lblPagina.Size = new Size(53, 20);
             lblPagina.TabIndex = 4;
@@ -99,7 +100,7 @@
             // 
             // txtPagina
             // 
-            txtPagina.Location = new Point(104, 481);
+            txtPagina.Location = new Point(383, 578);
             txtPagina.Name = "txtPagina";
             txtPagina.Size = new Size(87, 27);
             txtPagina.TabIndex = 5;
@@ -111,7 +112,7 @@
             // lblCantidadRegistros
             // 
             lblCantidadRegistros.AutoSize = true;
-            lblCantidadRegistros.Location = new Point(197, 485);
+            lblCantidadRegistros.Location = new Point(476, 582);
             lblCantidadRegistros.Name = "lblCantidadRegistros";
             lblCantidadRegistros.Size = new Size(230, 20);
             lblCantidadRegistros.TabIndex = 6;
@@ -119,7 +120,7 @@
             // 
             // btnAnterior
             // 
-            btnAnterior.Location = new Point(900, 481);
+            btnAnterior.Location = new Point(1179, 578);
             btnAnterior.Name = "btnAnterior";
             btnAnterior.Size = new Size(54, 29);
             btnAnterior.TabIndex = 8;
@@ -129,7 +130,7 @@
             // 
             // btnSiguiente
             // 
-            btnSiguiente.Location = new Point(960, 481);
+            btnSiguiente.Location = new Point(1239, 578);
             btnSiguiente.Name = "btnSiguiente";
             btnSiguiente.Size = new Size(53, 29);
             btnSiguiente.TabIndex = 9;
@@ -140,7 +141,7 @@
             // lblTotalRegistros
             // 
             lblTotalRegistros.AutoSize = true;
-            lblTotalRegistros.Location = new Point(526, 484);
+            lblTotalRegistros.Location = new Point(805, 581);
             lblTotalRegistros.Name = "lblTotalRegistros";
             lblTotalRegistros.Size = new Size(128, 20);
             lblTotalRegistros.TabIndex = 10;
@@ -148,7 +149,7 @@
             // 
             // txtTotalRegistros
             // 
-            txtTotalRegistros.Location = new Point(660, 481);
+            txtTotalRegistros.Location = new Point(939, 578);
             txtTotalRegistros.Name = "txtTotalRegistros";
             txtTotalRegistros.ReadOnly = true;
             txtTotalRegistros.Size = new Size(116, 27);
@@ -157,7 +158,7 @@
             // 
             // txtTotalPaginas
             // 
-            txtTotalPaginas.Location = new Point(660, 518);
+            txtTotalPaginas.Location = new Point(939, 615);
             txtTotalPaginas.Name = "txtTotalPaginas";
             txtTotalPaginas.ReadOnly = true;
             txtTotalPaginas.Size = new Size(116, 27);
@@ -167,7 +168,7 @@
             // lblTotalPaginas
             // 
             lblTotalPaginas.AutoSize = true;
-            lblTotalPaginas.Location = new Point(526, 521);
+            lblTotalPaginas.Location = new Point(805, 618);
             lblTotalPaginas.Name = "lblTotalPaginas";
             lblTotalPaginas.Size = new Size(117, 20);
             lblTotalPaginas.TabIndex = 12;
@@ -178,7 +179,7 @@
             cmbCantidadRegistrosXPagina.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCantidadRegistrosXPagina.FormattingEnabled = true;
             cmbCantidadRegistrosXPagina.Items.AddRange(new object[] { "2", "3", "5", "10", "15", "20", "25" });
-            cmbCantidadRegistrosXPagina.Location = new Point(433, 481);
+            cmbCantidadRegistrosXPagina.Location = new Point(712, 578);
             cmbCantidadRegistrosXPagina.Name = "cmbCantidadRegistrosXPagina";
             cmbCantidadRegistrosXPagina.Size = new Size(75, 28);
             cmbCantidadRegistrosXPagina.TabIndex = 14;
@@ -186,7 +187,7 @@
             // 
             // btnInicio
             // 
-            btnInicio.Location = new Point(827, 481);
+            btnInicio.Location = new Point(1106, 578);
             btnInicio.Name = "btnInicio";
             btnInicio.Size = new Size(67, 29);
             btnInicio.TabIndex = 15;
@@ -196,7 +197,7 @@
             // 
             // btnFin
             // 
-            btnFin.Location = new Point(1019, 481);
+            btnFin.Location = new Point(1298, 578);
             btnFin.Name = "btnFin";
             btnFin.Size = new Size(64, 29);
             btnFin.TabIndex = 16;
@@ -204,11 +205,19 @@
             btnFin.UseVisualStyleBackColor = true;
             btnFin.Click += btnFin_Click;
             // 
+            // tvCategorias
+            // 
+            tvCategorias.Location = new Point(12, 12);
+            tvCategorias.Name = "tvCategorias";
+            tvCategorias.Size = new Size(306, 560);
+            tvCategorias.TabIndex = 17;
+            // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1159, 661);
+            ClientSize = new Size(1395, 732);
+            Controls.Add(tvCategorias);
             Controls.Add(btnFin);
             Controls.Add(btnInicio);
             Controls.Add(cmbCantidadRegistrosXPagina);
@@ -252,5 +261,6 @@
         private ComboBox cmbCantidadRegistrosXPagina;
         private Button btnInicio;
         private Button btnFin;
+        private TreeView tvCategorias;
     }
 }

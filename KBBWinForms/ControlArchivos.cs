@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace KBBWinForms
     {
         #region Variables
         Archivos archivo = new Archivos();
+
+        SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
 
         #region Constructores
@@ -247,6 +250,8 @@ namespace KBBWinForms
         {
             var blankContextMenu = new ContextMenuStrip();
             txtPagina.ContextMenuStrip = blankContextMenu;
+
+            ListarCategorias();
         }
         #endregion
 
@@ -254,6 +259,34 @@ namespace KBBWinForms
         private void txtPagina_Click(object sender, EventArgs e)
         {
             txtPagina.Select(0, txtPagina.Text.Length);
+        }
+        #endregion
+
+        #region ListarCategorias
+        private void ListarCategorias()
+        {
+            tvCategorias.Nodes.Clear();
+
+            string query = "SELECT Categoria FROM Categorias ORDER BY Categoria";
+
+            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                tvCategorias.Nodes.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+            }
         }
         #endregion
     }
