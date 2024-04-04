@@ -16,6 +16,8 @@ namespace KBBWinForms
         private byte[] archivo;
         private string extension;
         private string observaciones;
+        List<int> listArchivos = new List<int>();
+        string inIDsCategorias;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
@@ -84,26 +86,62 @@ namespace KBBWinForms
                 registrosIgnorar *= short.Parse(cantidadRegistros);
             }
 
-            DataTable dt = new DataTable();
-
             using (SqlCommand comandoSql = new SqlCommand())
             {
                 comandoSql.CommandType = CommandType.Text;
                 comandoSql.CommandText =
-                    "SELECT ID,Nombre " +
-                    "FROM Archivos " +
-                    "ORDER BY ID " +
-                    "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                    "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+                    "SELECT ID " +
+                    "FROM Categorias " +
+                    "WHERE Categoria = '" + categoria + "'";
                 comandoSql.Connection = conexionDB;
 
                 conexionDB.Open();
 
-                SqlDataReader reader = comandoSql.ExecuteReader();
+                int idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
 
-                if (reader.HasRows) dt.Load(reader);
+                comandoSql.CommandText =
+                    "SELECT ArchivoID " +
+                    "FROM ArchivosCategorias " +
+                    "WHERE CategoriaID = " + idCategoria.ToString();
+                comandoSql.Connection = conexionDB;
+
+                SqlDataReader reader;
+
+                using (reader = comandoSql.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            listArchivos.Add(Convert.ToInt32(reader["ArchivoID"]));
+                        }
+                    }
+                }
+
+                inIDsCategorias = string.Join(",", listArchivos);
+
+                DataTable dt = new DataTable();
+
+                if (listArchivos.Count > 0)
+                {
+                    comandoSql.CommandText =
+                    "SELECT ID,Nombre " +
+                    "FROM Archivos " +
+                    $"WHERE ID IN ({inIDsCategorias}) " +
+                    "ORDER BY ID " +
+                    "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                    "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+
+                    reader.Close();
+                    reader.Dispose();
+
+                    reader = comandoSql.ExecuteReader();
+
+                    if (reader.HasRows) dt.Load(reader);
+                }
 
                 reader.Close();
+                reader.Dispose();
                 conexionDB.Close();
 
                 return dt;
@@ -165,27 +203,34 @@ namespace KBBWinForms
         {
             int total = 0;
 
-            using (SqlCommand comandoSql = new SqlCommand())
+            if (listArchivos.Count > 0)
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText = "SELECT COUNT(*) FROM Archivos";
-                comandoSql.Connection = conexionDB;
-
-                conexionDB.Open();
-
-                SqlDataReader reader = comandoSql.ExecuteReader();
-
-                if (reader.HasRows)
+                using (SqlCommand comandoSql = new SqlCommand())
                 {
-                    while (reader.Read())
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText = "SELECT COUNT(*) FROM Archivos";
+                    comandoSql.Connection = conexionDB;
+
+                    conexionDB.Open();
+
+                    SqlDataReader reader = comandoSql.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        total = reader.GetInt32(0);
+                        while (reader.Read())
+                        {
+                            total = reader.GetInt32(0);
+                        }
                     }
+
+                    reader.Close();
+                    conexionDB.Close();
+
+                    return total;
                 }
-
-                reader.Close();
-                conexionDB.Close();
-
+            }
+            else
+            {
                 return total;
             }
         }

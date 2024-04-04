@@ -109,7 +109,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text);
+                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria);
 
                 ControlBotonesPaginado();
             }
@@ -126,7 +126,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text);
+                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria);
 
                 ControlBotonesPaginado();
             }
