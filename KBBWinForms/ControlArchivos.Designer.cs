@@ -211,6 +211,7 @@
             tvCategorias.Name = "tvCategorias";
             tvCategorias.Size = new Size(306, 560);
             tvCategorias.TabIndex = 17;
+            tvCategorias.AfterSelect += tvCategorias_AfterSelect;
             // 
             // ControlArchivos
             // 

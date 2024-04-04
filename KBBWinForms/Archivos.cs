@@ -73,7 +73,7 @@ namespace KBBWinForms
         #endregion
 
         #region ListarArchivos
-        public DataTable ListarArchivos(string pagina, string cantidadRegistros)
+        public DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria)
         {
             short registrosIgnorar = 0;
 

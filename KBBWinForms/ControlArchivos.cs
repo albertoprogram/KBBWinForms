@@ -16,6 +16,7 @@ namespace KBBWinForms
     {
         #region Variables
         Archivos archivo = new Archivos();
+        string categoria;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
@@ -45,7 +46,7 @@ namespace KBBWinForms
             if (cmbCantidadRegistrosXPagina.Text.Length == 0)
                 cmbCantidadRegistrosXPagina.Text = "25";
 
-            dgvDocumentos.DataSource = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text);
+            dgvDocumentos.DataSource = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria);
 
             txtTotalRegistros.Text = archivo.CantidadTotalArchivos().ToString();
 
@@ -286,6 +287,18 @@ namespace KBBWinForms
                         }
                     }
                 }
+            }
+        }
+        #endregion
+
+        #region tvCategorias_AfterSelect
+        private void tvCategorias_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (tvCategorias.SelectedNode != null)
+            {
+                categoria = tvCategorias.SelectedNode.Text;
+
+                LlenarData();
             }
         }
         #endregion
