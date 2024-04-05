@@ -46,6 +46,8 @@ namespace KBBWinForms
             if (cmbCantidadRegistrosXPagina.Text.Length == 0)
                 cmbCantidadRegistrosXPagina.Text = "25";
 
+            dgvDocumentos.DataSource = null;
+
             dgvDocumentos.DataSource = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria);
 
             txtTotalRegistros.Text = archivo.CantidadTotalArchivos().ToString();
