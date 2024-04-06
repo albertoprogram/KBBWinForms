@@ -78,6 +78,8 @@ namespace KBBWinForms
         public DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria)
         {
             short registrosIgnorar = 0;
+            listArchivos.Clear();
+            inIDsCategorias = string.Empty;
 
             if (!string.IsNullOrWhiteSpace(pagina))
             {
