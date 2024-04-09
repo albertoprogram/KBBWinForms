@@ -18,6 +18,7 @@ namespace KBBWinForms
         private string observaciones;
         List<int> listArchivos = new List<int>();
         string inIDsCategorias;
+        int idCategoria;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
@@ -99,7 +100,7 @@ namespace KBBWinForms
 
                 conexionDB.Open();
 
-                int idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
+                idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
 
                 comandoSql.CommandText =
                     "SELECT ArchivoID " +
@@ -210,7 +211,7 @@ namespace KBBWinForms
                 using (SqlCommand comandoSql = new SqlCommand())
                 {
                     comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText = "SELECT COUNT(*) FROM Archivos";
+                    comandoSql.CommandText = $"SELECT COUNT(*) FROM ArchivosCategorias WHERE CategoriaID = {idCategoria}";
                     comandoSql.Connection = conexionDB;
 
                     conexionDB.Open();

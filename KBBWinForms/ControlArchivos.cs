@@ -169,6 +169,14 @@ namespace KBBWinForms
                 btnSiguiente.Enabled = false;
                 btnFin.Enabled = false;
             }
+
+            if (txtTotalPaginas.Text == "0")
+            {
+                btnAnterior.Enabled = false;
+                btnInicio.Enabled = false;
+                btnSiguiente.Enabled = false;
+                btnFin.Enabled = false;
+            }
         }
         #endregion
 

@@ -50,6 +50,8 @@
             // 
             // dgvDocumentos
             // 
+            dgvDocumentos.AllowUserToAddRows = false;
+            dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDocumentos.Location = new Point(324, 12);
