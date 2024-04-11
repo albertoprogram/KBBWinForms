@@ -45,6 +45,12 @@
             btnInicio = new Button();
             btnFin = new Button();
             tvCategorias = new TreeView();
+            lblBusqueda = new Label();
+            textBox1 = new TextBox();
+            btnBuscar = new Button();
+            ID = new DataGridViewTextBoxColumn();
+            Nombre = new DataGridViewTextBoxColumn();
+            Observaciones = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -54,13 +60,14 @@
             dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Location = new Point(324, 12);
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { ID, Nombre, Observaciones });
+            dgvDocumentos.Location = new Point(324, 89);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.ReadOnly = true;
             dgvDocumentos.RowHeadersWidth = 51;
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1059, 560);
+            dgvDocumentos.Size = new Size(1059, 550);
             dgvDocumentos.TabIndex = 0;
             // 
             // btnAgregar
@@ -95,7 +102,7 @@
             // lblPagina
             // 
             lblPagina.AutoSize = true;
-            lblPagina.Location = new Point(324, 581);
+            lblPagina.Location = new Point(326, 648);
             lblPagina.Name = "lblPagina";
             lblPagina.Size = new Size(53, 20);
             lblPagina.TabIndex = 4;
@@ -103,7 +110,7 @@
             // 
             // txtPagina
             // 
-            txtPagina.Location = new Point(383, 578);
+            txtPagina.Location = new Point(385, 645);
             txtPagina.Name = "txtPagina";
             txtPagina.Size = new Size(87, 27);
             txtPagina.TabIndex = 5;
@@ -115,7 +122,7 @@
             // lblCantidadRegistros
             // 
             lblCantidadRegistros.AutoSize = true;
-            lblCantidadRegistros.Location = new Point(476, 582);
+            lblCantidadRegistros.Location = new Point(478, 649);
             lblCantidadRegistros.Name = "lblCantidadRegistros";
             lblCantidadRegistros.Size = new Size(230, 20);
             lblCantidadRegistros.TabIndex = 6;
@@ -123,7 +130,7 @@
             // 
             // btnAnterior
             // 
-            btnAnterior.Location = new Point(1179, 578);
+            btnAnterior.Location = new Point(1181, 645);
             btnAnterior.Name = "btnAnterior";
             btnAnterior.Size = new Size(54, 29);
             btnAnterior.TabIndex = 8;
@@ -133,7 +140,7 @@
             // 
             // btnSiguiente
             // 
-            btnSiguiente.Location = new Point(1239, 578);
+            btnSiguiente.Location = new Point(1241, 645);
             btnSiguiente.Name = "btnSiguiente";
             btnSiguiente.Size = new Size(53, 29);
             btnSiguiente.TabIndex = 9;
@@ -144,7 +151,7 @@
             // lblTotalRegistros
             // 
             lblTotalRegistros.AutoSize = true;
-            lblTotalRegistros.Location = new Point(805, 581);
+            lblTotalRegistros.Location = new Point(807, 648);
             lblTotalRegistros.Name = "lblTotalRegistros";
             lblTotalRegistros.Size = new Size(128, 20);
             lblTotalRegistros.TabIndex = 10;
@@ -152,7 +159,7 @@
             // 
             // txtTotalRegistros
             // 
-            txtTotalRegistros.Location = new Point(939, 578);
+            txtTotalRegistros.Location = new Point(941, 645);
             txtTotalRegistros.Name = "txtTotalRegistros";
             txtTotalRegistros.ReadOnly = true;
             txtTotalRegistros.Size = new Size(116, 27);
@@ -161,7 +168,7 @@
             // 
             // txtTotalPaginas
             // 
-            txtTotalPaginas.Location = new Point(939, 615);
+            txtTotalPaginas.Location = new Point(941, 682);
             txtTotalPaginas.Name = "txtTotalPaginas";
             txtTotalPaginas.ReadOnly = true;
             txtTotalPaginas.Size = new Size(116, 27);
@@ -171,7 +178,7 @@
             // lblTotalPaginas
             // 
             lblTotalPaginas.AutoSize = true;
-            lblTotalPaginas.Location = new Point(805, 618);
+            lblTotalPaginas.Location = new Point(807, 685);
             lblTotalPaginas.Name = "lblTotalPaginas";
             lblTotalPaginas.Size = new Size(117, 20);
             lblTotalPaginas.TabIndex = 12;
@@ -182,7 +189,7 @@
             cmbCantidadRegistrosXPagina.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCantidadRegistrosXPagina.FormattingEnabled = true;
             cmbCantidadRegistrosXPagina.Items.AddRange(new object[] { "2", "3", "5", "10", "15", "20", "25" });
-            cmbCantidadRegistrosXPagina.Location = new Point(712, 578);
+            cmbCantidadRegistrosXPagina.Location = new Point(714, 645);
             cmbCantidadRegistrosXPagina.Name = "cmbCantidadRegistrosXPagina";
             cmbCantidadRegistrosXPagina.Size = new Size(75, 28);
             cmbCantidadRegistrosXPagina.TabIndex = 14;
@@ -190,7 +197,7 @@
             // 
             // btnInicio
             // 
-            btnInicio.Location = new Point(1106, 578);
+            btnInicio.Location = new Point(1108, 645);
             btnInicio.Name = "btnInicio";
             btnInicio.Size = new Size(67, 29);
             btnInicio.TabIndex = 15;
@@ -200,7 +207,7 @@
             // 
             // btnFin
             // 
-            btnFin.Location = new Point(1298, 578);
+            btnFin.Location = new Point(1300, 645);
             btnFin.Name = "btnFin";
             btnFin.Size = new Size(64, 29);
             btnFin.TabIndex = 16;
@@ -210,17 +217,70 @@
             // 
             // tvCategorias
             // 
-            tvCategorias.Location = new Point(12, 12);
+            tvCategorias.Location = new Point(12, 89);
             tvCategorias.Name = "tvCategorias";
-            tvCategorias.Size = new Size(306, 560);
+            tvCategorias.Size = new Size(306, 550);
             tvCategorias.TabIndex = 17;
             tvCategorias.AfterSelect += tvCategorias_AfterSelect;
+            // 
+            // lblBusqueda
+            // 
+            lblBusqueda.AutoSize = true;
+            lblBusqueda.Location = new Point(327, 35);
+            lblBusqueda.Name = "lblBusqueda";
+            lblBusqueda.Size = new Size(52, 20);
+            lblBusqueda.TabIndex = 18;
+            lblBusqueda.Text = "Buscar";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(385, 31);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(790, 27);
+            textBox1.TabIndex = 19;
+            // 
+            // btnBuscar
+            // 
+            btnBuscar.Location = new Point(1181, 31);
+            btnBuscar.Name = "btnBuscar";
+            btnBuscar.Size = new Size(183, 29);
+            btnBuscar.TabIndex = 20;
+            btnBuscar.Text = "Iniciar Búsqueda";
+            btnBuscar.UseVisualStyleBackColor = true;
+            btnBuscar.Click += btnBuscar_Click;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.Width = 53;
+            // 
+            // Nombre
+            // 
+            Nombre.HeaderText = "Nombre";
+            Nombre.MinimumWidth = 6;
+            Nombre.Name = "Nombre";
+            Nombre.ReadOnly = true;
+            Nombre.Width = 93;
+            // 
+            // Observaciones
+            // 
+            Observaciones.HeaderText = "Observaciones";
+            Observaciones.MinimumWidth = 6;
+            Observaciones.Name = "Observaciones";
+            Observaciones.ReadOnly = true;
+            Observaciones.Width = 134;
             // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1395, 732);
+            Controls.Add(btnBuscar);
+            Controls.Add(textBox1);
+            Controls.Add(lblBusqueda);
             Controls.Add(tvCategorias);
             Controls.Add(btnFin);
             Controls.Add(btnInicio);
@@ -266,5 +326,11 @@
         private Button btnInicio;
         private Button btnFin;
         private TreeView tvCategorias;
+        private Label lblBusqueda;
+        private TextBox textBox1;
+        private Button btnBuscar;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn Nombre;
+        private DataGridViewTextBoxColumn Observaciones;
     }
 }

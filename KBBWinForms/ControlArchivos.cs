@@ -312,5 +312,10 @@ namespace KBBWinForms
             }
         }
         #endregion
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
