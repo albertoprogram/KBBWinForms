@@ -46,9 +46,15 @@ namespace KBBWinForms
             if (cmbCantidadRegistrosXPagina.Text.Length == 0)
                 cmbCantidadRegistrosXPagina.Text = "25";
 
-            dgvDocumentos.DataSource = null;
+            dgvDocumentos.Rows.Clear();
 
-            dgvDocumentos.DataSource = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria);
+            DataTable dt = new DataTable();
+            dt = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(), dr["Observaciones"].ToString());
+            }
 
             txtTotalRegistros.Text = archivo.CantidadTotalArchivos().ToString();
 

@@ -128,7 +128,7 @@ namespace KBBWinForms
                 if (listArchivos.Count > 0)
                 {
                     comandoSql.CommandText =
-                    "SELECT ID,Nombre " +
+                    "SELECT ID,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE ID IN ({inIDsCategorias}) " +
                     "ORDER BY ID " +
