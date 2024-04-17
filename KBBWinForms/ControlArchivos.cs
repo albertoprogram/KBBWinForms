@@ -319,9 +319,44 @@ namespace KBBWinForms
         }
         #endregion
 
+        #region btnBuscar_Click
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-
+            EjecutarBusquedaArchivos();
         }
+        #endregion
+
+        #region EjecutarBusquedaArchivos
+        private void EjecutarBusquedaArchivos()
+        {
+            dgvDocumentos.Rows.Clear();
+
+            string query = "SELECT " +
+                "ID, Nombre, Observaciones " +
+                "FROM Archivos " +
+                "WHERE Nombre LIKE '%" + txtBusqueda.Text + "%' " +
+                "OR Observaciones LIKE '%" + txtBusqueda.Text + "%' " +
+                "ORDER BY Nombre";
+
+            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                dgvDocumentos.Rows.Add(reader["ID"].ToString(), reader["Nombre"].ToString(), reader["Observaciones"].ToString());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }

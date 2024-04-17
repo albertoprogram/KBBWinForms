@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             dgvDocumentos = new DataGridView();
+            ID = new DataGridViewTextBoxColumn();
+            Nombre = new DataGridViewTextBoxColumn();
+            Observaciones = new DataGridViewTextBoxColumn();
             btnAgregar = new Button();
             btnEditar = new Button();
             btnVer = new Button();
@@ -46,11 +49,8 @@
             btnFin = new Button();
             tvCategorias = new TreeView();
             lblBusqueda = new Label();
-            textBox1 = new TextBox();
+            txtBusqueda = new TextBox();
             btnBuscar = new Button();
-            ID = new DataGridViewTextBoxColumn();
-            Nombre = new DataGridViewTextBoxColumn();
-            Observaciones = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -69,6 +69,30 @@
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDocumentos.Size = new Size(1059, 550);
             dgvDocumentos.TabIndex = 0;
+            // 
+            // ID
+            // 
+            ID.HeaderText = "ID";
+            ID.MinimumWidth = 6;
+            ID.Name = "ID";
+            ID.ReadOnly = true;
+            ID.Width = 53;
+            // 
+            // Nombre
+            // 
+            Nombre.HeaderText = "Nombre";
+            Nombre.MinimumWidth = 6;
+            Nombre.Name = "Nombre";
+            Nombre.ReadOnly = true;
+            Nombre.Width = 93;
+            // 
+            // Observaciones
+            // 
+            Observaciones.HeaderText = "Observaciones";
+            Observaciones.MinimumWidth = 6;
+            Observaciones.Name = "Observaciones";
+            Observaciones.ReadOnly = true;
+            Observaciones.Width = 134;
             // 
             // btnAgregar
             // 
@@ -232,12 +256,12 @@
             lblBusqueda.TabIndex = 18;
             lblBusqueda.Text = "Buscar";
             // 
-            // textBox1
+            // txtBusqueda
             // 
-            textBox1.Location = new Point(385, 31);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(790, 27);
-            textBox1.TabIndex = 19;
+            txtBusqueda.Location = new Point(385, 31);
+            txtBusqueda.Name = "txtBusqueda";
+            txtBusqueda.Size = new Size(790, 27);
+            txtBusqueda.TabIndex = 19;
             // 
             // btnBuscar
             // 
@@ -249,37 +273,13 @@
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
             // 
-            // ID
-            // 
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 6;
-            ID.Name = "ID";
-            ID.ReadOnly = true;
-            ID.Width = 53;
-            // 
-            // Nombre
-            // 
-            Nombre.HeaderText = "Nombre";
-            Nombre.MinimumWidth = 6;
-            Nombre.Name = "Nombre";
-            Nombre.ReadOnly = true;
-            Nombre.Width = 93;
-            // 
-            // Observaciones
-            // 
-            Observaciones.HeaderText = "Observaciones";
-            Observaciones.MinimumWidth = 6;
-            Observaciones.Name = "Observaciones";
-            Observaciones.ReadOnly = true;
-            Observaciones.Width = 134;
-            // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1395, 732);
             Controls.Add(btnBuscar);
-            Controls.Add(textBox1);
+            Controls.Add(txtBusqueda);
             Controls.Add(lblBusqueda);
             Controls.Add(tvCategorias);
             Controls.Add(btnFin);
@@ -327,7 +327,7 @@
         private Button btnFin;
         private TreeView tvCategorias;
         private Label lblBusqueda;
-        private TextBox textBox1;
+        private TextBox txtBusqueda;
         private Button btnBuscar;
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Nombre;
