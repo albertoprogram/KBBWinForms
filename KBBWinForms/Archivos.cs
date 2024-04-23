@@ -76,11 +76,12 @@ namespace KBBWinForms
         #endregion
 
         #region ListarArchivos
-        public DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria)
+        public DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria, string busqueda)
         {
             short registrosIgnorar = 0;
             listArchivos.Clear();
             inIDsCategorias = string.Empty;
+            DataTable dt = new DataTable();
 
             if (!string.IsNullOrWhiteSpace(pagina))
             {
@@ -89,66 +90,95 @@ namespace KBBWinForms
                 registrosIgnorar *= short.Parse(cantidadRegistros);
             }
 
-            using (SqlCommand comandoSql = new SqlCommand())
+            if (busqueda == string.Empty && categoria != string.Empty)
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText =
-                    "SELECT ID " +
-                    "FROM Categorias " +
-                    "WHERE Categoria = '" + categoria + "'";
-                comandoSql.Connection = conexionDB;
-
-                conexionDB.Open();
-
-                idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
-
-                comandoSql.CommandText =
-                    "SELECT ArchivoID " +
-                    "FROM ArchivosCategorias " +
-                    "WHERE CategoriaID = " + idCategoria.ToString();
-                comandoSql.Connection = conexionDB;
-
-                SqlDataReader reader;
-
-                using (reader = comandoSql.ExecuteReader())
+                using (SqlCommand comandoSql = new SqlCommand())
                 {
-                    if (reader.HasRows)
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "SELECT ID " +
+                        "FROM Categorias " +
+                        "WHERE Categoria = '" + categoria + "'";
+                    comandoSql.Connection = conexionDB;
+
+                    conexionDB.Open();
+
+                    idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
+
+                    comandoSql.CommandText =
+                        "SELECT ArchivoID " +
+                        "FROM ArchivosCategorias " +
+                        "WHERE CategoriaID = " + idCategoria.ToString();
+                    comandoSql.Connection = conexionDB;
+
+                    SqlDataReader reader;
+
+                    using (reader = comandoSql.ExecuteReader())
                     {
-                        while (reader.Read())
+                        if (reader.HasRows)
                         {
-                            listArchivos.Add(Convert.ToInt32(reader["ArchivoID"]));
+                            while (reader.Read())
+                            {
+                                listArchivos.Add(Convert.ToInt32(reader["ArchivoID"]));
+                            }
                         }
                     }
-                }
 
-                inIDsCategorias = string.Join(",", listArchivos);
+                    inIDsCategorias = string.Join(",", listArchivos);
 
-                DataTable dt = new DataTable();
+                    if (listArchivos.Count > 0)
+                    {
+                        comandoSql.CommandText =
+                        "SELECT ID,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE ID IN ({inIDsCategorias}) " +
+                        "ORDER BY ID " +
+                        "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                        "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
 
-                if (listArchivos.Count > 0)
-                {
-                    comandoSql.CommandText =
-                    "SELECT ID,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE ID IN ({inIDsCategorias}) " +
-                    "ORDER BY ID " +
-                    "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                    "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+                        reader.Close();
+                        reader.Dispose();
+
+                        reader = comandoSql.ExecuteReader();
+
+                        if (reader.HasRows) dt.Load(reader);
+                    }
 
                     reader.Close();
                     reader.Dispose();
-
-                    reader = comandoSql.ExecuteReader();
-
-                    if (reader.HasRows) dt.Load(reader);
+                    conexionDB.Close();
                 }
-
-                reader.Close();
-                reader.Dispose();
-                conexionDB.Close();
-
-                return dt;
             }
+            else if (busqueda != string.Empty && categoria == string.Empty)
+            {
+                string query = "SELECT " +
+                "ID, Nombre, Observaciones " +
+                "FROM Archivos " +
+                "WHERE Nombre LIKE '%" + busqueda + "%' " +
+                "OR Observaciones LIKE '%" + busqueda + "%' " +
+                "ORDER BY Nombre " +
+                "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+
+                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                dt.Load(reader);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return dt;
+
         }
         #endregion
 

@@ -17,6 +17,7 @@ namespace KBBWinForms
         #region Variables
         Archivos archivo = new Archivos();
         string categoria;
+        string busqueda;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
@@ -49,7 +50,7 @@ namespace KBBWinForms
             dgvDocumentos.Rows.Clear();
 
             DataTable dt = new DataTable();
-            dt = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria);
+            dt = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
 
             foreach (DataRow dr in dt.Rows)
             {
@@ -117,7 +118,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria);
+                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
 
                 ControlBotonesPaginado();
             }
@@ -134,7 +135,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria);
+                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
 
                 ControlBotonesPaginado();
             }
@@ -312,6 +313,8 @@ namespace KBBWinForms
         {
             if (tvCategorias.SelectedNode != null)
             {
+                txtBusqueda.Text = string.Empty;
+                busqueda = string.Empty;
                 categoria = tvCategorias.SelectedNode.Text;
 
                 LlenarData();
@@ -322,39 +325,17 @@ namespace KBBWinForms
         #region btnBuscar_Click
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            EjecutarBusquedaArchivos();
-        }
-        #endregion
-
-        #region EjecutarBusquedaArchivos
-        private void EjecutarBusquedaArchivos()
-        {
-            dgvDocumentos.Rows.Clear();
-
-            string query = "SELECT " +
-                "ID, Nombre, Observaciones " +
-                "FROM Archivos " +
-                "WHERE Nombre LIKE '%" + txtBusqueda.Text + "%' " +
-                "OR Observaciones LIKE '%" + txtBusqueda.Text + "%' " +
-                "ORDER BY Nombre";
-
-            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            if (txtBusqueda.Text.Trim().Length > 0)
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
+                categoria = string.Empty;
+                busqueda = txtBusqueda.Text;
 
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                dgvDocumentos.Rows.Add(reader["ID"].ToString(), reader["Nombre"].ToString(), reader["Observaciones"].ToString());
-                            }
-                        }
-                    }
-                }
+                LlenarData();
+            }
+            else
+            {
+                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto");
+                txtBusqueda.Focus();
             }
         }
         #endregion
