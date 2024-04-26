@@ -14,6 +14,7 @@ namespace KBBWinForms
     {
         #region Variables
         Archivos archivo = new Archivos();
+        string? rutaSeleccionada = string.Empty;
         #endregion
 
         #region Constructores
@@ -27,8 +28,15 @@ namespace KBBWinForms
 
         private void btnExaminar_Click(object sender, EventArgs e)
         {
-            openFileDialog1.InitialDirectory =
+            if (string.IsNullOrEmpty(rutaSeleccionada))
+            {
+                openFileDialog1.InitialDirectory =
                 Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            }
+            else
+            {
+                openFileDialog1.InitialDirectory = rutaSeleccionada;
+            }
 
             openFileDialog1.FileName = string.Empty;
 
@@ -46,6 +54,7 @@ namespace KBBWinForms
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                rutaSeleccionada = Path.GetDirectoryName(openFileDialog1.FileName);
                 txtRutaArchivo.Text = openFileDialog1.FileName;
                 txtTituloArchivo.Text = openFileDialog1.SafeFileName;
             }
@@ -72,12 +81,16 @@ namespace KBBWinForms
 
             short[] categorias = new short[lbCategorias.Items.Count];
 
-            for (int i = 0;i < categorias.Length; i++)
+            for (int i = 0; i < categorias.Length; i++)
             {
-                categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0,1));
+                categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
             }
 
             MessageBox.Show(archivo.AgregarDocumento(categorias));
+
+            txtTituloArchivo.Text = string.Empty;
+            txtRutaArchivo.Text = string.Empty;
+            txtObservaciones.Text = string.Empty;
         }
         #endregion
 

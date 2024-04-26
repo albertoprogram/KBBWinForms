@@ -211,6 +211,7 @@
             // cmbCantidadRegistrosXPagina
             // 
             cmbCantidadRegistrosXPagina.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCantidadRegistrosXPagina.Enabled = false;
             cmbCantidadRegistrosXPagina.FormattingEnabled = true;
             cmbCantidadRegistrosXPagina.Items.AddRange(new object[] { "2", "3", "5", "10", "15", "20", "25" });
             cmbCantidadRegistrosXPagina.Location = new Point(714, 645);
