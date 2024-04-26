@@ -52,12 +52,15 @@ namespace KBBWinForms
             DataTable dt = new DataTable();
             dt = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
 
-            foreach (DataRow dr in dt.Rows)
+            if (dt.Rows.Count > 0)
             {
-                dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(), dr["Observaciones"].ToString());
+                foreach (DataRow dr in dt.Rows)
+                {
+                    dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(), dr["Observaciones"].ToString());
+                }
             }
 
-            txtTotalRegistros.Text = archivo.CantidadTotalArchivos().ToString();
+            txtTotalRegistros.Text = archivo.CantidadTotalArchivos(categoria, busqueda).ToString();
 
             if ((short.Parse(txtTotalRegistros.Text) % short.Parse(cmbCantidadRegistrosXPagina.Text)) == 0)
             {
@@ -118,7 +121,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
+                LlenarData();
 
                 ControlBotonesPaginado();
             }
@@ -135,7 +138,7 @@ namespace KBBWinForms
 
                 txtPagina.Text = pagina.ToString();
 
-                dgvDocumentos.DataSource = archivo.ListarArchivos(pagina.ToString(), cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
+                LlenarData();
 
                 ControlBotonesPaginado();
             }

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace KBBWinForms
 {
@@ -232,11 +233,10 @@ namespace KBBWinForms
         #endregion
 
         #region CantidadTotalArchivos
-        public long CantidadTotalArchivos()
+        public long CantidadTotalArchivos(string categoria, string busqueda)
         {
             int total = 0;
-
-            if (listArchivos.Count > 0)
+            if (busqueda == string.Empty && categoria != string.Empty)
             {
                 using (SqlCommand comandoSql = new SqlCommand())
                 {
@@ -258,14 +258,36 @@ namespace KBBWinForms
 
                     reader.Close();
                     conexionDB.Close();
-
-                    return total;
                 }
             }
-            else
+            else if (busqueda != string.Empty && categoria == string.Empty)
             {
-                return total;
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText = $"SELECT COUNT(*) FROM Archivos " +
+                        "WHERE Nombre LIKE '%" + busqueda + "%' " +
+                        "OR Observaciones LIKE '%" + busqueda + "%'";
+                    comandoSql.Connection = conexionDB;
+
+                    conexionDB.Open();
+
+                    SqlDataReader reader = comandoSql.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            total = reader.GetInt32(0);
+                        }
+                    }
+
+                    reader.Close();
+                    conexionDB.Close();
+                }
             }
+
+            return total;
         }
         #endregion
     }
