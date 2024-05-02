@@ -246,7 +246,7 @@
             tvCategorias.Name = "tvCategorias";
             tvCategorias.Size = new Size(306, 550);
             tvCategorias.TabIndex = 17;
-            tvCategorias.AfterSelect += tvCategorias_AfterSelect;
+            tvCategorias.NodeMouseClick += tvCategorias_NodeMouseClick;
             // 
             // lblBusqueda
             // 

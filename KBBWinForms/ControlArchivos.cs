@@ -42,8 +42,6 @@ namespace KBBWinForms
         #region LlenarData
         private void LlenarData()
         {
-            ControlBotonesPaginado();
-
             if (cmbCantidadRegistrosXPagina.Text.Length == 0)
                 cmbCantidadRegistrosXPagina.Text = "25";
 
@@ -70,6 +68,8 @@ namespace KBBWinForms
             {
                 txtTotalPaginas.Text = ((short.Parse(txtTotalRegistros.Text) / short.Parse(cmbCantidadRegistrosXPagina.Text)) + 1).ToString();
             }
+
+            ControlBotonesPaginado();
         }
         #endregion
 
@@ -311,8 +311,26 @@ namespace KBBWinForms
         }
         #endregion
 
-        #region tvCategorias_AfterSelect
-        private void tvCategorias_AfterSelect(object sender, TreeViewEventArgs e)
+        #region btnBuscar_Click
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            if (txtBusqueda.Text.Trim().Length > 0)
+            {
+                categoria = string.Empty;
+                busqueda = txtBusqueda.Text.Trim();
+
+                LlenarData();
+            }
+            else
+            {
+                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto");
+                txtBusqueda.Focus();
+            }
+        }
+        #endregion
+
+        #region tvCategorias_NodeMouseClick
+        private void tvCategorias_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (tvCategorias.SelectedNode != null)
             {
@@ -321,24 +339,6 @@ namespace KBBWinForms
                 categoria = tvCategorias.SelectedNode.Text;
 
                 LlenarData();
-            }
-        }
-        #endregion
-
-        #region btnBuscar_Click
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            if (txtBusqueda.Text.Trim().Length > 0)
-            {
-                categoria = string.Empty;
-                busqueda = txtBusqueda.Text;
-
-                LlenarData();
-            }
-            else
-            {
-                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto");
-                txtBusqueda.Focus();
             }
         }
         #endregion
