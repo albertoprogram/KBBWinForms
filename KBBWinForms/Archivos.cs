@@ -129,13 +129,19 @@ namespace KBBWinForms
 
                     if (listArchivos.Count > 0)
                     {
+                        //comandoSql.CommandText =
+                        //"SELECT ID,Nombre,Observaciones " +
+                        //"FROM Archivos " +
+                        //$"WHERE ID IN ({inIDsCategorias}) " +
+                        //"ORDER BY ID " +
+                        //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                        //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+
                         comandoSql.CommandText =
                         "SELECT ID,Nombre,Observaciones " +
                         "FROM Archivos " +
                         $"WHERE ID IN ({inIDsCategorias}) " +
-                        "ORDER BY ID " +
-                        "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                        "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+                        "ORDER BY Nombre";
 
                         reader.Close();
                         reader.Dispose();
@@ -152,14 +158,21 @@ namespace KBBWinForms
             }
             else if (busqueda != string.Empty && categoria == string.Empty)
             {
+                //string query = "SELECT " +
+                //"ID, Nombre, Observaciones " +
+                //"FROM Archivos " +
+                //"WHERE Nombre LIKE '%" + busqueda + "%' " +
+                //"OR Observaciones LIKE '%" + busqueda + "%' " +
+                //"ORDER BY Nombre " +
+                //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+
                 string query = "SELECT " +
                 "ID, Nombre, Observaciones " +
                 "FROM Archivos " +
                 "WHERE Nombre LIKE '%" + busqueda + "%' " +
                 "OR Observaciones LIKE '%" + busqueda + "%' " +
-                "ORDER BY Nombre " +
-                "OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                "FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+                "ORDER BY Nombre";
 
                 using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
                 {
@@ -175,6 +188,14 @@ namespace KBBWinForms
                             }
                         }
                     }
+
+                    ///////////////////////////////////////////////////////////////////////////////////
+                    ///Búsqueda en documentos
+
+
+
+                    ///////////////////////////////////////////////////////////////////////////////////
+
                 }
             }
 

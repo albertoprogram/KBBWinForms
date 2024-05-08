@@ -47,8 +47,11 @@ namespace KBBWinForms
 
             dgvDocumentos.Rows.Clear();
 
+            string pagina = txtPagina.Text;
+            string cantidadRegistros = cmbCantidadRegistrosXPagina.Text;
+
             DataTable dt = new DataTable();
-            dt = archivo.ListarArchivos(txtPagina.Text, cmbCantidadRegistrosXPagina.Text, categoria, busqueda);
+            dt = archivo.ListarArchivos(pagina, cantidadRegistros, categoria, busqueda);
 
             if (dt.Rows.Count > 0)
             {
@@ -329,8 +332,8 @@ namespace KBBWinForms
         }
         #endregion
 
-        #region tvCategorias_NodeMouseClick
-        private void tvCategorias_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        #region tvCategorias_AfterSelect
+        private void tvCategorias_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (tvCategorias.SelectedNode != null)
             {

@@ -131,6 +131,7 @@
             lblPagina.Size = new Size(53, 20);
             lblPagina.TabIndex = 4;
             lblPagina.Text = "Página";
+            lblPagina.Visible = false;
             // 
             // txtPagina
             // 
@@ -139,6 +140,7 @@
             txtPagina.Size = new Size(87, 27);
             txtPagina.TabIndex = 5;
             txtPagina.Text = "1";
+            txtPagina.Visible = false;
             txtPagina.Click += txtPagina_Click;
             txtPagina.TextChanged += txtPagina_TextChanged;
             txtPagina.KeyPress += txtPagina_KeyPress;
@@ -151,6 +153,7 @@
             lblCantidadRegistros.Size = new Size(230, 20);
             lblCantidadRegistros.TabIndex = 6;
             lblCantidadRegistros.Text = "Cantidad de Registros por Página";
+            lblCantidadRegistros.Visible = false;
             // 
             // btnAnterior
             // 
@@ -160,6 +163,7 @@
             btnAnterior.TabIndex = 8;
             btnAnterior.Text = "<<";
             btnAnterior.UseVisualStyleBackColor = true;
+            btnAnterior.Visible = false;
             btnAnterior.Click += btnAnterior_Click;
             // 
             // btnSiguiente
@@ -170,6 +174,7 @@
             btnSiguiente.TabIndex = 9;
             btnSiguiente.Text = ">>";
             btnSiguiente.UseVisualStyleBackColor = true;
+            btnSiguiente.Visible = false;
             btnSiguiente.Click += btnSiguiente_Click;
             // 
             // lblTotalRegistros
@@ -180,6 +185,7 @@
             lblTotalRegistros.Size = new Size(128, 20);
             lblTotalRegistros.TabIndex = 10;
             lblTotalRegistros.Text = "Total de Registros";
+            lblTotalRegistros.Visible = false;
             // 
             // txtTotalRegistros
             // 
@@ -189,6 +195,7 @@
             txtTotalRegistros.Size = new Size(116, 27);
             txtTotalRegistros.TabIndex = 11;
             txtTotalRegistros.Text = "0";
+            txtTotalRegistros.Visible = false;
             // 
             // txtTotalPaginas
             // 
@@ -198,6 +205,7 @@
             txtTotalPaginas.Size = new Size(116, 27);
             txtTotalPaginas.TabIndex = 13;
             txtTotalPaginas.Text = "0";
+            txtTotalPaginas.Visible = false;
             // 
             // lblTotalPaginas
             // 
@@ -207,6 +215,7 @@
             lblTotalPaginas.Size = new Size(117, 20);
             lblTotalPaginas.TabIndex = 12;
             lblTotalPaginas.Text = "Total de Páginas";
+            lblTotalPaginas.Visible = false;
             // 
             // cmbCantidadRegistrosXPagina
             // 
@@ -218,6 +227,7 @@
             cmbCantidadRegistrosXPagina.Name = "cmbCantidadRegistrosXPagina";
             cmbCantidadRegistrosXPagina.Size = new Size(75, 28);
             cmbCantidadRegistrosXPagina.TabIndex = 14;
+            cmbCantidadRegistrosXPagina.Visible = false;
             cmbCantidadRegistrosXPagina.SelectedIndexChanged += cmbCantidadRegistrosXPagina_SelectedIndexChanged;
             // 
             // btnInicio
@@ -228,6 +238,7 @@
             btnInicio.TabIndex = 15;
             btnInicio.Text = "Inicio";
             btnInicio.UseVisualStyleBackColor = true;
+            btnInicio.Visible = false;
             btnInicio.Click += btnInicio_Click;
             // 
             // btnFin
@@ -238,6 +249,7 @@
             btnFin.TabIndex = 16;
             btnFin.Text = "Fin";
             btnFin.UseVisualStyleBackColor = true;
+            btnFin.Visible = false;
             btnFin.Click += btnFin_Click;
             // 
             // tvCategorias
@@ -246,7 +258,7 @@
             tvCategorias.Name = "tvCategorias";
             tvCategorias.Size = new Size(306, 550);
             tvCategorias.TabIndex = 17;
-            tvCategorias.NodeMouseClick += tvCategorias_NodeMouseClick;
+            tvCategorias.AfterSelect += tvCategorias_AfterSelect;
             // 
             // lblBusqueda
             // 
