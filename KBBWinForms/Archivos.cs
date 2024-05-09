@@ -176,10 +176,10 @@ namespace KBBWinForms
 
                 using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
                 {
+                    connection.Open();
+
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        connection.Open();
-
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -192,8 +192,26 @@ namespace KBBWinForms
                     ///////////////////////////////////////////////////////////////////////////////////
                     ///Búsqueda en documentos
 
+                    DataTable dataTableExtensiones = new DataTable();
+                    string extension = string.Empty;
 
+                    extension = "doc";
 
+                    query = "SELECT " +
+                    "ID, Nombre, Observaciones " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.' + {extension}";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                //Añadir 1 a 1 las filas al datatable
+                            }
+                        }
+                    }
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
