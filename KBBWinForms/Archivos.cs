@@ -194,11 +194,12 @@ namespace KBBWinForms
 
                     DataTable dataTableExtensiones = new DataTable();
                     string extension = string.Empty;
+                    listArchivos.Clear();
 
                     extension = "doc";
 
                     query = "SELECT " +
-                    "ID, Nombre, Observaciones " +
+                    "ID " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.' + {extension}";
 
@@ -208,10 +209,13 @@ namespace KBBWinForms
                         {
                             if (reader.HasRows)
                             {
-                                //Añadir 1 a 1 las filas al datatable
+                                listArchivos.Add(Convert.ToInt32(reader["ID"]));
                             }
                         }
                     }
+
+                    //Obtener el Archivo, es decir, descargarlo y leerlo
+                    //Descarga del archivo: Ver ArchivoPorId() y FiltroArchivos() y en ControlArchivo.cs btnVer_Click
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
