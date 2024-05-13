@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -192,14 +194,16 @@ namespace KBBWinForms
                     ///////////////////////////////////////////////////////////////////////////////////
                     ///Búsqueda en documentos
 
-                    DataTable dataTableExtensiones = new DataTable();
+                    DataTable dataTableExtensiones = new DataTable("Extensiones");
                     string extension = string.Empty;
-                    listArchivos.Clear();
 
-                    extension = "doc";
+                    dataTableExtensiones.Columns.Add("ID", typeof(int));
+                    dataTableExtensiones.Columns.Add("Extension", typeof(string));
+
+                    extension = "docx";//Agregar otro bloque primero para doc
 
                     query = "SELECT " +
-                    "ID " +
+                    "ID,Extension " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.' + {extension}";
 
@@ -209,13 +213,42 @@ namespace KBBWinForms
                         {
                             if (reader.HasRows)
                             {
-                                listArchivos.Add(Convert.ToInt32(reader["ID"]));
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
                             }
                         }
                     }
 
                     //Obtener el Archivo, es decir, descargarlo y leerlo
                     //Descarga del archivo: Ver ArchivoPorId() y FiltroArchivos() y en ControlArchivo.cs btnVer_Click
+                    foreach (int idArchivo in listArchivos)
+                    {
+                        string ruta = AppDomain.CurrentDomain.BaseDirectory;
+
+                        string carpetaTemporal = ruta + @"temp\";
+
+                        string ubicacionCompleta = carpetaTemporal + archivo.Extension;
+
+                        if (!Directory.Exists(carpetaTemporal))
+                            Directory.CreateDirectory(carpetaTemporal);
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
+
+                        var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
+                        {
+                            UseShellExecute = true
+                        };
+
+                        Process.Start(processStartInfo);
+                    }
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
