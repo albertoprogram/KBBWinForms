@@ -200,12 +200,36 @@ namespace KBBWinForms
                     dataTableExtensiones.Columns.Add("ID", typeof(int));
                     dataTableExtensiones.Columns.Add("Extension", typeof(string));
 
-                    extension = "docx";//Agregar otro bloque primero para doc
+                    extension = "doc";
 
                     query = "SELECT " +
                     "ID,Extension " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.' + {extension}";
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "docx";
+
+                    query = "SELECT " +
+                    "ID,Extension " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -226,29 +250,29 @@ namespace KBBWinForms
 
                     //Obtener el Archivo, es decir, descargarlo y leerlo
                     //Descarga del archivo: Ver ArchivoPorId() y FiltroArchivos() y en ControlArchivo.cs btnVer_Click
-                    foreach (int idArchivo in listArchivos)
-                    {
-                        string ruta = AppDomain.CurrentDomain.BaseDirectory;
+                    //foreach (int idArchivo in listArchivos)
+                    //{
+                    //    string ruta = AppDomain.CurrentDomain.BaseDirectory;
 
-                        string carpetaTemporal = ruta + @"temp\";
+                    //    string carpetaTemporal = ruta + @"temp\";
 
-                        string ubicacionCompleta = carpetaTemporal + archivo.Extension;
+                    //    string ubicacionCompleta = carpetaTemporal + archivo.Extension;
 
-                        if (!Directory.Exists(carpetaTemporal))
-                            Directory.CreateDirectory(carpetaTemporal);
+                    //    if (!Directory.Exists(carpetaTemporal))
+                    //        Directory.CreateDirectory(carpetaTemporal);
 
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
+                    //    if (File.Exists(ubicacionCompleta))
+                    //        File.Delete(ubicacionCompleta);
 
-                        File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
+                    //    File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
 
-                        var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
-                        {
-                            UseShellExecute = true
-                        };
+                    //    var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
+                    //    {
+                    //        UseShellExecute = true
+                    //    };
 
-                        Process.Start(processStartInfo);
-                    }
+                    //    Process.Start(processStartInfo);
+                    //}
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
