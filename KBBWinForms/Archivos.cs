@@ -199,8 +199,221 @@ namespace KBBWinForms
 
                     dataTableExtensiones.Columns.Add("ID", typeof(int));
                     dataTableExtensiones.Columns.Add("Extension", typeof(string));
+                    dataTableExtensiones.Columns.Add("Archivo", typeof(byte[]));
 
                     extension = "doc";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    string ruta = AppDomain.CurrentDomain.BaseDirectory;
+
+                    string carpetaTemporal = ruta + @"temp\";
+
+                    if (!Directory.Exists(carpetaTemporal))
+                        Directory.CreateDirectory(carpetaTemporal);
+
+                    foreach (DataRow row in dataTableExtensiones.Rows)
+                    {
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+                    }
+
+                    //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+
+                    extension = "docx";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "xls";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "xlsx";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "ppt";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "pptx";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "pps";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "ppsx";
+
+                    query = "SELECT " +
+                    "ID,Extension,Archivo " +
+                    "FROM Archivos " +
+                    $"WHERE Extension LIKE '%.{extension}'";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    DataRow dataRow = dataTableExtensiones.NewRow();
+                                    dataRow["ID"] = reader.GetInt32("ID");
+                                    dataRow["Extension"] = reader.GetString("Extension");
+                                    dataTableExtensiones.Rows.Add(dataRow);
+                                }
+                            }
+                        }
+                    }
+
+                    extension = "pdf";
 
                     query = "SELECT " +
                     "ID,Extension " +
@@ -224,10 +437,10 @@ namespace KBBWinForms
                         }
                     }
 
-                    extension = "docx";
+                    extension = "txt";
 
                     query = "SELECT " +
-                    "ID,Extension " +
+                    "ID,Extension,Archivo " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}'";
 
@@ -265,13 +478,6 @@ namespace KBBWinForms
                     //        File.Delete(ubicacionCompleta);
 
                     //    File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
-
-                    //    var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
-                    //    {
-                    //        UseShellExecute = true
-                    //    };
-
-                    //    Process.Start(processStartInfo);
                     //}
                     ///////////////////////////////////////////////////////////////////////////////////
 
