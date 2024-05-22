@@ -1,10 +1,12 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -200,11 +202,13 @@ namespace KBBWinForms
                     dataTableExtensiones.Columns.Add("ID", typeof(int));
                     dataTableExtensiones.Columns.Add("Extension", typeof(string));
                     dataTableExtensiones.Columns.Add("Archivo", typeof(byte[]));
+                    dataTableExtensiones.Columns.Add("Nombre", typeof(string));
+                    dataTableExtensiones.Columns.Add("Observaciones", typeof(string));
 
                     extension = "doc";
 
                     query = "SELECT " +
-                    "ID,Extension,Archivo " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}'";
 
@@ -220,6 +224,8 @@ namespace KBBWinForms
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
                                     dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
@@ -241,9 +247,21 @@ namespace KBBWinForms
                             File.Delete(ubicacionCompleta);
 
                         File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
-                    }
 
-                    //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        
+
+
+                        //if (found)
+                        //{
+                        //    DataRow dataRow = dt.NewRow();
+                        //    dataRow["ID"] = row["ID"];
+                        //    dataRow["Nombre"] = row["Nombre"];
+                        //    dataRow["Observaciones"] = row["Observaciones"];
+                        //    dataTableExtensiones.Rows.Add(dataRow);
+                        //}
+
+                    }
 
                     extension = "docx";
 
@@ -594,6 +612,39 @@ namespace KBBWinForms
             }
 
             return total;
+        }
+        #endregion
+
+        #region SearchTextInWordDocument
+        public bool SearchTextInWordDocument(string filePath, string searchText)
+        {
+            try
+            {
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+                {
+                    // Access the main document part
+                    var docText = GetDocumentText(wordDoc);
+
+                    // Search for the specified text
+                    return docText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., file not found, invalid format)
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+        #endregion
+
+        #region GetDocumentText
+        private string GetDocumentText(WordprocessingDocument wordDoc)
+        {
+            using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+            {
+                return sr.ReadToEnd();
+            }
         }
         #endregion
     }
