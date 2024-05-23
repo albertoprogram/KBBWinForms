@@ -10,6 +10,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace KBBWinForms
 {
@@ -210,7 +211,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -249,18 +251,16 @@ namespace KBBWinForms
                         File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
 
                         //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        
+                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda);
 
-
-                        //if (found)
-                        //{
-                        //    DataRow dataRow = dt.NewRow();
-                        //    dataRow["ID"] = row["ID"];
-                        //    dataRow["Nombre"] = row["Nombre"];
-                        //    dataRow["Observaciones"] = row["Observaciones"];
-                        //    dataTableExtensiones.Rows.Add(dataRow);
-                        //}
-
+                        if (found)
+                        {
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataTableExtensiones.Rows.Add(dataRow);
+                        }
                     }
 
                     extension = "docx";
@@ -268,7 +268,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -292,7 +293,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -316,7 +318,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -340,7 +343,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -364,7 +368,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -388,7 +393,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -412,7 +418,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -436,7 +443,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -460,7 +468,8 @@ namespace KBBWinForms
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}'";
+                    $"WHERE Extension LIKE '%.{extension}' " +
+                    "ORDER BY ID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -479,24 +488,7 @@ namespace KBBWinForms
                         }
                     }
 
-                    //Obtener el Archivo, es decir, descargarlo y leerlo
-                    //Descarga del archivo: Ver ArchivoPorId() y FiltroArchivos() y en ControlArchivo.cs btnVer_Click
-                    //foreach (int idArchivo in listArchivos)
-                    //{
-                    //    string ruta = AppDomain.CurrentDomain.BaseDirectory;
-
-                    //    string carpetaTemporal = ruta + @"temp\";
-
-                    //    string ubicacionCompleta = carpetaTemporal + archivo.Extension;
-
-                    //    if (!Directory.Exists(carpetaTemporal))
-                    //        Directory.CreateDirectory(carpetaTemporal);
-
-                    //    if (File.Exists(ubicacionCompleta))
-                    //        File.Delete(ubicacionCompleta);
-
-                    //    File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
-                    //}
+                    
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
