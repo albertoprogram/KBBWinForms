@@ -1,16 +1,13 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using DocumentFormat.OpenXml.Wordprocessing;
+using WordA = Microsoft.Office.Interop.Word;
+using WApplication = Microsoft.Office.Interop.Word.Application;
+using WDocument = Microsoft.Office.Interop.Word.Document;
+using Microsoft.Office.Interop.Word;
 
 namespace KBBWinForms
 {
@@ -82,12 +79,16 @@ namespace KBBWinForms
         #endregion
 
         #region ListarArchivos
-        public DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria, string busqueda)
+        public System.Data.DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria, string busqueda)
         {
             short registrosIgnorar = 0;
             listArchivos.Clear();
             inIDsCategorias = string.Empty;
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
+
+            dt.Columns.Add("ID", typeof(int));
+            dt.Columns.Add("Nombre", typeof(string));
+            dt.Columns.Add("Observaciones", typeof(string));
 
             if (!string.IsNullOrWhiteSpace(pagina))
             {
@@ -197,7 +198,7 @@ namespace KBBWinForms
                     ///////////////////////////////////////////////////////////////////////////////////
                     ///Búsqueda en documentos
 
-                    DataTable dataTableExtensiones = new DataTable("Extensiones");
+                    System.Data.DataTable dataTableExtensiones = new System.Data.DataTable("Extensiones");
                     string extension = string.Empty;
 
                     dataTableExtensiones.Columns.Add("ID", typeof(int));
@@ -259,7 +260,7 @@ namespace KBBWinForms
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
                             dataRow["Observaciones"] = row["Observaciones"];
-                            dataTableExtensiones.Rows.Add(dataRow);
+                            dt.Rows.Add(dataRow);
                         }
                     }
 
@@ -475,9 +476,9 @@ namespace KBBWinForms
         #endregion
 
         #region ArchivoPorId
-        public DataTable ArchivoPorId()
+        public System.Data.DataTable ArchivoPorId()
         {
-            DataTable dt = new DataTable();
+            System.Data.DataTable dt = new System.Data.DataTable();
 
             using (SqlCommand comandoSql = new SqlCommand())
             {
@@ -585,6 +586,53 @@ namespace KBBWinForms
         #region SearchTextInWordDocument
         public bool SearchTextInWordDocument(string filePath, string searchText)
         {
+            //try
+            //{
+            //    // Check if the file exists
+            //    if (!File.Exists(filePath))
+            //    {
+            //        MessageBox.Show("The file does not exist.");
+            //        return false;
+            //    }
+
+            //    // Open the Word document
+            //    using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
+            //    {
+            //        // Access the main document part
+            //        var docText = GetDocumentText(wordDoc);
+
+            //        // Search for the specified text
+            //        return docText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+            //    }
+            //}
+            //catch (FileFormatException ex)
+            //{
+            //    // Handle specific file format exceptions
+            //    MessageBox.Show($"File format error: {ex.Message}");
+            //    return false;
+            //}
+            //catch (IOException ex)
+            //{
+            //    // Handle IO exceptions
+            //    MessageBox.Show($"IO error: {ex.Message}");
+            //    return false;
+            //}
+            //catch (UnauthorizedAccessException ex)
+            //{
+            //    // Handle unauthorized access exceptions
+            //    MessageBox.Show($"Access error: {ex.Message}");
+            //    return false;
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Handle all other exceptions
+            //    MessageBox.Show($"An error occurred: {ex.Message}");
+            //    return false;
+            //}
+
+            WApplication wordApp = null;
+            WDocument wordDoc = null;
+
             try
             {
                 // Check if the file exists
@@ -594,15 +642,37 @@ namespace KBBWinForms
                     return false;
                 }
 
-                // Open the Word document
-                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
-                {
-                    // Access the main document part
-                    var docText = GetDocumentText(wordDoc);
+                // Initialize Word application
+                wordApp = new WApplication();
+                wordDoc = wordApp.Documents.Open(filePath, ReadOnly: true);
 
-                    // Search for the specified text
-                    return docText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+                bool textFound = false;
+                var foundPages = new List<int>();
+
+                // Loop through each story in the document
+                foreach (WordA.Range storyRange in wordDoc.StoryRanges)
+                {
+                    WordA.Range searchRange = storyRange.Duplicate;
+                    while (searchRange.Find.Execute(searchText, MatchCase: false, MatchWholeWord: false))
+                    {
+                        textFound = true;
+                        foundPages.Add((int)searchRange.Information[WdInformation.wdActiveEndPageNumber]);
+                        searchRange.Collapse(WdCollapseDirection.wdCollapseEnd);
+                    }
                 }
+
+                // Display the results
+                if (textFound)
+                {
+                    string pages = string.Join(", ", foundPages.Distinct());
+                    MessageBox.Show($"The text '{searchText}' was found on the following pages: {pages}");
+                }
+                else
+                {
+                    MessageBox.Show($"The text '{searchText}' was not found.");
+                }
+
+                return textFound;
             }
             catch (FileFormatException ex)
             {
@@ -627,6 +697,18 @@ namespace KBBWinForms
                 // Handle all other exceptions
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
+            }
+            finally
+            {
+                // Ensure the document and application are properly closed
+                if (wordDoc != null)
+                {
+                    wordDoc.Close(false);
+                }
+                if (wordApp != null)
+                {
+                    wordApp.Quit(false);
+                }
             }
         }
         #endregion
