@@ -41,7 +41,7 @@ namespace KBBWinForms
             openFileDialog1.FileName = string.Empty;
 
             openFileDialog1.Filter =
-                "Archivos de Word|*.doc;*.docx|" +
+                "Archivos de Word|*.docx|" +
                 "Archivos de Excel|*.xls;*.xlsx|" +
                 "Archivos de Power Point|*.ppt;*.pptx;*.pps;*.ppsx|" +
                 "Archivos PDF|*.pdf|" +

@@ -206,7 +206,7 @@ namespace KBBWinForms
                     dataTableExtensiones.Columns.Add("Nombre", typeof(string));
                     dataTableExtensiones.Columns.Add("Observaciones", typeof(string));
 
-                    extension = "doc";
+                    extension = "docx";
 
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
@@ -260,31 +260,6 @@ namespace KBBWinForms
                             dataRow["Nombre"] = row["Nombre"];
                             dataRow["Observaciones"] = row["Observaciones"];
                             dataTableExtensiones.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "docx";
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
-                            }
                         }
                     }
 
@@ -488,7 +463,7 @@ namespace KBBWinForms
                         }
                     }
 
-                    
+
                     ///////////////////////////////////////////////////////////////////////////////////
 
                 }
@@ -612,6 +587,14 @@ namespace KBBWinForms
         {
             try
             {
+                // Check if the file exists
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show("The file does not exist.");
+                    return false;
+                }
+
+                // Open the Word document
                 using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(filePath, false))
                 {
                     // Access the main document part
@@ -621,9 +604,27 @@ namespace KBBWinForms
                     return docText.Contains(searchText, StringComparison.OrdinalIgnoreCase);
                 }
             }
+            catch (FileFormatException ex)
+            {
+                // Handle specific file format exceptions
+                MessageBox.Show($"File format error: {ex.Message}");
+                return false;
+            }
+            catch (IOException ex)
+            {
+                // Handle IO exceptions
+                MessageBox.Show($"IO error: {ex.Message}");
+                return false;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access exceptions
+                MessageBox.Show($"Access error: {ex.Message}");
+                return false;
+            }
             catch (Exception ex)
             {
-                // Handle exceptions (e.g., file not found, invalid format)
+                // Handle all other exceptions
                 MessageBox.Show($"An error occurred: {ex.Message}");
                 return false;
             }
