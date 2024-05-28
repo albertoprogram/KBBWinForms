@@ -57,7 +57,8 @@ namespace KBBWinForms
             {
                 foreach (DataRow dr in dt.Rows)
                 {
-                    dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(), dr["Observaciones"].ToString());
+                    dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(),
+                        dr["Observaciones"].ToString(), dr["Paginas"].ToString());
                 }
             }
 

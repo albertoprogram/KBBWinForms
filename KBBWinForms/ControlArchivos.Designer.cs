@@ -51,6 +51,7 @@
             lblBusqueda = new Label();
             txtBusqueda = new TextBox();
             btnBuscar = new Button();
+            Paginas = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -60,7 +61,7 @@
             dgvDocumentos.AllowUserToDeleteRows = false;
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { ID, Nombre, Observaciones });
+            dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { ID, Nombre, Observaciones, Paginas });
             dgvDocumentos.Location = new Point(324, 89);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
@@ -286,6 +287,14 @@
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
             // 
+            // Paginas
+            // 
+            Paginas.HeaderText = "Páginas";
+            Paginas.MinimumWidth = 6;
+            Paginas.Name = "Paginas";
+            Paginas.ReadOnly = true;
+            Paginas.Width = 88;
+            // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -345,5 +354,6 @@
         private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Nombre;
         private DataGridViewTextBoxColumn Observaciones;
+        private DataGridViewTextBoxColumn Paginas;
     }
 }

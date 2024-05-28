@@ -89,6 +89,7 @@ namespace KBBWinForms
             dt.Columns.Add("ID", typeof(int));
             dt.Columns.Add("Nombre", typeof(string));
             dt.Columns.Add("Observaciones", typeof(string));
+            dt.Columns.Add("Paginas", typeof(string));
 
             if (!string.IsNullOrWhiteSpace(pagina))
             {
@@ -251,8 +252,10 @@ namespace KBBWinForms
 
                         File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
 
+                        string pages;
+
                         //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda);
+                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda,out pages);
 
                         if (found)
                         {
@@ -260,6 +263,7 @@ namespace KBBWinForms
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
                             dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
                             dt.Rows.Add(dataRow);
                         }
                     }
@@ -584,7 +588,7 @@ namespace KBBWinForms
         #endregion
 
         #region SearchTextInWordDocument
-        public bool SearchTextInWordDocument(string filePath, string searchText)
+        public bool SearchTextInWordDocument(string filePath, string searchText, out string pages)
         {
             //try
             //{
@@ -632,13 +636,14 @@ namespace KBBWinForms
 
             WApplication wordApp = null;
             WDocument wordDoc = null;
+            pages = string.Empty;
 
             try
             {
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show("The file does not exist.");
+                    MessageBox.Show($"El archivo no existe: {filePath}");
                     return false;
                 }
 
@@ -664,12 +669,12 @@ namespace KBBWinForms
                 // Display the results
                 if (textFound)
                 {
-                    string pages = string.Join(", ", foundPages.Distinct());
-                    MessageBox.Show($"The text '{searchText}' was found on the following pages: {pages}");
+                    pages = string.Join(", ", foundPages.Distinct());
+                    //MessageBox.Show($"The text '{searchText}' was found on the following pages: {pages}");
                 }
                 else
                 {
-                    MessageBox.Show($"The text '{searchText}' was not found.");
+                    //MessageBox.Show($"The text '{searchText}' was not found.");
                 }
 
                 return textFound;
@@ -714,13 +719,13 @@ namespace KBBWinForms
         #endregion
 
         #region GetDocumentText
-        private string GetDocumentText(WordprocessingDocument wordDoc)
-        {
-            using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-            {
-                return sr.ReadToEnd();
-            }
-        }
+        //private string GetDocumentText(WordprocessingDocument wordDoc)
+        //{
+        //    using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
+        //    {
+        //        return sr.ReadToEnd();
+        //    }
+        //}
         #endregion
     }
 }
