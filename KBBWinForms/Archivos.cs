@@ -8,6 +8,7 @@ using WordA = Microsoft.Office.Interop.Word;
 using WApplication = Microsoft.Office.Interop.Word.Application;
 using WDocument = Microsoft.Office.Interop.Word.Document;
 using Microsoft.Office.Interop.Word;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace KBBWinForms
 {
@@ -201,6 +202,14 @@ namespace KBBWinForms
 
                     System.Data.DataTable dataTableExtensiones = new System.Data.DataTable("Extensiones");
                     string extension = string.Empty;
+                    string pages;
+
+                    string ruta = AppDomain.CurrentDomain.BaseDirectory;
+
+                    string carpetaTemporal = ruta + @"temp\";
+
+                    if (!Directory.Exists(carpetaTemporal))
+                        Directory.CreateDirectory(carpetaTemporal);
 
                     dataTableExtensiones.Columns.Add("ID", typeof(int));
                     dataTableExtensiones.Columns.Add("Extension", typeof(string));
@@ -236,13 +245,6 @@ namespace KBBWinForms
                         }
                     }
 
-                    string ruta = AppDomain.CurrentDomain.BaseDirectory;
-
-                    string carpetaTemporal = ruta + @"temp\";
-
-                    if (!Directory.Exists(carpetaTemporal))
-                        Directory.CreateDirectory(carpetaTemporal);
-
                     foreach (DataRow row in dataTableExtensiones.Rows)
                     {
                         string ubicacionCompleta = carpetaTemporal + row["Extension"];
@@ -252,10 +254,8 @@ namespace KBBWinForms
 
                         File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
 
-                        string pages;
-
                         //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda,out pages);
+                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda, out pages);
 
                         if (found)
                         {
@@ -268,10 +268,10 @@ namespace KBBWinForms
                         }
                     }
 
-                    extension = "xls";
+                    extension = "xlsx";
 
                     query = "SELECT " +
-                    "ID,Extension,Archivo " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}' " +
                     "ORDER BY ID";
@@ -287,34 +287,35 @@ namespace KBBWinForms
                                     DataRow dataRow = dataTableExtensiones.NewRow();
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
                         }
                     }
 
-                    extension = "xlsx";
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    foreach (DataRow row in dataTableExtensiones.Rows)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        bool found = SearchTextInExcelFile(ubicacionCompleta, busqueda, out pages);
+
+                        if (found)
                         {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
-                            }
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
+                            dt.Rows.Add(dataRow);
                         }
                     }
 
@@ -726,6 +727,97 @@ namespace KBBWinForms
         //        return sr.ReadToEnd();
         //    }
         //}
+        #endregion
+
+        #region SearchTextInExcelFile
+        public bool SearchTextInExcelFile(string filePath, string searchText, out string foundCells)
+        {
+            Excel.Application excelApp = null;
+            Excel.Workbook excelWorkbook = null;
+            foundCells = string.Empty;
+
+            try
+            {
+                // Check if the file exists
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show($"El archivo no existe: {filePath}");
+                    return false;
+                }
+
+                // Initialize Excel application
+                excelApp = new Excel.Application();
+                excelWorkbook = excelApp.Workbooks.Open(filePath, ReadOnly: true);
+
+                bool textFound = false;
+                var foundCellAddresses = new List<string>();
+
+                // Loop through each worksheet in the workbook
+                foreach (Excel.Worksheet worksheet in excelWorkbook.Worksheets)
+                {
+                    Excel.Range usedRange = worksheet.UsedRange;
+
+                    // Loop through each cell in the used range
+                    foreach (Excel.Range cell in usedRange.Cells)
+                    {
+                        if (cell.Value != null && cell.Value.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                        {
+                            textFound = true;
+                            foundCellAddresses.Add(cell.Address);
+                        }
+                    }
+                }
+
+                // Display the results
+                if (textFound)
+                {
+                    foundCells = string.Join(", ", foundCellAddresses.Distinct());
+                    //MessageBox.Show($"The text '{searchText}' was found in the following cells: {foundCells}");
+                }
+                else
+                {
+                    //MessageBox.Show($"The text '{searchText}' was not found.");
+                }
+
+                return textFound;
+            }
+            catch (FileFormatException ex)
+            {
+                // Handle specific file format exceptions
+                MessageBox.Show($"File format error: {ex.Message}");
+                return false;
+            }
+            catch (IOException ex)
+            {
+                // Handle IO exceptions
+                MessageBox.Show($"IO error: {ex.Message}");
+                return false;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access exceptions
+                MessageBox.Show($"Access error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Handle all other exceptions
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                // Ensure the workbook and application are properly closed
+                if (excelWorkbook != null)
+                {
+                    excelWorkbook.Close(false);
+                }
+                if (excelApp != null)
+                {
+                    excelApp.Quit();
+                }
+            }
+        }
         #endregion
     }
 }
