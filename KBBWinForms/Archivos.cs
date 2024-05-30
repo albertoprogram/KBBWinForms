@@ -270,6 +270,8 @@ namespace KBBWinForms
 
                     extension = "xlsx";
 
+                    dataTableExtensiones.Rows.Clear();
+
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
@@ -763,7 +765,8 @@ namespace KBBWinForms
                         if (cell.Value != null && cell.Value.ToString().Contains(searchText, StringComparison.OrdinalIgnoreCase))
                         {
                             textFound = true;
-                            foundCellAddresses.Add(cell.Address);
+                            // Store the sheet name along with the cell address
+                            foundCellAddresses.Add($"{worksheet.Name}!{cell.Address}");
                         }
                     }
                 }
