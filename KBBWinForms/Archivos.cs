@@ -9,6 +9,8 @@ using WApplication = Microsoft.Office.Interop.Word.Application;
 using WDocument = Microsoft.Office.Interop.Word.Document;
 using Microsoft.Office.Interop.Word;
 using Excel = Microsoft.Office.Interop.Excel;
+using PowerPoint = Microsoft.Office.Interop.PowerPoint;
+using Office = Microsoft.Office.Core;
 
 namespace KBBWinForms
 {
@@ -321,7 +323,9 @@ namespace KBBWinForms
                         }
                     }
 
-                    extension = "ppt";
+                    extension = "pptx";
+
+                    dataTableExtensiones.Rows.Clear();
 
                     query = "SELECT " +
                     "ID,Extension,Archivo " +
@@ -340,34 +344,35 @@ namespace KBBWinForms
                                     DataRow dataRow = dataTableExtensiones.NewRow();
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
                         }
                     }
 
-                    extension = "pptx";
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    foreach (DataRow row in dataTableExtensiones.Rows)
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+
+                        if (found)
                         {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
-                            }
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
+                            dt.Rows.Add(dataRow);
                         }
                     }
 
@@ -818,6 +823,100 @@ namespace KBBWinForms
                 if (excelApp != null)
                 {
                     excelApp.Quit();
+                }
+            }
+        }
+        #endregion
+
+        #region SearchTextInPowerPointFile
+        public bool SearchTextInPowerPointFile(string filePath, string searchText, out string foundSlides)
+        {
+            PowerPoint.Application pptApp = null;
+            PowerPoint.Presentation pptPresentation = null;
+            foundSlides = string.Empty;
+
+            try
+            {
+                // Check if the file exists
+                if (!File.Exists(filePath))
+                {
+                    MessageBox.Show($"El archivo no existe: {filePath}");
+                    return false;
+                }
+
+                // Initialize PowerPoint application
+                pptApp = new PowerPoint.Application();
+                pptPresentation = pptApp.Presentations.Open(filePath, WithWindow: Office.MsoTriState.msoFalse);
+
+                bool textFound = false;
+                var foundSlideIndexes = new List<string>();
+
+                // Loop through each slide in the presentation
+                foreach (PowerPoint.Slide slide in pptPresentation.Slides)
+                {
+                    // Loop through each shape in the slide
+                    foreach (PowerPoint.Shape shape in slide.Shapes)
+                    {
+                        if (shape.HasTextFrame == Office.MsoTriState.msoTrue && shape.TextFrame.HasText == Office.MsoTriState.msoTrue)
+                        {
+                            PowerPoint.TextRange textRange = shape.TextFrame.TextRange;
+
+                            if (textRange.Text.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                            {
+                                textFound = true;
+                                foundSlideIndexes.Add($"Slide {slide.SlideIndex}");
+                            }
+                        }
+                    }
+                }
+
+                // Display the results
+                if (textFound)
+                {
+                    foundSlides = string.Join(", ", foundSlideIndexes.Distinct());
+                    //MessageBox.Show($"The text '{searchText}' was found in the following slides: {foundSlides}");
+                }
+                else
+                {
+                    //MessageBox.Show($"The text '{searchText}' was not found.");
+                }
+
+                return textFound;
+            }
+            catch (FileFormatException ex)
+            {
+                // Handle specific file format exceptions
+                MessageBox.Show($"File format error: {ex.Message}");
+                return false;
+            }
+            catch (IOException ex)
+            {
+                // Handle IO exceptions
+                MessageBox.Show($"IO error: {ex.Message}");
+                return false;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access exceptions
+                MessageBox.Show($"Access error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Handle all other exceptions
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                // Ensure the presentation and application are properly closed
+                if (pptPresentation != null)
+                {
+                    pptPresentation.Close();
+                }
+                if (pptApp != null)
+                {
+                    pptApp.Quit();
                 }
             }
         }
