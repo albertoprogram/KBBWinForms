@@ -328,7 +328,7 @@ namespace KBBWinForms
                     dataTableExtensiones.Rows.Clear();
 
                     query = "SELECT " +
-                    "ID,Extension,Archivo " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}' " +
                     "ORDER BY ID";
@@ -373,31 +373,6 @@ namespace KBBWinForms
                             dataRow["Observaciones"] = row["Observaciones"];
                             dataRow["Paginas"] = pages;
                             dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "pps";
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
-                            }
                         }
                     }
 

@@ -15,6 +15,7 @@ namespace KBBWinForms
         #region Variables
         Archivos archivo = new Archivos();
         string? rutaSeleccionada = string.Empty;
+        string? filtroSeleccionado = string.Empty;
         #endregion
 
         #region Constructores
@@ -38,6 +39,15 @@ namespace KBBWinForms
                 openFileDialog1.InitialDirectory = rutaSeleccionada;
             }
 
+            if (string.IsNullOrEmpty(filtroSeleccionado))
+            {
+                openFileDialog1.Filter = "Todos los Archivos|*.*";
+            }
+            else
+            {
+                openFileDialog1.Filter = filtroSeleccionado;
+            }
+
             openFileDialog1.FileName = string.Empty;
 
             openFileDialog1.Filter =
@@ -48,13 +58,15 @@ namespace KBBWinForms
                 "Archivos de imagen|*.jpg;*.jpeg;*.png|" +
                 "Archivos de texto|*.txt|" +
                 "Archivos de audio|*.mp3|" +
-                "Archivos de vídeo|*.mp4;*.wmv";
+                "Archivos de vídeo|*.mp4;*.wmv|" +
+                "Todos los Archivos|*.*";
 
             openFileDialog1.FilterIndex = 1;
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 rutaSeleccionada = Path.GetDirectoryName(openFileDialog1.FileName);
+                filtroSeleccionado = openFileDialog1.Filter;
                 txtRutaArchivo.Text = openFileDialog1.FileName;
                 txtTituloArchivo.Text = openFileDialog1.SafeFileName;
             }
