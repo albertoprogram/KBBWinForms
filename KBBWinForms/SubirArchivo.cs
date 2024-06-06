@@ -41,19 +41,10 @@ namespace KBBWinForms
 
             if (string.IsNullOrEmpty(filtroSeleccionado))
             {
-                openFileDialog1.Filter = "Todos los Archivos|*.*";
-            }
-            else
-            {
-                openFileDialog1.Filter = filtroSeleccionado;
-            }
-
-            openFileDialog1.FileName = string.Empty;
-
-            openFileDialog1.Filter =
+                openFileDialog1.Filter =
                 "Archivos de Word|*.docx|" +
                 "Archivos de Excel|*.xlsx|" +
-                "Archivos de Power Point|*.ppt;*.pptx;*.pps;*.ppsx|" +
+                "Archivos de Power Point|*.pptx;*.ppsx|" +
                 "Archivos PDF|*.pdf|" +
                 "Archivos de imagen|*.jpg;*.jpeg;*.png|" +
                 "Archivos de texto|*.txt|" +
@@ -61,7 +52,14 @@ namespace KBBWinForms
                 "Archivos de vídeo|*.mp4;*.wmv|" +
                 "Todos los Archivos|*.*";
 
-            openFileDialog1.FilterIndex = 1;
+                openFileDialog1.FilterIndex = 1;
+            }
+            else
+            {
+                openFileDialog1.Filter = filtroSeleccionado;
+            }
+
+            openFileDialog1.FileName = string.Empty;
 
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {

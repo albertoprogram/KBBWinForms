@@ -378,8 +378,10 @@ namespace KBBWinForms
 
                     extension = "ppsx";
 
+                    dataTableExtensiones.Rows.Clear();
+
                     query = "SELECT " +
-                    "ID,Extension,Archivo " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}' " +
                     "ORDER BY ID";
@@ -395,9 +397,35 @@ namespace KBBWinForms
                                     DataRow dataRow = dataTableExtensiones.NewRow();
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
+                        }
+                    }
+
+                    foreach (DataRow row in dataTableExtensiones.Rows)
+                    {
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+
+                        if (found)
+                        {
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
+                            dt.Rows.Add(dataRow);
                         }
                     }
 
