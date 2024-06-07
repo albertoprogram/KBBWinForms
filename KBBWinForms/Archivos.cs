@@ -11,6 +11,10 @@ using Microsoft.Office.Interop.Word;
 using Excel = Microsoft.Office.Interop.Excel;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Office = Microsoft.Office.Core;
+using System.Collections.Generic;
+using iText.Kernel.Pdf;
+using iText.Kernel.Pdf.Canvas.Parser;
+using iText.Kernel.Pdf.Canvas.Parser.Listener;
 
 namespace KBBWinForms
 {
@@ -431,8 +435,10 @@ namespace KBBWinForms
 
                     extension = "pdf";
 
+                    dataTableExtensiones.Rows.Clear();
+
                     query = "SELECT " +
-                    "ID,Extension " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}' " +
                     "ORDER BY ID";
@@ -448,9 +454,35 @@ namespace KBBWinForms
                                     DataRow dataRow = dataTableExtensiones.NewRow();
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
+                        }
+                    }
+
+                    foreach (DataRow row in dataTableExtensiones.Rows)
+                    {
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+
+                        if (found)
+                        {
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
+                            dt.Rows.Add(dataRow);
                         }
                     }
 
@@ -922,6 +954,48 @@ namespace KBBWinForms
                     pptApp.Quit();
                 }
             }
+        }
+        #endregion
+
+        #region SearchTextInPdf
+        public static bool SearchTextInPdf(string filePath, string searchText, out string pagesWithText)
+        {
+            bool textFound = false;
+            pagesWithText = string.Empty;
+            var foundPages = new List<string>();
+            // Load the PDF document
+            using (PdfReader pdfReader = new PdfReader(filePath))
+            using (PdfDocument pdfDocument = new PdfDocument(pdfReader))
+            {
+                // Iterate through each page
+                for (int pageNum = 1; pageNum <= pdfDocument.GetNumberOfPages(); pageNum++)
+                {
+                    // Extract text from the current page
+                    PdfPage page = pdfDocument.GetPage(pageNum);
+                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                    string pageText = PdfTextExtractor.GetTextFromPage(page, strategy);
+
+                    // Check if the text is found on the current page
+                    if (pageText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                    {
+                        textFound = true;
+                        foundPages.Add(pageNum.ToString());
+                    }
+                }
+            }
+
+            // Display the results
+            if (textFound)
+            {
+                pagesWithText = string.Join(", ", foundPages.Distinct());
+                //MessageBox.Show($"The text '{searchText}' was found in the following slides: {foundSlides}");
+            }
+            else
+            {
+                //MessageBox.Show($"The text '{searchText}' was not found.");
+            }
+
+            return textFound;
         }
         #endregion
     }
