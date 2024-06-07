@@ -473,7 +473,7 @@ namespace KBBWinForms
                         File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
 
                         //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+                        bool found = SearchTextInPdf(ubicacionCompleta, busqueda, out pages);
 
                         if (found)
                         {
