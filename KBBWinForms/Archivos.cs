@@ -208,7 +208,7 @@ namespace KBBWinForms
 
                     System.Data.DataTable dataTableExtensiones = new System.Data.DataTable("Extensiones");
                     string extension = string.Empty;
-                    string pages;
+                    string pages = string.Empty;
 
                     string ruta = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -277,6 +277,7 @@ namespace KBBWinForms
                     extension = "xlsx";
 
                     dataTableExtensiones.Rows.Clear();
+                    pages = string.Empty;
 
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
@@ -330,6 +331,7 @@ namespace KBBWinForms
                     extension = "pptx";
 
                     dataTableExtensiones.Rows.Clear();
+                    pages = string.Empty;
 
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
@@ -383,6 +385,7 @@ namespace KBBWinForms
                     extension = "ppsx";
 
                     dataTableExtensiones.Rows.Clear();
+                    pages = string.Empty;
 
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
@@ -436,6 +439,7 @@ namespace KBBWinForms
                     extension = "pdf";
 
                     dataTableExtensiones.Rows.Clear();
+                    pages = string.Empty;
 
                     query = "SELECT " +
                     "ID,Extension,Archivo,Nombre,Observaciones " +
@@ -488,8 +492,11 @@ namespace KBBWinForms
 
                     extension = "txt";
 
+                    dataTableExtensiones.Rows.Clear();
+                    pages = string.Empty;
+
                     query = "SELECT " +
-                    "ID,Extension,Archivo " +
+                    "ID,Extension,Archivo,Nombre,Observaciones " +
                     "FROM Archivos " +
                     $"WHERE Extension LIKE '%.{extension}' " +
                     "ORDER BY ID";
@@ -505,12 +512,37 @@ namespace KBBWinForms
                                     DataRow dataRow = dataTableExtensiones.NewRow();
                                     dataRow["ID"] = reader.GetInt32("ID");
                                     dataRow["Extension"] = reader.GetString("Extension");
+                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                    dataRow["Nombre"] = reader.GetString("Nombre");
+                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
                                     dataTableExtensiones.Rows.Add(dataRow);
                                 }
                             }
                         }
                     }
 
+                    foreach (DataRow row in dataTableExtensiones.Rows)
+                    {
+                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                        bool found = SearchTextInTXT(ubicacionCompleta, busqueda);
+
+                        if (found)
+                        {
+                            DataRow dataRow = dt.NewRow();
+                            dataRow["ID"] = row["ID"];
+                            dataRow["Nombre"] = row["Nombre"];
+                            dataRow["Observaciones"] = row["Observaciones"];
+                            dataRow["Paginas"] = pages;
+                            dt.Rows.Add(dataRow);
+                        }
+                    }
 
                     ///////////////////////////////////////////////////////////////////////////////////
 
@@ -958,44 +990,136 @@ namespace KBBWinForms
         #endregion
 
         #region SearchTextInPdf
-        public static bool SearchTextInPdf(string filePath, string searchText, out string pagesWithText)
+        public bool SearchTextInPdf(string filePath, string searchText, out string pagesWithText)
         {
+
             bool textFound = false;
             pagesWithText = string.Empty;
             var foundPages = new List<string>();
-            // Load the PDF document
-            using (PdfReader pdfReader = new PdfReader(filePath))
-            using (PdfDocument pdfDocument = new PdfDocument(pdfReader))
+            try
             {
-                // Iterate through each page
-                for (int pageNum = 1; pageNum <= pdfDocument.GetNumberOfPages(); pageNum++)
+                // Check if the file exists
+                if (!File.Exists(filePath))
                 {
-                    // Extract text from the current page
-                    PdfPage page = pdfDocument.GetPage(pageNum);
-                    ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
-                    string pageText = PdfTextExtractor.GetTextFromPage(page, strategy);
+                    throw new FileNotFoundException($"El archivo no existe: {filePath}");
+                }
 
-                    // Check if the text is found on the current page
-                    if (pageText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                // Load the PDF document
+                using (PdfReader pdfReader = new PdfReader(filePath))
+                using (PdfDocument pdfDocument = new PdfDocument(pdfReader))
+                {
+                    // Iterate through each page
+                    for (int pageNum = 1; pageNum <= pdfDocument.GetNumberOfPages(); pageNum++)
                     {
-                        textFound = true;
-                        foundPages.Add(pageNum.ToString());
+                        // Extract text from the current page
+                        PdfPage page = pdfDocument.GetPage(pageNum);
+                        ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
+                        string pageText = PdfTextExtractor.GetTextFromPage(page, strategy);
+
+                        // Check if the text is found on the current page
+                        if (pageText.Contains(searchText, StringComparison.OrdinalIgnoreCase))
+                        {
+                            textFound = true;
+                            foundPages.Add(pageNum.ToString());
+                        }
                     }
                 }
-            }
 
-            // Display the results
-            if (textFound)
-            {
-                pagesWithText = string.Join(", ", foundPages.Distinct());
-                //MessageBox.Show($"The text '{searchText}' was found in the following slides: {foundSlides}");
-            }
-            else
-            {
-                //MessageBox.Show($"The text '{searchText}' was not found.");
-            }
+                // Display the results
+                if (textFound)
+                {
+                    pagesWithText = string.Join(", ", foundPages.Distinct());
+                    //MessageBox.Show($"The text '{searchText}' was found in the following slides: {foundSlides}");
+                }
+                else
+                {
+                    //MessageBox.Show($"The text '{searchText}' was not found.");
+                }
 
-            return textFound;
+                return textFound;
+            }
+            catch (FileFormatException ex)
+            {
+                // Handle specific file format exceptions
+                MessageBox.Show($"File format error: {ex.Message}");
+                return false;
+            }
+            catch (IOException ex)
+            {
+                // Handle IO exceptions
+                MessageBox.Show($"IO error: {ex.Message}");
+                return false;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access exceptions
+                MessageBox.Show($"Access error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Handle all other exceptions
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+            }
+        }
+        #endregion
+
+        #region SearchTextInTXT
+        public bool SearchTextInTXT(string filePath, string searchText)
+        {
+            try
+            {
+                // Check if the file exists
+                if (!File.Exists(filePath))
+                {
+                    throw new FileNotFoundException($"El archivo no existe: {filePath}");
+                }
+
+                // Read all lines from the file
+                string[] lines = File.ReadAllLines(filePath);
+
+                // Search for the specified text in each line
+                foreach (string line in lines)
+                {
+                    if (line.Contains(searchText))
+                    {
+                        return true; // Search text found
+                    }
+                }
+
+                return false; // Search text not found
+            }
+            catch (FileFormatException ex)
+            {
+                // Handle specific file format exceptions
+                MessageBox.Show($"File format error: {ex.Message}");
+                return false;
+            }
+            catch (IOException ex)
+            {
+                // Handle IO exceptions
+                MessageBox.Show($"IO error: {ex.Message}");
+                return false;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Handle unauthorized access exceptions
+                MessageBox.Show($"Access error: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // Handle all other exceptions
+                MessageBox.Show($"An error occurred: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+            }
         }
         #endregion
     }
