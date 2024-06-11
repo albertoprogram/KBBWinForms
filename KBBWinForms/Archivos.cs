@@ -1085,7 +1085,7 @@ namespace KBBWinForms
                 // Search for the specified text in each line
                 foreach (string line in lines)
                 {
-                    if (line.Contains(searchText))
+                    if (line.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                     {
                         return true; // Search text found
                     }
