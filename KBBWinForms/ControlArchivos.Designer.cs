@@ -32,6 +32,7 @@
             ID = new DataGridViewTextBoxColumn();
             Nombre = new DataGridViewTextBoxColumn();
             Observaciones = new DataGridViewTextBoxColumn();
+            Paginas = new DataGridViewTextBoxColumn();
             btnAgregar = new Button();
             btnEditar = new Button();
             btnVer = new Button();
@@ -51,7 +52,7 @@
             lblBusqueda = new Label();
             txtBusqueda = new TextBox();
             btnBuscar = new Button();
-            Paginas = new DataGridViewTextBoxColumn();
+            lblStatus = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -94,6 +95,14 @@
             Observaciones.Name = "Observaciones";
             Observaciones.ReadOnly = true;
             Observaciones.Width = 134;
+            // 
+            // Paginas
+            // 
+            Paginas.HeaderText = "Páginas";
+            Paginas.MinimumWidth = 6;
+            Paginas.Name = "Paginas";
+            Paginas.ReadOnly = true;
+            Paginas.Width = 88;
             // 
             // btnAgregar
             // 
@@ -287,19 +296,24 @@
             btnBuscar.UseVisualStyleBackColor = true;
             btnBuscar.Click += btnBuscar_Click;
             // 
-            // Paginas
+            // lblStatus
             // 
-            Paginas.HeaderText = "Páginas";
-            Paginas.MinimumWidth = 6;
-            Paginas.Name = "Paginas";
-            Paginas.ReadOnly = true;
-            Paginas.Width = 88;
+            lblStatus.AutoSize = true;
+            lblStatus.BackColor = SystemColors.HotTrack;
+            lblStatus.ForeColor = Color.White;
+            lblStatus.Location = new Point(1181, 63);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(66, 20);
+            lblStatus.TabIndex = 21;
+            lblStatus.Text = "lblStatus";
+            lblStatus.Visible = false;
             // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1395, 732);
+            Controls.Add(lblStatus);
             Controls.Add(btnBuscar);
             Controls.Add(txtBusqueda);
             Controls.Add(lblBusqueda);
@@ -355,5 +369,6 @@
         private DataGridViewTextBoxColumn Nombre;
         private DataGridViewTextBoxColumn Observaciones;
         private DataGridViewTextBoxColumn Paginas;
+        private Label lblStatus;
     }
 }

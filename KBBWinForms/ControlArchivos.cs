@@ -323,7 +323,15 @@ namespace KBBWinForms
                 categoria = string.Empty;
                 busqueda = txtBusqueda.Text.Trim();
 
+                lblStatus.ForeColor = Color.White;
+                lblStatus.Text = "Buscando...";
+                lblStatus.Visible = true;
+                this.Enabled = false;
+
                 LlenarData();
+
+                lblStatus.Visible = false;
+                this.Enabled = true;
             }
             else
             {
