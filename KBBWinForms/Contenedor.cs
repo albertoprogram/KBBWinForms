@@ -16,13 +16,32 @@ namespace KBBWinForms
         public Contenedor()
         {
             InitializeComponent();
+
+            //Colores
+            //----------------------------------------------------------------
+            string hexColor = "#E7ECEF";
+
+            Color color = ColorTranslator.FromHtml(hexColor);
+
+            this.BackColor = color;
+
+            controlDeArchivosToolStripMenuItem.BackColor = color;
+
+            hexColor = "#274C77";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            this.ForeColor = color;
+
+            controlDeArchivosToolStripMenuItem.ForeColor = color;
+            //----------------------------------------------------------------
         }
         #endregion
 
         #region controlDeArchivosToolStripMenuItem_Click
         private void controlDeArchivosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ControlArchivos controlArchivos = new ControlArchivos();
+            ControlArchivos controlArchivos = new ControlArchivos(this);
 
             controlArchivos.MdiParent = this;
 

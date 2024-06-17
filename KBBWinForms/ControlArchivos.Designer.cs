@@ -60,16 +60,17 @@
             // 
             dgvDocumentos.AllowUserToAddRows = false;
             dgvDocumentos.AllowUserToDeleteRows = false;
+            dgvDocumentos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvDocumentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvDocumentos.Columns.AddRange(new DataGridViewColumn[] { ID, Nombre, Observaciones, Paginas });
-            dgvDocumentos.Location = new Point(324, 89);
+            dgvDocumentos.Location = new Point(404, 93);
             dgvDocumentos.MultiSelect = false;
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.ReadOnly = true;
             dgvDocumentos.RowHeadersWidth = 51;
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1059, 550);
+            dgvDocumentos.Size = new Size(1323, 576);
             dgvDocumentos.TabIndex = 0;
             // 
             // ID
@@ -78,7 +79,7 @@
             ID.MinimumWidth = 6;
             ID.Name = "ID";
             ID.ReadOnly = true;
-            ID.Width = 53;
+            ID.Width = 57;
             // 
             // Nombre
             // 
@@ -86,7 +87,7 @@
             Nombre.MinimumWidth = 6;
             Nombre.Name = "Nombre";
             Nombre.ReadOnly = true;
-            Nombre.Width = 93;
+            Nombre.Width = 106;
             // 
             // Observaciones
             // 
@@ -94,7 +95,7 @@
             Observaciones.MinimumWidth = 6;
             Observaciones.Name = "Observaciones";
             Observaciones.ReadOnly = true;
-            Observaciones.Width = 134;
+            Observaciones.Width = 165;
             // 
             // Paginas
             // 
@@ -102,13 +103,14 @@
             Paginas.MinimumWidth = 6;
             Paginas.Name = "Paginas";
             Paginas.ReadOnly = true;
-            Paginas.Width = 88;
+            Paginas.Width = 104;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(1089, 691);
+            btnAgregar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAgregar.Location = new Point(1361, 726);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(94, 29);
+            btnAgregar.Size = new Size(118, 30);
             btnAgregar.TabIndex = 1;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -116,18 +118,20 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(1189, 691);
+            btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnEditar.Location = new Point(1487, 726);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(94, 29);
+            btnEditar.Size = new Size(118, 30);
             btnEditar.TabIndex = 2;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
             // 
             // btnVer
             // 
-            btnVer.Location = new Point(1289, 691);
+            btnVer.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVer.Location = new Point(1611, 726);
             btnVer.Name = "btnVer";
-            btnVer.Size = new Size(94, 29);
+            btnVer.Size = new Size(118, 30);
             btnVer.TabIndex = 3;
             btnVer.Text = "Ver";
             btnVer.UseVisualStyleBackColor = true;
@@ -135,19 +139,21 @@
             // 
             // lblPagina
             // 
+            lblPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblPagina.AutoSize = true;
-            lblPagina.Location = new Point(326, 648);
+            lblPagina.Location = new Point(408, 680);
             lblPagina.Name = "lblPagina";
-            lblPagina.Size = new Size(53, 20);
+            lblPagina.Size = new Size(68, 21);
             lblPagina.TabIndex = 4;
             lblPagina.Text = "Página";
             lblPagina.Visible = false;
             // 
             // txtPagina
             // 
-            txtPagina.Location = new Point(385, 645);
+            txtPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtPagina.Location = new Point(481, 677);
             txtPagina.Name = "txtPagina";
-            txtPagina.Size = new Size(87, 27);
+            txtPagina.Size = new Size(107, 28);
             txtPagina.TabIndex = 5;
             txtPagina.Text = "1";
             txtPagina.Visible = false;
@@ -157,19 +163,21 @@
             // 
             // lblCantidadRegistros
             // 
+            lblCantidadRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblCantidadRegistros.AutoSize = true;
-            lblCantidadRegistros.Location = new Point(478, 649);
+            lblCantidadRegistros.Location = new Point(598, 681);
             lblCantidadRegistros.Name = "lblCantidadRegistros";
-            lblCantidadRegistros.Size = new Size(230, 20);
+            lblCantidadRegistros.Size = new Size(293, 21);
             lblCantidadRegistros.TabIndex = 6;
             lblCantidadRegistros.Text = "Cantidad de Registros por Página";
             lblCantidadRegistros.Visible = false;
             // 
             // btnAnterior
             // 
-            btnAnterior.Location = new Point(1181, 645);
+            btnAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAnterior.Location = new Point(1477, 677);
             btnAnterior.Name = "btnAnterior";
-            btnAnterior.Size = new Size(54, 29);
+            btnAnterior.Size = new Size(68, 30);
             btnAnterior.TabIndex = 8;
             btnAnterior.Text = "<<";
             btnAnterior.UseVisualStyleBackColor = true;
@@ -178,9 +186,10 @@
             // 
             // btnSiguiente
             // 
-            btnSiguiente.Location = new Point(1241, 645);
+            btnSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnSiguiente.Location = new Point(1551, 677);
             btnSiguiente.Name = "btnSiguiente";
-            btnSiguiente.Size = new Size(53, 29);
+            btnSiguiente.Size = new Size(67, 30);
             btnSiguiente.TabIndex = 9;
             btnSiguiente.Text = ">>";
             btnSiguiente.UseVisualStyleBackColor = true;
@@ -189,62 +198,68 @@
             // 
             // lblTotalRegistros
             // 
+            lblTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblTotalRegistros.AutoSize = true;
-            lblTotalRegistros.Location = new Point(807, 648);
+            lblTotalRegistros.Location = new Point(1009, 680);
             lblTotalRegistros.Name = "lblTotalRegistros";
-            lblTotalRegistros.Size = new Size(128, 20);
+            lblTotalRegistros.Size = new Size(156, 21);
             lblTotalRegistros.TabIndex = 10;
             lblTotalRegistros.Text = "Total de Registros";
             lblTotalRegistros.Visible = false;
             // 
             // txtTotalRegistros
             // 
-            txtTotalRegistros.Location = new Point(941, 645);
+            txtTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtTotalRegistros.Location = new Point(1177, 677);
             txtTotalRegistros.Name = "txtTotalRegistros";
             txtTotalRegistros.ReadOnly = true;
-            txtTotalRegistros.Size = new Size(116, 27);
+            txtTotalRegistros.Size = new Size(144, 28);
             txtTotalRegistros.TabIndex = 11;
             txtTotalRegistros.Text = "0";
             txtTotalRegistros.Visible = false;
             // 
             // txtTotalPaginas
             // 
-            txtTotalPaginas.Location = new Point(941, 682);
+            txtTotalPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtTotalPaginas.Location = new Point(1177, 716);
             txtTotalPaginas.Name = "txtTotalPaginas";
             txtTotalPaginas.ReadOnly = true;
-            txtTotalPaginas.Size = new Size(116, 27);
+            txtTotalPaginas.Size = new Size(144, 28);
             txtTotalPaginas.TabIndex = 13;
             txtTotalPaginas.Text = "0";
             txtTotalPaginas.Visible = false;
             // 
             // lblTotalPaginas
             // 
+            lblTotalPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblTotalPaginas.AutoSize = true;
-            lblTotalPaginas.Location = new Point(807, 685);
+            lblTotalPaginas.Location = new Point(1009, 719);
             lblTotalPaginas.Name = "lblTotalPaginas";
-            lblTotalPaginas.Size = new Size(117, 20);
+            lblTotalPaginas.Size = new Size(149, 21);
             lblTotalPaginas.TabIndex = 12;
             lblTotalPaginas.Text = "Total de Páginas";
             lblTotalPaginas.Visible = false;
             // 
             // cmbCantidadRegistrosXPagina
             // 
+            cmbCantidadRegistrosXPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             cmbCantidadRegistrosXPagina.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCantidadRegistrosXPagina.Enabled = false;
             cmbCantidadRegistrosXPagina.FormattingEnabled = true;
             cmbCantidadRegistrosXPagina.Items.AddRange(new object[] { "2", "3", "5", "10", "15", "20", "25" });
-            cmbCantidadRegistrosXPagina.Location = new Point(714, 645);
+            cmbCantidadRegistrosXPagina.Location = new Point(892, 677);
             cmbCantidadRegistrosXPagina.Name = "cmbCantidadRegistrosXPagina";
-            cmbCantidadRegistrosXPagina.Size = new Size(75, 28);
+            cmbCantidadRegistrosXPagina.Size = new Size(93, 29);
             cmbCantidadRegistrosXPagina.TabIndex = 14;
             cmbCantidadRegistrosXPagina.Visible = false;
             cmbCantidadRegistrosXPagina.SelectedIndexChanged += cmbCantidadRegistrosXPagina_SelectedIndexChanged;
             // 
             // btnInicio
             // 
-            btnInicio.Location = new Point(1108, 645);
+            btnInicio.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnInicio.Location = new Point(1384, 677);
             btnInicio.Name = "btnInicio";
-            btnInicio.Size = new Size(67, 29);
+            btnInicio.Size = new Size(83, 30);
             btnInicio.TabIndex = 15;
             btnInicio.Text = "Inicio";
             btnInicio.UseVisualStyleBackColor = true;
@@ -253,9 +268,10 @@
             // 
             // btnFin
             // 
-            btnFin.Location = new Point(1300, 645);
+            btnFin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnFin.Location = new Point(1624, 677);
             btnFin.Name = "btnFin";
-            btnFin.Size = new Size(64, 29);
+            btnFin.Size = new Size(80, 30);
             btnFin.TabIndex = 16;
             btnFin.Text = "Fin";
             btnFin.UseVisualStyleBackColor = true;
@@ -264,33 +280,36 @@
             // 
             // tvCategorias
             // 
-            tvCategorias.Location = new Point(12, 89);
+            tvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            tvCategorias.Location = new Point(16, 93);
             tvCategorias.Name = "tvCategorias";
-            tvCategorias.Size = new Size(306, 550);
+            tvCategorias.Size = new Size(382, 577);
             tvCategorias.TabIndex = 17;
             tvCategorias.AfterSelect += tvCategorias_AfterSelect;
             // 
             // lblBusqueda
             // 
             lblBusqueda.AutoSize = true;
-            lblBusqueda.Location = new Point(327, 35);
+            lblBusqueda.Location = new Point(409, 37);
             lblBusqueda.Name = "lblBusqueda";
-            lblBusqueda.Size = new Size(52, 20);
+            lblBusqueda.Size = new Size(65, 21);
             lblBusqueda.TabIndex = 18;
             lblBusqueda.Text = "Buscar";
             // 
             // txtBusqueda
             // 
-            txtBusqueda.Location = new Point(385, 31);
+            txtBusqueda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtBusqueda.Location = new Point(481, 33);
             txtBusqueda.Name = "txtBusqueda";
-            txtBusqueda.Size = new Size(790, 27);
+            txtBusqueda.Size = new Size(986, 28);
             txtBusqueda.TabIndex = 19;
             // 
             // btnBuscar
             // 
-            btnBuscar.Location = new Point(1181, 31);
+            btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBuscar.Location = new Point(1477, 33);
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(183, 29);
+            btnBuscar.Size = new Size(229, 30);
             btnBuscar.TabIndex = 20;
             btnBuscar.Text = "Iniciar Búsqueda";
             btnBuscar.UseVisualStyleBackColor = true;
@@ -298,21 +317,24 @@
             // 
             // lblStatus
             // 
+            lblStatus.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblStatus.AutoSize = true;
-            lblStatus.BackColor = SystemColors.HotTrack;
-            lblStatus.ForeColor = Color.White;
-            lblStatus.Location = new Point(1181, 63);
+            lblStatus.BackColor = Color.FromArgb(255, 255, 192);
+            lblStatus.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblStatus.ForeColor = Color.Black;
+            lblStatus.Location = new Point(828, 64);
             lblStatus.Name = "lblStatus";
-            lblStatus.Size = new Size(66, 20);
+            lblStatus.Size = new Size(74, 19);
             lblStatus.TabIndex = 21;
             lblStatus.Text = "lblStatus";
             lblStatus.Visible = false;
             // 
             // ControlArchivos
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1395, 732);
+            BackColor = Color.White;
+            ClientSize = new Size(1743, 769);
             Controls.Add(lblStatus);
             Controls.Add(btnBuscar);
             Controls.Add(txtBusqueda);
@@ -334,9 +356,11 @@
             Controls.Add(btnEditar);
             Controls.Add(btnAgregar);
             Controls.Add(dgvDocumentos);
+            Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ControlArchivos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Control Archivos";
+            WindowState = FormWindowState.Maximized;
             Load += ControlArchivos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
             ResumeLayout(false);

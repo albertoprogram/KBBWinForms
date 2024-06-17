@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace KBBWinForms
 {
@@ -18,14 +19,34 @@ namespace KBBWinForms
         Archivos archivo = new Archivos();
         string categoria;
         string busqueda;
+        private Panel overlayPanel;
+        private Contenedor mdiParentForm;
 
         SqlConnection conexionDB = new SqlConnection(ConexionDB.cadenaConexionSQLServer);
         #endregion
 
         #region Constructores
-        public ControlArchivos()
+        public ControlArchivos(Contenedor parent)
         {
             InitializeComponent();
+
+            this.mdiParentForm = parent;
+
+            //Colores
+            //----------------------------------------------------------------
+            string hexColor = "#E7ECEF";
+
+            Color color = ColorTranslator.FromHtml(hexColor);
+
+            this.BackColor = color;
+
+            hexColor = "#274C77";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            this.ForeColor = color;
+            //----------------------------------------------------------------
+
             LlenarData();
         }
         #endregion
@@ -324,14 +345,18 @@ namespace KBBWinForms
                 busqueda = txtBusqueda.Text.Trim();
 
                 lblStatus.ForeColor = Color.White;
-                lblStatus.Text = "Buscando...";
+                lblStatus.Text = "                                          Buscando...                                          ";
                 lblStatus.Visible = true;
                 this.Enabled = false;
+
+                //LockForm();
 
                 LlenarData();
 
                 lblStatus.Visible = false;
                 this.Enabled = true;
+
+                //UnlockForm();
             }
             else
             {
@@ -354,5 +379,76 @@ namespace KBBWinForms
             }
         }
         #endregion
+
+        #region LockForm
+        private void LockForm()
+        {
+            if (overlayPanel == null)
+            {
+                // Create and configure the overlay panel
+                overlayPanel = new Panel
+                {
+                    BackColor = Color.FromArgb(128, 0, 0, 0), // Adjust the alpha value for transparency
+                    Size = this.ClientSize,
+                    Location = this.Location,
+                    Visible = true
+                };
+
+                // Add the overlay panel to the MDI parent form
+                this.mdiParentForm.Controls.Add(overlayPanel);
+                overlayPanel.BringToFront();
+
+                //Attach event handlers to keep overlay panel in sync with main form
+                this.LocationChanged += MainForm_LocationChanged;
+                this.SizeChanged += MainForm_SizeChanged;
+            }
+        }
+        #endregion
+
+        #region UnlockForm
+        private void UnlockForm()
+        {
+            if (overlayPanel != null)
+            {
+                // Remove the overlay panel from the MDI parent form
+                this.mdiParentForm.Controls.Remove(overlayPanel);
+                overlayPanel.Dispose();
+                overlayPanel = null;
+
+                // Detach event handlers
+                this.LocationChanged -= MainForm_LocationChanged;
+                this.SizeChanged -= MainForm_SizeChanged;
+            }
+        }
+        #endregion
+
+        #region MainForm_LocationChanged
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            if (overlayPanel != null)
+            {
+                UpdateOverlayForm();
+            }
+        }
+        #endregion
+
+        #region MainForm_SizeChanged
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            if (overlayPanel != null)
+            {
+                UpdateOverlayForm();
+            }
+        }
+        #endregion
+
+        private void UpdateOverlayForm()
+        {
+            if (overlayPanel != null)
+            {
+                overlayPanel.Size = this.ClientSize;
+                overlayPanel.Location = this.Location;
+            }
+        }
     }
 }
