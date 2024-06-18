@@ -39,12 +39,22 @@ namespace KBBWinForms
             Color color = ColorTranslator.FromHtml(hexColor);
 
             this.BackColor = color;
+            tvCategorias.BackColor = color;
+            dgvDocumentos.BackgroundColor = color;
 
             hexColor = "#274C77";
 
             color = ColorTranslator.FromHtml(hexColor);
 
             this.ForeColor = color;
+
+            lblStatus.BackColor = color;
+
+            hexColor = "#A3CEF1";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            lblStatus.ForeColor = color;
             //----------------------------------------------------------------
 
             LlenarData();

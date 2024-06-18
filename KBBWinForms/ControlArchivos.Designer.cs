@@ -69,6 +69,10 @@
             dgvDocumentos.Name = "dgvDocumentos";
             dgvDocumentos.ReadOnly = true;
             dgvDocumentos.RowHeadersWidth = 51;
+            dgvDocumentos.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(231, 236, 239);
+            dgvDocumentos.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(39, 76, 119);
+            dgvDocumentos.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(39, 76, 119);
+            dgvDocumentos.RowTemplate.DefaultCellStyle.SelectionForeColor = Color.FromArgb(231, 236, 239);
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDocumentos.Size = new Size(1323, 576);
             dgvDocumentos.TabIndex = 0;
@@ -108,6 +112,7 @@
             // btnAgregar
             // 
             btnAgregar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAgregar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.Location = new Point(1361, 726);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(118, 30);
@@ -119,6 +124,7 @@
             // btnEditar
             // 
             btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnEditar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.Location = new Point(1487, 726);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(118, 30);
@@ -129,6 +135,7 @@
             // btnVer
             // 
             btnVer.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnVer.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnVer.Location = new Point(1611, 726);
             btnVer.Name = "btnVer";
             btnVer.Size = new Size(118, 30);
@@ -290,9 +297,10 @@
             // lblBusqueda
             // 
             lblBusqueda.AutoSize = true;
+            lblBusqueda.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblBusqueda.Location = new Point(409, 37);
             lblBusqueda.Name = "lblBusqueda";
-            lblBusqueda.Size = new Size(65, 21);
+            lblBusqueda.Size = new Size(64, 19);
             lblBusqueda.TabIndex = 18;
             lblBusqueda.Text = "Buscar";
             // 
@@ -307,6 +315,7 @@
             // btnBuscar
             // 
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBuscar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnBuscar.Location = new Point(1477, 33);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(229, 30);
@@ -322,7 +331,7 @@
             lblStatus.BackColor = Color.FromArgb(255, 255, 192);
             lblStatus.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblStatus.ForeColor = Color.Black;
-            lblStatus.Location = new Point(828, 64);
+            lblStatus.Location = new Point(481, 64);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(74, 19);
             lblStatus.TabIndex = 21;
