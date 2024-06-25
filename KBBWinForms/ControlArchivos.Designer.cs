@@ -288,6 +288,8 @@
             // tvCategorias
             // 
             tvCategorias.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            tvCategorias.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            tvCategorias.ForeColor = Color.FromArgb(39, 76, 119);
             tvCategorias.Location = new Point(16, 93);
             tvCategorias.Name = "tvCategorias";
             tvCategorias.Size = new Size(382, 577);

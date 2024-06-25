@@ -41,6 +41,10 @@ namespace KBBWinForms
             this.BackColor = color;
             tvCategorias.BackColor = color;
             dgvDocumentos.BackgroundColor = color;
+            btnBuscar.ForeColor = color;
+            btnAgregar.ForeColor = color;
+            btnEditar.ForeColor = color;
+            btnVer.ForeColor = color;
 
             hexColor = "#274C77";
 
@@ -48,13 +52,23 @@ namespace KBBWinForms
 
             this.ForeColor = color;
 
-            lblStatus.BackColor = color;
+            txtBusqueda.ForeColor = color;
 
             hexColor = "#A3CEF1";
 
             color = ColorTranslator.FromHtml(hexColor);
 
             lblStatus.ForeColor = color;
+            lblStatus.BackColor = color;
+
+            hexColor = "#6096BA";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            btnBuscar.BackColor = color;
+            btnAgregar.BackColor = color;
+            btnEditar.BackColor = color;
+            btnVer.BackColor = color;
             //----------------------------------------------------------------
 
             LlenarData();
