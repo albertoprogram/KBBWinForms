@@ -47,51 +47,63 @@
             // lblSeleccionArchivo
             // 
             lblSeleccionArchivo.AutoSize = true;
-            lblSeleccionArchivo.Location = new Point(44, 41);
+            lblSeleccionArchivo.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSeleccionArchivo.Location = new Point(13, 38);
+            lblSeleccionArchivo.Margin = new Padding(4, 0, 4, 0);
             lblSeleccionArchivo.Name = "lblSeleccionArchivo";
-            lblSeleccionArchivo.Size = new Size(257, 20);
+            lblSeleccionArchivo.Size = new Size(327, 19);
             lblSeleccionArchivo.TabIndex = 0;
             lblSeleccionArchivo.Text = "Busque y seleccione el archivo a subir";
             // 
             // lblRutaArchivo
             // 
             lblRutaArchivo.AutoSize = true;
-            lblRutaArchivo.Location = new Point(44, 98);
+            lblRutaArchivo.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRutaArchivo.Location = new Point(13, 104);
+            lblRutaArchivo.Margin = new Padding(4, 0, 4, 0);
             lblRutaArchivo.Name = "lblRutaArchivo";
-            lblRutaArchivo.Size = new Size(116, 20);
+            lblRutaArchivo.Size = new Size(142, 19);
             lblRutaArchivo.TabIndex = 1;
             lblRutaArchivo.Text = "Ruta del archivo";
             // 
             // lblTituloArchivo
             // 
             lblTituloArchivo.AutoSize = true;
-            lblTituloArchivo.Location = new Point(44, 152);
+            lblTituloArchivo.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTituloArchivo.Location = new Point(13, 156);
+            lblTituloArchivo.Margin = new Padding(4, 0, 4, 0);
             lblTituloArchivo.Name = "lblTituloArchivo";
-            lblTituloArchivo.Size = new Size(124, 20);
+            lblTituloArchivo.Size = new Size(147, 19);
             lblTituloArchivo.TabIndex = 2;
             lblTituloArchivo.Text = "Título del archivo";
             // 
             // txtRutaArchivo
             // 
-            txtRutaArchivo.Location = new Point(198, 95);
+            txtRutaArchivo.ForeColor = Color.FromArgb(39, 76, 119);
+            txtRutaArchivo.Location = new Point(168, 99);
+            txtRutaArchivo.Margin = new Padding(4, 3, 4, 3);
             txtRutaArchivo.Name = "txtRutaArchivo";
             txtRutaArchivo.ReadOnly = true;
-            txtRutaArchivo.Size = new Size(708, 27);
+            txtRutaArchivo.Size = new Size(985, 28);
             txtRutaArchivo.TabIndex = 3;
             // 
             // txtTituloArchivo
             // 
-            txtTituloArchivo.Location = new Point(198, 149);
+            txtTituloArchivo.ForeColor = Color.FromArgb(39, 76, 119);
+            txtTituloArchivo.Location = new Point(168, 156);
+            txtTituloArchivo.Margin = new Padding(4, 3, 4, 3);
             txtTituloArchivo.Name = "txtTituloArchivo";
             txtTituloArchivo.ReadOnly = true;
-            txtTituloArchivo.Size = new Size(708, 27);
+            txtTituloArchivo.Size = new Size(985, 28);
             txtTituloArchivo.TabIndex = 4;
             // 
             // btnExaminar
             // 
-            btnExaminar.Location = new Point(929, 94);
+            btnExaminar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExaminar.Location = new Point(1161, 99);
+            btnExaminar.Margin = new Padding(4, 3, 4, 3);
             btnExaminar.Name = "btnExaminar";
-            btnExaminar.Size = new Size(94, 29);
+            btnExaminar.Size = new Size(118, 30);
             btnExaminar.TabIndex = 5;
             btnExaminar.Text = "Examinar";
             btnExaminar.UseVisualStyleBackColor = true;
@@ -99,9 +111,11 @@
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(929, 580);
+            btnGuardar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnGuardar.Location = new Point(1161, 609);
+            btnGuardar.Margin = new Padding(4, 3, 4, 3);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(94, 29);
+            btnGuardar.Size = new Size(118, 30);
             btnGuardar.TabIndex = 6;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
@@ -109,9 +123,11 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(829, 580);
+            btnCancelar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancelar.Location = new Point(1036, 609);
+            btnCancelar.Margin = new Padding(4, 3, 4, 3);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(94, 29);
+            btnCancelar.Size = new Size(118, 30);
             btnCancelar.TabIndex = 7;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
@@ -122,9 +138,11 @@
             // 
             // btnCategorias
             // 
-            btnCategorias.Location = new Point(929, 254);
+            btnCategorias.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCategorias.Location = new Point(1161, 267);
+            btnCategorias.Margin = new Padding(4, 3, 4, 3);
             btnCategorias.Name = "btnCategorias";
-            btnCategorias.Size = new Size(94, 29);
+            btnCategorias.Size = new Size(118, 30);
             btnCategorias.TabIndex = 8;
             btnCategorias.Text = "Categorías";
             btnCategorias.UseVisualStyleBackColor = true;
@@ -133,42 +151,50 @@
             // lbCategorias
             // 
             lbCategorias.FormattingEnabled = true;
-            lbCategorias.Location = new Point(198, 208);
+            lbCategorias.ItemHeight = 21;
+            lbCategorias.Location = new Point(168, 212);
+            lbCategorias.Margin = new Padding(4, 3, 4, 3);
             lbCategorias.Name = "lbCategorias";
-            lbCategorias.Size = new Size(708, 124);
+            lbCategorias.Size = new Size(985, 130);
             lbCategorias.TabIndex = 9;
             // 
             // lblCategorias
             // 
             lblCategorias.AutoSize = true;
-            lblCategorias.Location = new Point(44, 244);
+            lblCategorias.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCategorias.Location = new Point(13, 257);
+            lblCategorias.Margin = new Padding(4, 0, 4, 0);
             lblCategorias.Name = "lblCategorias";
-            lblCategorias.Size = new Size(80, 20);
+            lblCategorias.Size = new Size(98, 19);
             lblCategorias.TabIndex = 10;
             lblCategorias.Text = "Categorías";
             // 
             // lblObservaciones
             // 
             lblObservaciones.AutoSize = true;
-            lblObservaciones.Location = new Point(44, 362);
+            lblObservaciones.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblObservaciones.Location = new Point(13, 380);
+            lblObservaciones.Margin = new Padding(4, 0, 4, 0);
             lblObservaciones.Name = "lblObservaciones";
-            lblObservaciones.Size = new Size(207, 20);
+            lblObservaciones.Size = new Size(265, 19);
             lblObservaciones.TabIndex = 11;
             lblObservaciones.Text = "Breve Reseña / Observaciones";
             // 
             // txtObservaciones
             // 
-            txtObservaciones.Location = new Point(44, 401);
+            txtObservaciones.Location = new Point(13, 414);
+            txtObservaciones.Margin = new Padding(4, 3, 4, 3);
             txtObservaciones.Multiline = true;
             txtObservaciones.Name = "txtObservaciones";
-            txtObservaciones.Size = new Size(862, 160);
+            txtObservaciones.ScrollBars = ScrollBars.Vertical;
+            txtObservaciones.Size = new Size(1266, 168);
             txtObservaciones.TabIndex = 12;
             // 
             // SubirArchivo
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1035, 621);
+            ClientSize = new Size(1294, 652);
             Controls.Add(txtObservaciones);
             Controls.Add(lblObservaciones);
             Controls.Add(lblCategorias);
@@ -182,6 +208,8 @@
             Controls.Add(lblTituloArchivo);
             Controls.Add(lblRutaArchivo);
             Controls.Add(lblSeleccionArchivo);
+            Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "SubirArchivo";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Subir Archivo";

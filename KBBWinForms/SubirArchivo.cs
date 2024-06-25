@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,6 +23,43 @@ namespace KBBWinForms
         public SubirArchivo()
         {
             InitializeComponent();
+
+            // Colores
+            //----------------------------------------------------------------
+            string hexColor = "#E7ECEF";
+
+            Color color = ColorTranslator.FromHtml(hexColor);
+
+            this.BackColor = color;
+            btnExaminar.ForeColor = color;
+            btnCategorias.ForeColor = color;
+            btnCancelar.ForeColor = color;
+            btnGuardar.ForeColor = color;
+
+            hexColor = "#274C77";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            this.ForeColor = color;
+
+            txtRutaArchivo.ForeColor = color;
+            txtTituloArchivo.ForeColor = color;
+            lbCategorias.ForeColor = color;
+            txtObservaciones.ForeColor = color;
+
+            hexColor = "#A3CEF1";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            hexColor = "#6096BA";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            btnExaminar.BackColor = color;
+            btnCategorias.BackColor = color;
+            btnCancelar.BackColor = color;
+            btnGuardar.BackColor = color;
+            //----------------------------------------------------------------
         }
         #endregion
 

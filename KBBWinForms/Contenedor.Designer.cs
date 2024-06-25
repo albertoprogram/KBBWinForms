@@ -39,14 +39,15 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { controlDeArchivosToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 28);
+            menuStrip1.Size = new Size(800, 27);
             menuStrip1.TabIndex = 1;
             menuStrip1.Text = "menuStrip1";
             // 
             // controlDeArchivosToolStripMenuItem
             // 
+            controlDeArchivosToolStripMenuItem.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             controlDeArchivosToolStripMenuItem.Name = "controlDeArchivosToolStripMenuItem";
-            controlDeArchivosToolStripMenuItem.Size = new Size(153, 24);
+            controlDeArchivosToolStripMenuItem.Size = new Size(185, 23);
             controlDeArchivosToolStripMenuItem.Text = "Control de Archivos";
             controlDeArchivosToolStripMenuItem.Click += controlDeArchivosToolStripMenuItem_Click;
             // 
