@@ -44,25 +44,30 @@
             // lblCategoria
             // 
             lblCategoria.AutoSize = true;
-            lblCategoria.Location = new Point(56, 42);
+            lblCategoria.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblCategoria.Location = new Point(70, 44);
+            lblCategoria.Margin = new Padding(4, 0, 4, 0);
             lblCategoria.Name = "lblCategoria";
-            lblCategoria.Size = new Size(74, 20);
+            lblCategoria.Size = new Size(90, 19);
             lblCategoria.TabIndex = 0;
             lblCategoria.Text = "Categoría";
             // 
             // txtCategoria
             // 
-            txtCategoria.Location = new Point(136, 35);
+            txtCategoria.Location = new Point(170, 36);
+            txtCategoria.Margin = new Padding(4, 3, 4, 3);
             txtCategoria.MaxLength = 350;
             txtCategoria.Name = "txtCategoria";
-            txtCategoria.Size = new Size(561, 27);
+            txtCategoria.Size = new Size(888, 28);
             txtCategoria.TabIndex = 1;
             // 
             // btnGuardarCategoria
             // 
-            btnGuardarCategoria.Location = new Point(603, 68);
+            btnGuardarCategoria.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnGuardarCategoria.Location = new Point(940, 71);
+            btnGuardarCategoria.Margin = new Padding(4, 3, 4, 3);
             btnGuardarCategoria.Name = "btnGuardarCategoria";
-            btnGuardarCategoria.Size = new Size(94, 29);
+            btnGuardarCategoria.Size = new Size(118, 30);
             btnGuardarCategoria.TabIndex = 2;
             btnGuardarCategoria.Text = "Guardar";
             btnGuardarCategoria.UseVisualStyleBackColor = true;
@@ -72,12 +77,18 @@
             // 
             dgvCategorias.AllowUserToAddRows = false;
             dgvCategorias.AllowUserToDeleteRows = false;
+            dgvCategorias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvCategorias.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCategorias.Columns.AddRange(new DataGridViewColumn[] { Seleccion, IdCategoria, Categoria });
-            dgvCategorias.Location = new Point(12, 197);
+            dgvCategorias.Location = new Point(15, 207);
+            dgvCategorias.Margin = new Padding(4, 3, 4, 3);
             dgvCategorias.Name = "dgvCategorias";
             dgvCategorias.RowHeadersWidth = 51;
-            dgvCategorias.Size = new Size(776, 385);
+            dgvCategorias.RowTemplate.DefaultCellStyle.BackColor = Color.FromArgb(231, 236, 239);
+            dgvCategorias.RowTemplate.DefaultCellStyle.ForeColor = Color.FromArgb(39, 76, 119);
+            dgvCategorias.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(39, 76, 119);
+            dgvCategorias.RowTemplate.DefaultCellStyle.SelectionForeColor = Color.FromArgb(231, 236, 239);
+            dgvCategorias.Size = new Size(1108, 405);
             dgvCategorias.TabIndex = 3;
             // 
             // Seleccion
@@ -85,7 +96,7 @@
             Seleccion.HeaderText = "Selección";
             Seleccion.MinimumWidth = 6;
             Seleccion.Name = "Seleccion";
-            Seleccion.Width = 125;
+            Seleccion.Width = 95;
             // 
             // IdCategoria
             // 
@@ -93,7 +104,7 @@
             IdCategoria.MinimumWidth = 6;
             IdCategoria.Name = "IdCategoria";
             IdCategoria.ReadOnly = true;
-            IdCategoria.Width = 125;
+            IdCategoria.Width = 136;
             // 
             // Categoria
             // 
@@ -105,9 +116,11 @@
             // 
             // btnEnviar
             // 
-            btnEnviar.Location = new Point(603, 588);
+            btnEnviar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEnviar.Location = new Point(940, 627);
+            btnEnviar.Margin = new Padding(4, 3, 4, 3);
             btnEnviar.Name = "btnEnviar";
-            btnEnviar.Size = new Size(94, 29);
+            btnEnviar.Size = new Size(118, 30);
             btnEnviar.TabIndex = 4;
             btnEnviar.Text = "Enviar";
             btnEnviar.UseVisualStyleBackColor = true;
@@ -115,26 +128,29 @@
             // 
             // txtFiltroCategorias
             // 
-            txtFiltroCategorias.Location = new Point(445, 131);
+            txtFiltroCategorias.Location = new Point(744, 138);
+            txtFiltroCategorias.Margin = new Padding(4, 3, 4, 3);
             txtFiltroCategorias.Name = "txtFiltroCategorias";
-            txtFiltroCategorias.Size = new Size(252, 27);
+            txtFiltroCategorias.Size = new Size(314, 28);
             txtFiltroCategorias.TabIndex = 5;
             txtFiltroCategorias.TextChanged += txtFiltroCategorias_TextChanged;
             // 
             // lblFiltroCategorias
             // 
             lblFiltroCategorias.AutoSize = true;
-            lblFiltroCategorias.Location = new Point(396, 134);
+            lblFiltroCategorias.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFiltroCategorias.Location = new Point(678, 141);
+            lblFiltroCategorias.Margin = new Padding(4, 0, 4, 0);
             lblFiltroCategorias.Name = "lblFiltroCategorias";
-            lblFiltroCategorias.Size = new Size(43, 20);
+            lblFiltroCategorias.Size = new Size(45, 19);
             lblFiltroCategorias.TabIndex = 6;
             lblFiltroCategorias.Text = "Filtro";
             // 
             // Categorias
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(801, 641);
+            ClientSize = new Size(1136, 674);
             Controls.Add(lblFiltroCategorias);
             Controls.Add(txtFiltroCategorias);
             Controls.Add(btnEnviar);
@@ -142,7 +158,11 @@
             Controls.Add(btnGuardarCategoria);
             Controls.Add(txtCategoria);
             Controls.Add(lblCategoria);
+            Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
             Name = "Categorias";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Categorias";
             Load += Categorias_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCategorias).EndInit();

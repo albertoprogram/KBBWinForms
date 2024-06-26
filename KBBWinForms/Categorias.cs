@@ -26,6 +26,37 @@ namespace KBBWinForms
         public Categorias()
         {
             InitializeComponent();
+
+            // Colores
+            //----------------------------------------------------------------
+            string hexColor = "#E7ECEF";
+
+            Color color = ColorTranslator.FromHtml(hexColor);
+
+            this.BackColor = color;
+            btnGuardarCategoria.ForeColor = color;
+            btnEnviar.ForeColor = color;
+
+            hexColor = "#274C77";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            this.ForeColor = color;
+
+            txtCategoria.ForeColor = color;
+            txtFiltroCategorias.ForeColor = color;
+
+            hexColor = "#A3CEF1";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            hexColor = "#6096BA";
+
+            color = ColorTranslator.FromHtml(hexColor);
+
+            btnGuardarCategoria.BackColor = color;
+            btnEnviar.BackColor = color;
+            //----------------------------------------------------------------
         }
         #endregion
 

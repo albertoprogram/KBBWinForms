@@ -155,6 +155,7 @@
             lbCategorias.Location = new Point(168, 212);
             lbCategorias.Margin = new Padding(4, 3, 4, 3);
             lbCategorias.Name = "lbCategorias";
+            lbCategorias.ScrollAlwaysVisible = true;
             lbCategorias.Size = new Size(985, 130);
             lbCategorias.TabIndex = 9;
             // 
@@ -210,6 +211,7 @@
             Controls.Add(lblSeleccionArchivo);
             Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
             Name = "SubirArchivo";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Subir Archivo";
