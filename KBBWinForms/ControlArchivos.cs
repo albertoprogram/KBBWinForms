@@ -78,7 +78,7 @@ namespace KBBWinForms
         #region btnAgregar_Click
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            SubirArchivo frmSubirArchivo = new SubirArchivo();
+            SubirArchivo frmSubirArchivo = new SubirArchivo(0);
             frmSubirArchivo.ShowDialog();
             LlenarData();
         }
@@ -466,6 +466,7 @@ namespace KBBWinForms
         }
         #endregion
 
+        #region UpdateOverlayForm
         private void UpdateOverlayForm()
         {
             if (overlayPanel != null)
@@ -474,5 +475,19 @@ namespace KBBWinForms
                 overlayPanel.Location = this.Location;
             }
         }
+        #endregion
+
+        #region btnEditar_Click
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvDocumentos.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
+
+                SubirArchivo frmSubirArchivo = new SubirArchivo(id);
+                frmSubirArchivo.ShowDialog();
+            }
+        }
+        #endregion
     }
 }

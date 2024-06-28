@@ -17,10 +17,11 @@ namespace KBBWinForms
         Archivos archivo = new Archivos();
         string? rutaSeleccionada = string.Empty;
         string? filtroSeleccionado = string.Empty;
+        int idArchivo = 0;
         #endregion
 
         #region Constructores
-        public SubirArchivo()
+        public SubirArchivo(int id)
         {
             InitializeComponent();
 
@@ -60,6 +61,11 @@ namespace KBBWinForms
             btnCancelar.BackColor = color;
             btnGuardar.BackColor = color;
             //----------------------------------------------------------------
+
+            if (id > 0)
+            {
+                idArchivo = id;
+            }
         }
         #endregion
 
