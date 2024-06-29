@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -65,6 +66,8 @@ namespace KBBWinForms
             if (id > 0)
             {
                 idArchivo = id;
+
+                CargarDatosArchivo();
             }
         }
         #endregion
@@ -171,5 +174,37 @@ namespace KBBWinForms
         }
         #endregion
 
+        #region CargarDatosArchivo
+        private void CargarDatosArchivo()
+        {
+            string query = $"SELECT Nombre, Extension, Observaciones FROM Archivos WHERE ID = {idArchivo}";
+
+            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                txtRutaArchivo.Text = reader["Nombre"].ToString();
+                                txtTituloArchivo.Text = reader["Extension"].ToString();
+                                txtObservaciones.Text = reader["Observaciones"].ToString();
+                            }
+                        }
+                        else
+                        {
+                            // Opcional: Manejar el caso cuando no hay registros encontrados.
+                            MessageBox.Show("No se encontraron registros con el ID especificado.");
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
     }
 }
