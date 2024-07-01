@@ -181,10 +181,10 @@ namespace KBBWinForms
 
             using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
             {
+                connection.Open();
+
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    connection.Open();
-
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -203,7 +203,54 @@ namespace KBBWinForms
                         }
                     }
                 }
+
+                query = $"SELECT CategoriaID FROM ArchivosCategorias WHERE ArchivoID = {idArchivo}";
+                List<int> categoriasIds = new List<int>();
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                categoriasIds.Add(Convert.ToInt32(reader["CategoriaID"]));
+                            }
+                        }
+                        else
+                        {
+                            // Opcional: Manejar el caso cuando no hay registros encontrados.
+                            MessageBox.Show("No se encontraron categorías con el ID especificado.");
+                        }
+                    }
+                }
+
+                string inClause = string.Join(",", categoriasIds);
+                query = $"SELECT ID,Categoria FROM Categorias WHERE ID IN ({inClause})";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                lbCategorias.Items.Add(reader["ID"].ToString() + "-" + reader["Categoria"]);
+                            }
+                        }
+                        else
+                        {
+                            // Opcional: Manejar el caso cuando no hay registros encontrados.
+                            MessageBox.Show("No se encontraron descripciones de categorías con los IDs especificados.");
+                        }
+                    }
+                }
             }
+
         }
         #endregion
     }
