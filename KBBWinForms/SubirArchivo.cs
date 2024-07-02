@@ -19,6 +19,7 @@ namespace KBBWinForms
         string? rutaSeleccionada = string.Empty;
         string? filtroSeleccionado = string.Empty;
         int idArchivo = 0;
+        bool archivoSeleccionado = false;
         #endregion
 
         #region Constructores
@@ -114,6 +115,7 @@ namespace KBBWinForms
                 filtroSeleccionado = openFileDialog1.Filter;
                 txtRutaArchivo.Text = openFileDialog1.FileName;
                 txtTituloArchivo.Text = openFileDialog1.SafeFileName;
+                archivoSeleccionado = true;
             }
         }
         #endregion
@@ -121,19 +123,23 @@ namespace KBBWinForms
         #region btnGuardar_Click
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            byte[] data = null;
+            if (archivoSeleccionado)
+            {
+                byte[] data = null;
 
-            Stream stream = openFileDialog1.OpenFile();
+                Stream stream = openFileDialog1.OpenFile();
 
-            MemoryStream memoryStream = new MemoryStream();
+                MemoryStream memoryStream = new MemoryStream();
 
-            stream.CopyTo(memoryStream);
+                stream.CopyTo(memoryStream);
 
-            data = memoryStream.ToArray();
+                data = memoryStream.ToArray();
 
-            archivo.Nombre = txtTituloArchivo.Text;
-            archivo.Archivo = data;
-            archivo.Extension = openFileDialog1.SafeFileName;
+                archivo.Nombre = txtTituloArchivo.Text;
+                archivo.Archivo = data;
+                archivo.Extension = openFileDialog1.SafeFileName;
+            }
+
             archivo.Observaciones = txtObservaciones.Text;
 
             short[] categorias = new short[lbCategorias.Items.Count];
@@ -143,7 +149,14 @@ namespace KBBWinForms
                 categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
             }
 
-            MessageBox.Show(archivo.AgregarDocumento(categorias));
+            if (idArchivo == 0)
+            {
+                MessageBox.Show(archivo.AgregarDocumento(categorias));
+            }
+            else
+            {
+                //actualizar registro
+            }
 
             txtTituloArchivo.Text = string.Empty;
             txtRutaArchivo.Text = string.Empty;
