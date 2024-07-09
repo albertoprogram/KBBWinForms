@@ -155,7 +155,7 @@ namespace KBBWinForms
             }
             else
             {
-                //actualizar registro
+                MessageBox.Show(archivo.ActualizarDocumento(idArchivo, categorias, archivoSeleccionado));
             }
 
             txtTituloArchivo.Text = string.Empty;

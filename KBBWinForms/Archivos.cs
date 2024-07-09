@@ -85,6 +85,59 @@ namespace KBBWinForms
         }
         #endregion
 
+        #region ActualizarDocumento
+        public string ActualizarDocumento(int id, short[] categorias, bool archivoSeleccionado)
+        {
+            if (archivoSeleccionado == false)
+            {
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "UPDATE Archivos " +
+                        "SET Observaciones = " +
+                        "@Observaciones " +
+                        $"WHERE ID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
+
+                    conexionDB.Open();
+
+                    comandoSql.ExecuteNonQuery();
+
+                    //DELETE Categorías
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "DELETE FROM ArchivosCategorias " +
+                        $"WHERE ArchivoID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.ExecuteNonQuery();
+
+                    foreach (short categoria in categorias)
+                    {
+                        comandoSql.CommandText =
+                        "INSERT INTO ArchivosCategorias " +
+                        "(ArchivoID,CategoriaID) " +
+                        "VALUES (@ArchivoID,@CategoriaID)";
+
+                        comandoSql.Parameters.Clear();
+
+                        comandoSql.Parameters.AddWithValue("@ArchivoID", id);
+                        comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
+
+                        comandoSql.ExecuteNonQuery();
+                    }
+
+                    conexionDB.Close();
+                }
+            }
+
+            return "Actualizado con éxito";
+        }
+        #endregion
+
         #region ListarArchivos
         public System.Data.DataTable ListarArchivos(string pagina, string cantidadRegistros, string categoria, string busqueda)
         {
