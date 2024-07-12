@@ -133,6 +133,56 @@ namespace KBBWinForms
                     conexionDB.Close();
                 }
             }
+            else
+            {
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "UPDATE Archivos " +
+                        "SET Nombre = @Nombre, " +
+                        "Archivo = @Archivo, " +
+                        "Extension = @Extension, " +
+                        "Observaciones = @Observaciones " +
+                        $"WHERE ID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
+                    comandoSql.Parameters.AddWithValue("@Archivo", Archivo);
+                    comandoSql.Parameters.AddWithValue("@Extension", Extension);
+                    comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
+
+                    conexionDB.Open();
+
+                    comandoSql.ExecuteNonQuery();
+
+                    //DELETE Categorías
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "DELETE FROM ArchivosCategorias " +
+                        $"WHERE ArchivoID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.ExecuteNonQuery();
+
+                    foreach (short categoria in categorias)
+                    {
+                        comandoSql.CommandText =
+                        "INSERT INTO ArchivosCategorias " +
+                        "(ArchivoID,CategoriaID) " +
+                        "VALUES (@ArchivoID,@CategoriaID)";
+
+                        comandoSql.Parameters.Clear();
+
+                        comandoSql.Parameters.AddWithValue("@ArchivoID", id);
+                        comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
+
+                        comandoSql.ExecuteNonQuery();
+                    }
+
+                    conexionDB.Close();
+                }
+            }
 
             return "Actualizado con éxito";
         }
