@@ -1225,5 +1225,38 @@ namespace KBBWinForms
             }
         }
         #endregion
+
+        #region EliminarDocumento
+        public string EliminarDocumento(int id)
+        {
+            conexionDB.Open();
+
+            using (SqlCommand comandoSql = new SqlCommand())
+            {
+                comandoSql.CommandType = CommandType.Text;
+                comandoSql.CommandText =
+                    "DELETE FROM Archivos " +
+                    $"WHERE ID = {id}";
+                comandoSql.Connection = conexionDB;
+
+                comandoSql.ExecuteNonQuery();
+            }
+
+            using (SqlCommand comandoSql = new SqlCommand())
+            {
+                comandoSql.CommandType = CommandType.Text;
+                comandoSql.CommandText =
+                    "DELETE FROM ArchivosCategorias " +
+                    $"WHERE ArchivoID = {id}";
+                comandoSql.Connection = conexionDB;
+
+                comandoSql.ExecuteNonQuery();
+            }
+
+            conexionDB.Close();
+
+            return "Archivo eliminado con éxito";
+        }
+        #endregion
     }
 }

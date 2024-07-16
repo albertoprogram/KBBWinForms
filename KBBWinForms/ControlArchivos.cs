@@ -45,6 +45,7 @@ namespace KBBWinForms
             btnAgregar.ForeColor = color;
             btnEditar.ForeColor = color;
             btnVer.ForeColor = color;
+            btnEliminar.ForeColor = color;
 
             hexColor = "#274C77";
 
@@ -69,6 +70,7 @@ namespace KBBWinForms
             btnAgregar.BackColor = color;
             btnEditar.BackColor = color;
             btnVer.BackColor = color;
+            btnEliminar.BackColor = color;
             //----------------------------------------------------------------
 
             LlenarData();
@@ -486,6 +488,31 @@ namespace KBBWinForms
 
                 SubirArchivo frmSubirArchivo = new SubirArchivo(id);
                 frmSubirArchivo.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No hay ningún elemento seleccionado");
+            }
+        }
+        #endregion
+
+        #region btnEliminar_Click
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvDocumentos.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
+
+                if (MessageBox.Show($"Está seguro de eliminar el archivo de ID: {id}", ElementosGlobales.NombreSistema, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    MessageBox.Show(archivo.EliminarDocumento(id));
+
+                    LlenarData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("No hay ningún elemento seleccionado");
             }
         }
         #endregion
