@@ -159,6 +159,13 @@ namespace KBBWinForms
                     Process.Start(processStartInfo);
                 }
             }
+            else
+            {
+                MessageBox.Show("No hay algún archivo seleccionado",
+                    ElementosGlobales.NombreSistema,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
         }
         #endregion
 
@@ -386,7 +393,11 @@ namespace KBBWinForms
             }
             else
             {
-                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto");
+                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto",
+                    ElementosGlobales.NombreSistema,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
                 txtBusqueda.Focus();
             }
         }
@@ -491,7 +502,10 @@ namespace KBBWinForms
             }
             else
             {
-                MessageBox.Show("No hay ningún elemento seleccionado");
+                MessageBox.Show("No hay algún archivo seleccionado",
+                    ElementosGlobales.NombreSistema,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             }
         }
         #endregion
@@ -512,7 +526,10 @@ namespace KBBWinForms
             }
             else
             {
-                MessageBox.Show("No hay ningún elemento seleccionado");
+                MessageBox.Show("No hay algún archivo seleccionado",
+                    ElementosGlobales.NombreSistema,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
             }
         }
         #endregion

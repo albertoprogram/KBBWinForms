@@ -35,6 +35,8 @@ namespace KBBWinForms
 
             controlDeArchivosToolStripMenuItem.ForeColor = color;
             //----------------------------------------------------------------
+
+            Text = ElementosGlobales.NombreSistema;
         }
         #endregion
 
