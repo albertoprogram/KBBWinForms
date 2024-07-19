@@ -519,7 +519,7 @@ namespace KBBWinForms
 
                 if (MessageBox.Show($"Está seguro de eliminar el archivo de ID: {id}", ElementosGlobales.NombreSistema, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    MessageBox.Show(archivo.EliminarDocumento(id));
+                    MessageBox.Show(archivo.EliminarDocumento(id), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     LlenarData();
                 }

@@ -821,7 +821,10 @@ namespace KBBWinForms
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show($"El archivo no existe: {filePath}");
+                    MessageBox.Show($"El archivo no existe: {filePath}",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -860,25 +863,38 @@ namespace KBBWinForms
             catch (FileFormatException ex)
             {
                 // Handle specific file format exceptions
-                MessageBox.Show($"File format error: {ex.Message}");
+                MessageBox.Show($"Error en el formato del archivo: {ex.Message}",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
                 return false;
             }
             catch (IOException ex)
             {
                 // Handle IO exceptions
-                MessageBox.Show($"IO error: {ex.Message}");
+                MessageBox.Show($"Error de I/O - Entrada/Salida: {ex.Message}",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
                 return false;
             }
             catch (UnauthorizedAccessException ex)
             {
                 // Handle unauthorized access exceptions
-                MessageBox.Show($"Access error: {ex.Message}");
+                MessageBox.Show($"Error de acceso: {ex.Message}",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
                 return false;
             }
             catch (Exception ex)
             {
                 // Handle all other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 return false;
             }
             finally
@@ -918,7 +934,10 @@ namespace KBBWinForms
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show($"El archivo no existe: {filePath}");
+                    MessageBox.Show($"El archivo no existe: {filePath}",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -962,25 +981,25 @@ namespace KBBWinForms
             catch (FileFormatException ex)
             {
                 // Handle specific file format exceptions
-                MessageBox.Show($"File format error: {ex.Message}");
+                MessageBox.Show($"Error en el formato del archivo: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (IOException ex)
             {
                 // Handle IO exceptions
-                MessageBox.Show($"IO error: {ex.Message}");
+                MessageBox.Show($"Error de I/O - Entrada/Salida: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (UnauthorizedAccessException ex)
             {
                 // Handle unauthorized access exceptions
-                MessageBox.Show($"Access error: {ex.Message}");
+                MessageBox.Show($"Error de acceso: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (Exception ex)
             {
                 // Handle all other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally
@@ -1010,7 +1029,7 @@ namespace KBBWinForms
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show($"El archivo no existe: {filePath}");
+                    MessageBox.Show($"El archivo no existe: {filePath}",ElementosGlobales.NombreSistema,MessageBoxButtons.OK,MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -1056,25 +1075,25 @@ namespace KBBWinForms
             catch (FileFormatException ex)
             {
                 // Handle specific file format exceptions
-                MessageBox.Show($"File format error: {ex.Message}");
+                MessageBox.Show($"Error en el formato del archivo: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (IOException ex)
             {
                 // Handle IO exceptions
-                MessageBox.Show($"IO error: {ex.Message}");
+                MessageBox.Show($"Error de I/O - Entrada/Salida: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (UnauthorizedAccessException ex)
             {
                 // Handle unauthorized access exceptions
-                MessageBox.Show($"Access error: {ex.Message}");
+                MessageBox.Show($"Error de acceso: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (Exception ex)
             {
                 // Handle all other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally
@@ -1144,25 +1163,25 @@ namespace KBBWinForms
             catch (FileFormatException ex)
             {
                 // Handle specific file format exceptions
-                MessageBox.Show($"File format error: {ex.Message}");
+                MessageBox.Show($"Error en el formato del archivo: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (IOException ex)
             {
                 // Handle IO exceptions
-                MessageBox.Show($"IO error: {ex.Message}");
+                MessageBox.Show($"Error de I/O - Entrada/Salida: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (UnauthorizedAccessException ex)
             {
                 // Handle unauthorized access exceptions
-                MessageBox.Show($"Access error: {ex.Message}");
+                MessageBox.Show($"Error de acceso: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (Exception ex)
             {
                 // Handle all other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally
@@ -1199,25 +1218,25 @@ namespace KBBWinForms
             catch (FileFormatException ex)
             {
                 // Handle specific file format exceptions
-                MessageBox.Show($"File format error: {ex.Message}");
+                MessageBox.Show($"Error en el formato del archivo: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (IOException ex)
             {
                 // Handle IO exceptions
-                MessageBox.Show($"IO error: {ex.Message}");
+                MessageBox.Show($"Error de I/O - Entrada/Salida: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (UnauthorizedAccessException ex)
             {
                 // Handle unauthorized access exceptions
-                MessageBox.Show($"Access error: {ex.Message}");
+                MessageBox.Show($"Error de acceso: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             catch (Exception ex)
             {
                 // Handle all other exceptions
-                MessageBox.Show($"An error occurred: {ex.Message}");
+                MessageBox.Show($"Ha ocurrido un error: {ex.Message}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             finally

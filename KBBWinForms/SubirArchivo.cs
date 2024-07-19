@@ -151,11 +151,11 @@ namespace KBBWinForms
 
             if (idArchivo == 0)
             {
-                MessageBox.Show(archivo.AgregarDocumento(categorias));
+                MessageBox.Show(archivo.AgregarDocumento(categorias), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show(archivo.ActualizarDocumento(idArchivo, categorias, archivoSeleccionado));
+                MessageBox.Show(archivo.ActualizarDocumento(idArchivo, categorias, archivoSeleccionado), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             txtTituloArchivo.Text = string.Empty;
@@ -212,7 +212,7 @@ namespace KBBWinForms
                         else
                         {
                             // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron registros con el ID especificado.");
+                            MessageBox.Show("No se encontraron registros con el ID especificado.",, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -235,7 +235,7 @@ namespace KBBWinForms
                         else
                         {
                             // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron categorías con el ID especificado.");
+                            MessageBox.Show("No se encontraron categorías con el ID especificado.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -258,7 +258,7 @@ namespace KBBWinForms
                         else
                         {
                             // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron descripciones de categorías con los IDs especificados.");
+                            MessageBox.Show("No se encontraron descripciones de categorías con los IDs especificados.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
