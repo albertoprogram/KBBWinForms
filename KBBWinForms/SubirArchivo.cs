@@ -212,7 +212,7 @@ namespace KBBWinForms
                         else
                         {
                             // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron registros con el ID especificado.",, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("No se encontraron registros con el ID especificado.",ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
