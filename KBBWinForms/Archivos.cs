@@ -368,6 +368,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -422,6 +434,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -476,6 +500,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -530,6 +566,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -584,6 +632,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -638,6 +698,18 @@ namespace KBBWinForms
 
                         if (found)
                         {
+                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                            if (filasEncontradas.Length > 0)
+                            {
+                                foreach (DataRow fila in filasEncontradas)
+                                {
+                                    fila.Delete();
+                                }
+
+                                dt.AcceptChanges();
+                            }
+
                             DataRow dataRow = dt.NewRow();
                             dataRow["ID"] = row["ID"];
                             dataRow["Nombre"] = row["Nombre"];
@@ -1029,7 +1101,7 @@ namespace KBBWinForms
                 // Check if the file exists
                 if (!File.Exists(filePath))
                 {
-                    MessageBox.Show($"El archivo no existe: {filePath}",ElementosGlobales.NombreSistema,MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                    MessageBox.Show($"El archivo no existe: {filePath}", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
