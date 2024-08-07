@@ -499,6 +499,7 @@ namespace KBBWinForms
 
                 SubirArchivo frmSubirArchivo = new SubirArchivo(id);
                 frmSubirArchivo.ShowDialog();
+                LlenarData();
             }
             else
             {
