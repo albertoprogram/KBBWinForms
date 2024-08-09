@@ -37,6 +37,8 @@ namespace KBBWinForms
             //----------------------------------------------------------------
 
             Text = ElementosGlobales.NombreSistema;
+
+            this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
         }
         #endregion
 
@@ -48,6 +50,30 @@ namespace KBBWinForms
             controlArchivos.MdiParent = this;
 
             controlArchivos.Show();
+        }
+        #endregion
+
+        #region MainForm_FormClosing
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                string tempFolderPath = Path.Combine(Application.StartupPath, "temp");
+
+                if (Directory.Exists(tempFolderPath))
+                {
+                    string[] files = Directory.GetFiles(tempFolderPath);
+
+                    foreach (string file in files)
+                    {
+                        File.Delete(file);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al eliminar archivos en la carpeta 'temp': {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
     }
