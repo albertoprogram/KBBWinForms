@@ -399,6 +399,7 @@ namespace KBBWinForms
                     MessageBoxIcon.Exclamation);
 
                 txtBusqueda.Focus();
+                txtBusqueda.SelectAll();
             }
         }
         #endregion
