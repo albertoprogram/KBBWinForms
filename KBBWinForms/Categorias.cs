@@ -63,23 +63,32 @@ namespace KBBWinForms
         #region btnGuardarCategoria_Click
         private void btnGuardarCategoria_Click(object sender, EventArgs e)
         {
-            using (SqlCommand comandoSql = new SqlCommand())
+            try
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText =
-                    "INSERT INTO Categorias " +
-                    "(Categoria) " +
-                    "VALUES ('" + txtCategoria.Text.Trim() + "')";
-                comandoSql.Connection = conexionDB;
 
-                conexionDB.Open();
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "INSERT INTO Categorias " +
+                        "(Categoria) " +
+                        "VALUES ('" + txtCategoria.Text.Trim() + "')";
+                    comandoSql.Connection = conexionDB;
 
-                comandoSql.ExecuteNonQuery();
+                    conexionDB.Open();
 
-                conexionDB.Close();
+                    comandoSql.ExecuteNonQuery();
+
+                    conexionDB.Close();
+                }
+
+                CargarCategorias();
+
             }
-
-            CargarCategorias();
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
@@ -93,27 +102,36 @@ namespace KBBWinForms
         #region CargarCategorias
         private void CargarCategorias()
         {
-            dgvCategorias.Rows.Clear();
-
-            string query = "SELECT ID, Categoria FROM Categorias ORDER BY Categoria";
-
-            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            try
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                dgvCategorias.Rows.Clear();
+
+                string query = "SELECT ID, Categoria FROM Categorias ORDER BY Categoria";
+
+                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        if (reader.HasRows)
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
+                                while (reader.Read())
+                                {
+                                    dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
+                                }
                             }
                         }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -121,29 +139,38 @@ namespace KBBWinForms
         #region CargarCategoriasConFiltro
         private void CargarCategoriasConFiltro()
         {
-            dgvCategorias.Rows.Clear();
-
-            string query = "SELECT ID, Categoria FROM Categorias " +
-                "WHERE Categoria LIKE '%" + txtFiltroCategorias.Text + "%' " +
-                "ORDER BY Categoria";
-
-            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            try
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                dgvCategorias.Rows.Clear();
+
+                string query = "SELECT ID, Categoria FROM Categorias " +
+                    "WHERE Categoria LIKE '%" + txtFiltroCategorias.Text + "%' " +
+                    "ORDER BY Categoria";
+
+                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        if (reader.HasRows)
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
+                                while (reader.Read())
+                                {
+                                    dgvCategorias.Rows.Add(false, reader[0].ToString(), reader[1].ToString());
+                                }
                             }
                         }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -151,30 +178,39 @@ namespace KBBWinForms
         #region btnEnviar_Click
         private void btnEnviar_Click(object sender, EventArgs e)
         {
-            List<(int, string)> tuplas = new List<(int, string)>();
-            bool controlCategorias = false;
-
-            foreach (DataGridViewRow row in dgvCategorias.Rows)
+            try
             {
-                DataGridViewCheckBoxCell cell = row.Cells["Seleccion"] as DataGridViewCheckBoxCell;
 
-                if (cell != null && (bool)cell.Value == true)
+                List<(int, string)> tuplas = new List<(int, string)>();
+                bool controlCategorias = false;
+
+                foreach (DataGridViewRow row in dgvCategorias.Rows)
                 {
-                    controlCategorias = true;
-                    tuplas.Add((Convert.ToInt32(row.Cells["IdCategoria"].Value), row.Cells["Categoria"].Value.ToString()));
+                    DataGridViewCheckBoxCell cell = row.Cells["Seleccion"] as DataGridViewCheckBoxCell;
+
+                    if (cell != null && (bool)cell.Value == true)
+                    {
+                        controlCategorias = true;
+                        tuplas.Add((Convert.ToInt32(row.Cells["IdCategoria"].Value), row.Cells["Categoria"].Value.ToString()));
+                    }
                 }
-            }
 
-            if (controlCategorias == true)
-            {
-                Contrato.Compartir(tuplas);
+                if (controlCategorias == true)
+                {
+                    Contrato.Compartir(tuplas);
 
-                Close();
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar al menos una categoría", Configuraciones.nombreSistema,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Debe seleccionar al menos una categoría", Configuraciones.nombreSistema,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion

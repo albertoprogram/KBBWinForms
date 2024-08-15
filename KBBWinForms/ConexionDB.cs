@@ -8,7 +8,6 @@ namespace KBBWinForms
 {
     public static class ConexionDB
     {
-        //public static string cadenaConexionSQLServer = @"Server=.;Database=KBB;User Id=;Password=;";
-        public static string cadenaConexionSQLServer = @"Server=.;Database=KBB;Integrated Security = SSPI;";
+        public static string cadenaConexionSQLServer = @"Server=.;Database=KBB;Integrated Security = SSPI;Connect Timeout=120;";
     }
 }

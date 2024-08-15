@@ -77,45 +77,54 @@ namespace KBBWinForms
 
         private void btnExaminar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(rutaSeleccionada))
+            try
             {
-                openFileDialog1.InitialDirectory =
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            }
-            else
-            {
-                openFileDialog1.InitialDirectory = rutaSeleccionada;
-            }
 
-            if (string.IsNullOrEmpty(filtroSeleccionado))
-            {
-                openFileDialog1.Filter =
-                "Archivos de Word|*.docx|" +
-                "Archivos de Excel|*.xlsx|" +
-                "Archivos de Power Point|*.pptx;*.ppsx|" +
-                "Archivos PDF|*.pdf|" +
-                "Archivos de imagen|*.jpg;*.jpeg;*.png|" +
-                "Archivos de texto|*.txt|" +
-                "Archivos de audio|*.mp3|" +
-                "Archivos de vídeo|*.mp4;*.wmv|" +
-                "Todos los Archivos|*.*";
+                if (string.IsNullOrEmpty(rutaSeleccionada))
+                {
+                    openFileDialog1.InitialDirectory =
+                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                }
+                else
+                {
+                    openFileDialog1.InitialDirectory = rutaSeleccionada;
+                }
 
-                openFileDialog1.FilterIndex = 1;
+                if (string.IsNullOrEmpty(filtroSeleccionado))
+                {
+                    openFileDialog1.Filter =
+                    "Archivos de Word|*.docx|" +
+                    "Archivos de Excel|*.xlsx|" +
+                    "Archivos de Power Point|*.pptx;*.ppsx|" +
+                    "Archivos PDF|*.pdf|" +
+                    "Archivos de imagen|*.jpg;*.jpeg;*.png|" +
+                    "Archivos de texto|*.txt|" +
+                    "Archivos de audio|*.mp3|" +
+                    "Archivos de vídeo|*.mp4;*.wmv|" +
+                    "Todos los Archivos|*.*";
+
+                    openFileDialog1.FilterIndex = 1;
+                }
+                else
+                {
+                    openFileDialog1.Filter = filtroSeleccionado;
+                }
+
+                openFileDialog1.FileName = string.Empty;
+
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    rutaSeleccionada = Path.GetDirectoryName(openFileDialog1.FileName);
+                    filtroSeleccionado = openFileDialog1.Filter;
+                    txtRutaArchivo.Text = openFileDialog1.FileName;
+                    txtTituloArchivo.Text = openFileDialog1.SafeFileName;
+                    archivoSeleccionado = true;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                openFileDialog1.Filter = filtroSeleccionado;
-            }
-
-            openFileDialog1.FileName = string.Empty;
-
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                rutaSeleccionada = Path.GetDirectoryName(openFileDialog1.FileName);
-                filtroSeleccionado = openFileDialog1.Filter;
-                txtRutaArchivo.Text = openFileDialog1.FileName;
-                txtTituloArchivo.Text = openFileDialog1.SafeFileName;
-                archivoSeleccionado = true;
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -123,66 +132,93 @@ namespace KBBWinForms
         #region btnGuardar_Click
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (archivoSeleccionado)
+            try
             {
-                byte[] data = null;
 
-                Stream stream = openFileDialog1.OpenFile();
+                if (archivoSeleccionado)
+                {
+                    byte[] data = null;
 
-                MemoryStream memoryStream = new MemoryStream();
+                    Stream stream = openFileDialog1.OpenFile();
 
-                stream.CopyTo(memoryStream);
+                    MemoryStream memoryStream = new MemoryStream();
 
-                data = memoryStream.ToArray();
+                    stream.CopyTo(memoryStream);
 
-                archivo.Nombre = txtTituloArchivo.Text;
-                archivo.Archivo = data;
-                archivo.Extension = openFileDialog1.SafeFileName;
+                    data = memoryStream.ToArray();
+
+                    archivo.Nombre = txtTituloArchivo.Text;
+                    archivo.Archivo = data;
+                    archivo.Extension = openFileDialog1.SafeFileName;
+                }
+
+                archivo.Observaciones = txtObservaciones.Text;
+
+                short[] categorias = new short[lbCategorias.Items.Count];
+
+                for (int i = 0; i < categorias.Length; i++)
+                {
+                    categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
+                }
+
+                if (idArchivo == 0)
+                {
+                    MessageBox.Show(archivo.AgregarDocumento(categorias), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(archivo.ActualizarDocumento(idArchivo, categorias, archivoSeleccionado), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                txtTituloArchivo.Text = string.Empty;
+                txtRutaArchivo.Text = string.Empty;
+                txtObservaciones.Text = string.Empty;
+
             }
-
-            archivo.Observaciones = txtObservaciones.Text;
-
-            short[] categorias = new short[lbCategorias.Items.Count];
-
-            for (int i = 0; i < categorias.Length; i++)
+            catch (Exception ex)
             {
-                categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            if (idArchivo == 0)
-            {
-                MessageBox.Show(archivo.AgregarDocumento(categorias), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show(archivo.ActualizarDocumento(idArchivo, categorias, archivoSeleccionado), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-            txtTituloArchivo.Text = string.Empty;
-            txtRutaArchivo.Text = string.Empty;
-            txtObservaciones.Text = string.Empty;
         }
         #endregion
 
         #region btnCategorias_Click
         private void btnCategorias_Click(object sender, EventArgs e)
         {
-            Categorias categorias = new Categorias();
+            try
+            {
 
-            categorias.Contrato = this;
+                Categorias categorias = new Categorias();
 
-            categorias.ShowDialog();
+                categorias.Contrato = this;
+
+                categorias.ShowDialog();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region Compartir
         public void Compartir(List<(int, string)> values)
         {
-            lbCategorias.Items.Clear();
-
-            foreach (var item in values)
+            try
             {
-                lbCategorias.Items.Add(item.Item1.ToString() + "-" + item.Item2.ToString());
+
+                lbCategorias.Items.Clear();
+
+                foreach (var item in values)
+                {
+                    lbCategorias.Items.Add(item.Item1.ToString() + "-" + item.Item2.ToString());
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -190,80 +226,88 @@ namespace KBBWinForms
         #region CargarDatosArchivo
         private void CargarDatosArchivo()
         {
-            string query = $"SELECT Nombre, Extension, Observaciones FROM Archivos WHERE ID = {idArchivo}";
-
-            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            try
             {
-                connection.Open();
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                string query = $"SELECT Nombre, Extension, Observaciones FROM Archivos WHERE ID = {idArchivo}";
+
+                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        if (reader.HasRows)
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                txtRutaArchivo.Text = reader["Nombre"].ToString();
-                                txtTituloArchivo.Text = reader["Extension"].ToString();
-                                txtObservaciones.Text = reader["Observaciones"].ToString();
+                                while (reader.Read())
+                                {
+                                    txtRutaArchivo.Text = reader["Nombre"].ToString();
+                                    txtTituloArchivo.Text = reader["Extension"].ToString();
+                                    txtObservaciones.Text = reader["Observaciones"].ToString();
+                                }
+                            }
+                            else
+                            {
+                                // Opcional: Manejar el caso cuando no hay registros encontrados.
+                                MessageBox.Show("No se encontraron registros con el ID especificado.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-                        else
+                    }
+
+                    query = $"SELECT CategoriaID FROM ArchivosCategorias WHERE ArchivoID = {idArchivo}";
+                    List<int> categoriasIds = new List<int>();
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron registros con el ID especificado.",ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    categoriasIds.Add(Convert.ToInt32(reader["CategoriaID"]));
+                                }
+                            }
+                            else
+                            {
+                                // Opcional: Manejar el caso cuando no hay registros encontrados.
+                                MessageBox.Show("No se encontraron categorías con el ID especificado.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+                    }
+
+                    string inClause = string.Join(",", categoriasIds);
+                    query = $"SELECT ID,Categoria FROM Categorias WHERE ID IN ({inClause})";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    lbCategorias.Items.Add(reader["ID"].ToString() + "-" + reader["Categoria"]);
+                                }
+                            }
+                            else
+                            {
+                                // Opcional: Manejar el caso cuando no hay registros encontrados.
+                                MessageBox.Show("No se encontraron descripciones de categorías con los IDs especificados.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
                         }
                     }
                 }
 
-                query = $"SELECT CategoriaID FROM ArchivosCategorias WHERE ArchivoID = {idArchivo}";
-                List<int> categoriasIds = new List<int>();
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                categoriasIds.Add(Convert.ToInt32(reader["CategoriaID"]));
-                            }
-                        }
-                        else
-                        {
-                            // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron categorías con el ID especificado.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
-                }
-
-                string inClause = string.Join(",", categoriasIds);
-                query = $"SELECT ID,Categoria FROM Categorias WHERE ID IN ({inClause})";
-
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                lbCategorias.Items.Add(reader["ID"].ToString() + "-" + reader["Categoria"]);
-                            }
-                        }
-                        else
-                        {
-                            // Opcional: Manejar el caso cuando no hay registros encontrados.
-                            MessageBox.Show("No se encontraron descripciones de categorías con los IDs especificados.", ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
-                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
     }

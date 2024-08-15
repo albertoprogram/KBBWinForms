@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
-    Microsoft ResX Schema 
+    Microsoft ResX Schema
 
     Version 2.0
 
@@ -48,7 +48,7 @@
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
@@ -120,4 +120,29 @@
   <metadata name="openFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA
+        AAAPrPsAD6z7ABqw+wA+vPwA////AAB9+AcAnvoYCKr7NhGt+zIDqPsAD6z7AA+s+wAPrPsAAAAAAAAA
+        AAAAAAAAAJ/6EACl+yIWrvtAL7f8ZUa+/I1fx/yyeM/90pHX/etHv/zjCqr7cw+s+wwPrPsAD6z7AA+s
+        +wAAAAAAAAAAAGHH/ayH1P3joNz+9bfk/v/L6///2vD//+Pz///n9P//X8f8/wur+/wPrPurD6z7Kg+s
+        +wAPrPsAD6z7AA+s+wDf8f+S5vT//+n1///q9f//6fT//+Xz///d8f//zuz//07B/P8Lq/v/D6z7/w+s
+        +9kPrPtZD6z7BA+s+wAPrPsA3PD/jNbu///E6P7/rOH+/5PY/f970fz/acz6/1i++P84sff+Eqr6/w2s
+        +/8Orfv/Dq779Q6u+44NtPwQFZX3AFrG+8ZhyPn/Wsb4/1vH9v9iy/X/acr0/1qd8P9ceO3/fJfy/1aK
+        8v42hfP/JYj0/xmQ9v8SmPj6DIj1TgAAigJXxvU5cs/0q3fS9Pp50/T/b73y/0927P8xOOb/c3nv/+Pw
+        ///b6P3/ztr8/7zI+f+ktff/iaL1/n6O8thobu6bZM32AIXs9glyxvNyXJXv8z1P6f8vMun/LDDp/2Rr
+        8P/M2v3/2un+/+Py///o9///6vn//+n4///j8v//1+X9nS8w5gAuLeUXMDPmoDA06PkzNOH/UkOv/1dG
+        qP9bUMX/Z2Lc/21u6v96gPP/jZb4/6Ou+f+4xPn/ytj7/83a/JYwNOgALzPpSDAz6ftEPMX/flNZ/7eF
+        RP/RxLD/x7Sg/7mgkv+oi43/lXmS/4Nqnv9oXtD/Wlz4/19i9f5bX/G4VkOlAEI7yEpkSYz6n2Ik/7No
+        AP+/jED/3+bp/+Px+//l8/7/5PH3/+Lq6f/V1NL/gHnh/2Vl/95lZf9zV1f8GbZrABetZwursGkF/7Nq
+        AP+4bwD/z4gK/9ecLP/To0r/0q5r/9S8kP/YzLP/0c/Q/4eD56teXv8oZmb/AGRk/gCzagA+s2oA8rRr
+        AP/FewH+5JkC/vSoAv/0qAD/8qUA/+6hAP/onQD/4poG/9iVFd/FghNKnX6RAGlm9gBmZv8AsWkAMrpx
+        AOHXjQH/8KUC//WqAv/0qQL/9KkC//SpAv/0qQL/9aoC7/aqApj5rAAr/8EAAf+pAACuahAAAAAAAKhf
+        AAbWjAE59KkCY/WqAof0qQKq9KkCyfSpAuL0qQLu9KkCs/SpAkL0qQID9KkCAPSpAgD0qQIAAAAAAAAA
+        AACqYQAA04kBAPKnAgD0qQIA9KkCBPSpAhL0qQIp9KkCO/SpAg/0qQIA9KkCAPSpAgD0qQIAAAAAAAAA
+        AAAAAAAAAAcAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB
+        AAAAAwAAAAcAAA==
+</value>
+  </data>
 </root>

@@ -60,6 +60,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1063, 637);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             IsMdiContainer = true;
             MainMenuStrip = menuStrip1;
             Name = "Contenedor";

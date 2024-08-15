@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Categorias));
             lblCategoria = new Label();
             txtCategoria = new TextBox();
             btnGuardarCategoria = new Button();
@@ -104,7 +105,7 @@
             IdCategoria.MinimumWidth = 6;
             IdCategoria.Name = "IdCategoria";
             IdCategoria.ReadOnly = true;
-            IdCategoria.Width = 136;
+            IdCategoria.Width = 148;
             // 
             // Categoria
             // 
@@ -159,6 +160,7 @@
             Controls.Add(txtCategoria);
             Controls.Add(lblCategoria);
             Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             MaximizeBox = false;
             Name = "Categorias";

@@ -44,107 +44,16 @@ namespace KBBWinForms
         #region AgregarDocumento
         public string AgregarDocumento(short[] categorias)
         {
-            using (SqlCommand comandoSql = new SqlCommand())
-            {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText =
-                    "INSERT INTO Archivos " +
-                    "(Nombre,Archivo,Extension,Observaciones) " +
-                    "VALUES (@Nombre,@Archivo,@Extension,@Observaciones); " +
-                    "SELECT SCOPE_IDENTITY();";
-                comandoSql.Connection = conexionDB;
-
-                comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
-                comandoSql.Parameters.AddWithValue("@Archivo", Archivo);
-                comandoSql.Parameters.AddWithValue("@Extension", Extension);
-                comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
-
-                conexionDB.Open();
-
-                int identityValue = Convert.ToInt32(comandoSql.ExecuteScalar());
-
-                foreach (short categoria in categorias)
-                {
-                    comandoSql.CommandText =
-                    "INSERT INTO ArchivosCategorias " +
-                    "(ArchivoID,CategoriaID) " +
-                    "VALUES (@ArchivoID,@CategoriaID)";
-
-                    comandoSql.Parameters.Clear();
-
-                    comandoSql.Parameters.AddWithValue("@ArchivoID", identityValue);
-                    comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
-
-                    comandoSql.ExecuteNonQuery();
-                }
-
-                conexionDB.Close();
-            }
-
-            return "Agregado con éxito";
-        }
-        #endregion
-
-        #region ActualizarDocumento
-        public string ActualizarDocumento(int id, short[] categorias, bool archivoSeleccionado)
-        {
-            if (archivoSeleccionado == false)
+            try
             {
                 using (SqlCommand comandoSql = new SqlCommand())
                 {
                     comandoSql.CommandType = CommandType.Text;
                     comandoSql.CommandText =
-                        "UPDATE Archivos " +
-                        "SET Observaciones = " +
-                        "@Observaciones " +
-                        $"WHERE ID = {id}";
-                    comandoSql.Connection = conexionDB;
-
-                    comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
-
-                    conexionDB.Open();
-
-                    comandoSql.ExecuteNonQuery();
-
-                    //DELETE Categorías
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText =
-                        "DELETE FROM ArchivosCategorias " +
-                        $"WHERE ArchivoID = {id}";
-                    comandoSql.Connection = conexionDB;
-
-                    comandoSql.ExecuteNonQuery();
-
-                    foreach (short categoria in categorias)
-                    {
-                        comandoSql.CommandText =
-                        "INSERT INTO ArchivosCategorias " +
-                        "(ArchivoID,CategoriaID) " +
-                        "VALUES (@ArchivoID,@CategoriaID)";
-
-                        comandoSql.Parameters.Clear();
-
-                        comandoSql.Parameters.AddWithValue("@ArchivoID", id);
-                        comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
-
-                        comandoSql.ExecuteNonQuery();
-                    }
-
-                    conexionDB.Close();
-                }
-            }
-            else
-            {
-                using (SqlCommand comandoSql = new SqlCommand())
-                {
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText =
-                        "UPDATE Archivos " +
-                        "SET Nombre = @Nombre, " +
-                        "Archivo = @Archivo, " +
-                        "Extension = @Extension, " +
-                        "Observaciones = @Observaciones " +
-                        $"WHERE ID = {id}";
+                        "INSERT INTO Archivos " +
+                        "(Nombre,Archivo,Extension,Observaciones) " +
+                        "VALUES (@Nombre,@Archivo,@Extension,@Observaciones); " +
+                        "SELECT SCOPE_IDENTITY();";
                     comandoSql.Connection = conexionDB;
 
                     comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
@@ -154,16 +63,7 @@ namespace KBBWinForms
 
                     conexionDB.Open();
 
-                    comandoSql.ExecuteNonQuery();
-
-                    //DELETE Categorías
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText =
-                        "DELETE FROM ArchivosCategorias " +
-                        $"WHERE ArchivoID = {id}";
-                    comandoSql.Connection = conexionDB;
-
-                    comandoSql.ExecuteNonQuery();
+                    int identityValue = Convert.ToInt32(comandoSql.ExecuteScalar());
 
                     foreach (short categoria in categorias)
                     {
@@ -174,7 +74,7 @@ namespace KBBWinForms
 
                         comandoSql.Parameters.Clear();
 
-                        comandoSql.Parameters.AddWithValue("@ArchivoID", id);
+                        comandoSql.Parameters.AddWithValue("@ArchivoID", identityValue);
                         comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
 
                         comandoSql.ExecuteNonQuery();
@@ -182,9 +82,127 @@ namespace KBBWinForms
 
                     conexionDB.Close();
                 }
-            }
 
-            return "Actualizado con éxito";
+                return "Agregado con éxito";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return "ERROR";
+            }
+        }
+        #endregion
+
+        #region ActualizarDocumento
+        public string ActualizarDocumento(int id, short[] categorias, bool archivoSeleccionado)
+        {
+            try
+            {
+                if (archivoSeleccionado == false)
+                {
+                    using (SqlCommand comandoSql = new SqlCommand())
+                    {
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText =
+                            "UPDATE Archivos " +
+                            "SET Observaciones = " +
+                            "@Observaciones " +
+                            $"WHERE ID = {id}";
+                        comandoSql.Connection = conexionDB;
+
+                        comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
+
+                        conexionDB.Open();
+
+                        comandoSql.ExecuteNonQuery();
+
+                        //DELETE Categorías
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText =
+                            "DELETE FROM ArchivosCategorias " +
+                            $"WHERE ArchivoID = {id}";
+                        comandoSql.Connection = conexionDB;
+
+                        comandoSql.ExecuteNonQuery();
+
+                        foreach (short categoria in categorias)
+                        {
+                            comandoSql.CommandText =
+                            "INSERT INTO ArchivosCategorias " +
+                            "(ArchivoID,CategoriaID) " +
+                            "VALUES (@ArchivoID,@CategoriaID)";
+
+                            comandoSql.Parameters.Clear();
+
+                            comandoSql.Parameters.AddWithValue("@ArchivoID", id);
+                            comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
+
+                            comandoSql.ExecuteNonQuery();
+                        }
+
+                        conexionDB.Close();
+                    }
+                }
+                else
+                {
+                    using (SqlCommand comandoSql = new SqlCommand())
+                    {
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText =
+                            "UPDATE Archivos " +
+                            "SET Nombre = @Nombre, " +
+                            "Archivo = @Archivo, " +
+                            "Extension = @Extension, " +
+                            "Observaciones = @Observaciones " +
+                            $"WHERE ID = {id}";
+                        comandoSql.Connection = conexionDB;
+
+                        comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
+                        comandoSql.Parameters.AddWithValue("@Archivo", Archivo);
+                        comandoSql.Parameters.AddWithValue("@Extension", Extension);
+                        comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
+
+                        conexionDB.Open();
+
+                        comandoSql.ExecuteNonQuery();
+
+                        //DELETE Categorías
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText =
+                            "DELETE FROM ArchivosCategorias " +
+                            $"WHERE ArchivoID = {id}";
+                        comandoSql.Connection = conexionDB;
+
+                        comandoSql.ExecuteNonQuery();
+
+                        foreach (short categoria in categorias)
+                        {
+                            comandoSql.CommandText =
+                            "INSERT INTO ArchivosCategorias " +
+                            "(ArchivoID,CategoriaID) " +
+                            "VALUES (@ArchivoID,@CategoriaID)";
+
+                            comandoSql.Parameters.Clear();
+
+                            comandoSql.Parameters.AddWithValue("@ArchivoID", id);
+                            comandoSql.Parameters.AddWithValue("@CategoriaID", categoria);
+
+                            comandoSql.ExecuteNonQuery();
+                        }
+
+                        conexionDB.Close();
+                    }
+                }
+
+                return "Actualizado con éxito";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return "ERROR";
+            }
         }
         #endregion
 
@@ -196,536 +214,553 @@ namespace KBBWinForms
             inIDsCategorias = string.Empty;
             System.Data.DataTable dt = new System.Data.DataTable();
 
-            dt.Columns.Add("ID", typeof(int));
-            dt.Columns.Add("Nombre", typeof(string));
-            dt.Columns.Add("Observaciones", typeof(string));
-            dt.Columns.Add("Paginas", typeof(string));
-
-            if (!string.IsNullOrWhiteSpace(pagina))
+            try
             {
-                registrosIgnorar = short.Parse(pagina);
-                registrosIgnorar -= 1;
-                registrosIgnorar *= short.Parse(cantidadRegistros);
-            }
+                dt.Columns.Add("ID", typeof(int));
+                dt.Columns.Add("Nombre", typeof(string));
+                dt.Columns.Add("Observaciones", typeof(string));
+                dt.Columns.Add("Paginas", typeof(string));
 
-            if (busqueda == string.Empty && categoria != string.Empty)
-            {
-                using (SqlCommand comandoSql = new SqlCommand())
+                if (!string.IsNullOrWhiteSpace(pagina))
                 {
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText =
-                        "SELECT ID " +
-                        "FROM Categorias " +
-                        "WHERE Categoria = '" + categoria + "'";
-                    comandoSql.Connection = conexionDB;
+                    registrosIgnorar = short.Parse(pagina);
+                    registrosIgnorar -= 1;
+                    registrosIgnorar *= short.Parse(cantidadRegistros);
+                }
 
-                    conexionDB.Open();
-
-                    idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
-
-                    comandoSql.CommandText =
-                        "SELECT ArchivoID " +
-                        "FROM ArchivosCategorias " +
-                        "WHERE CategoriaID = " + idCategoria.ToString();
-                    comandoSql.Connection = conexionDB;
-
-                    SqlDataReader reader;
-
-                    using (reader = comandoSql.ExecuteReader())
+                if (busqueda == string.Empty && categoria != string.Empty)
+                {
+                    using (SqlCommand comandoSql = new SqlCommand())
                     {
-                        if (reader.HasRows)
-                        {
-                            while (reader.Read())
-                            {
-                                listArchivos.Add(Convert.ToInt32(reader["ArchivoID"]));
-                            }
-                        }
-                    }
+                        comandoSql.CommandTimeout = 1000;
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText =
+                            "SELECT ID " +
+                            "FROM Categorias " +
+                            "WHERE Categoria = '" + categoria + "'";
+                        comandoSql.Connection = conexionDB;
 
-                    inIDsCategorias = string.Join(",", listArchivos);
+                        conexionDB.Open();
 
-                    if (listArchivos.Count > 0)
-                    {
-                        //comandoSql.CommandText =
-                        //"SELECT ID,Nombre,Observaciones " +
-                        //"FROM Archivos " +
-                        //$"WHERE ID IN ({inIDsCategorias}) " +
-                        //"ORDER BY ID " +
-                        //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                        //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+                        idCategoria = Convert.ToInt32(comandoSql.ExecuteScalar());
 
                         comandoSql.CommandText =
-                        "SELECT ID,Nombre,Observaciones " +
-                        "FROM Archivos " +
-                        $"WHERE ID IN ({inIDsCategorias}) " +
-                        "ORDER BY Nombre";
+                            "SELECT ArchivoID " +
+                            "FROM ArchivosCategorias " +
+                            "WHERE CategoriaID = " + idCategoria.ToString();
+                        comandoSql.Connection = conexionDB;
+
+                        SqlDataReader reader;
+
+                        using (reader = comandoSql.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                while (reader.Read())
+                                {
+                                    listArchivos.Add(Convert.ToInt32(reader["ArchivoID"]));
+                                }
+                            }
+                        }
+
+                        inIDsCategorias = string.Join(",", listArchivos);
+
+                        if (listArchivos.Count > 0)
+                        {
+                            //comandoSql.CommandText =
+                            //"SELECT ID,Nombre,Observaciones " +
+                            //"FROM Archivos " +
+                            //$"WHERE ID IN ({inIDsCategorias}) " +
+                            //"ORDER BY ID " +
+                            //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                            //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
+
+                            comandoSql.CommandText =
+                            "SELECT ID,Nombre,Observaciones " +
+                            "FROM Archivos " +
+                            $"WHERE ID IN ({inIDsCategorias}) " +
+                            "ORDER BY Nombre";
+
+                            reader.Close();
+                            reader.Dispose();
+
+                            reader = comandoSql.ExecuteReader();
+
+                            if (reader.HasRows) dt.Load(reader);
+                        }
 
                         reader.Close();
                         reader.Dispose();
-
-                        reader = comandoSql.ExecuteReader();
-
-                        if (reader.HasRows) dt.Load(reader);
+                        conexionDB.Close();
                     }
-
-                    reader.Close();
-                    reader.Dispose();
-                    conexionDB.Close();
                 }
-            }
-            else if (busqueda != string.Empty && categoria == string.Empty)
-            {
-                //string query = "SELECT " +
-                //"ID, Nombre, Observaciones " +
-                //"FROM Archivos " +
-                //"WHERE Nombre LIKE '%" + busqueda + "%' " +
-                //"OR Observaciones LIKE '%" + busqueda + "%' " +
-                //"ORDER BY Nombre " +
-                //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
-                //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
-
-                string query = "SELECT " +
-                "ID, Nombre, Observaciones " +
-                "FROM Archivos " +
-                "WHERE Nombre LIKE '%" + busqueda + "%' " +
-                "OR Observaciones LIKE '%" + busqueda + "%' " +
-                "ORDER BY Nombre";
-
-                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+                else if (busqueda != string.Empty && categoria == string.Empty)
                 {
-                    connection.Open();
+                    //string query = "SELECT " +
+                    //"ID, Nombre, Observaciones " +
+                    //"FROM Archivos " +
+                    //"WHERE Nombre LIKE '%" + busqueda + "%' " +
+                    //"OR Observaciones LIKE '%" + busqueda + "%' " +
+                    //"ORDER BY Nombre " +
+                    //"OFFSET " + registrosIgnorar.ToString() + " ROWS " +
+                    //"FETCH NEXT " + cantidadRegistros + " ROWS ONLY";
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                dt.Load(reader);
-                            }
-                        }
-                    }
-
-                    ///////////////////////////////////////////////////////////////////////////////////
-                    ///Búsqueda en documentos
-
-                    System.Data.DataTable dataTableExtensiones = new System.Data.DataTable("Extensiones");
-                    string extension = string.Empty;
-                    string pages = string.Empty;
-
-                    string ruta = AppDomain.CurrentDomain.BaseDirectory;
-
-                    string carpetaTemporal = ruta + @"temp\";
-
-                    if (!Directory.Exists(carpetaTemporal))
-                        Directory.CreateDirectory(carpetaTemporal);
-
-                    dataTableExtensiones.Columns.Add("ID", typeof(int));
-                    dataTableExtensiones.Columns.Add("Extension", typeof(string));
-                    dataTableExtensiones.Columns.Add("Archivo", typeof(byte[]));
-                    dataTableExtensiones.Columns.Add("Nombre", typeof(string));
-                    dataTableExtensiones.Columns.Add("Observaciones", typeof(string));
-
-                    extension = "docx";
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
+                    string query = "SELECT " +
+                    "ID, Nombre, Observaciones " +
                     "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
+                    "WHERE Nombre LIKE '%" + busqueda + "%' " +
+                    "OR Observaciones LIKE '%" + busqueda + "%' " +
+                    "ORDER BY Nombre";
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        connection.Open();
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            if (reader.HasRows)
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                while (reader.Read())
+                                if (reader.HasRows)
                                 {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
+                                    dt.Load(reader);
                                 }
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+                        ///////////////////////////////////////////////////////////////////////////////////
+                        ///Búsqueda en documentos
 
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
+                        System.Data.DataTable dataTableExtensiones = new System.Data.DataTable("Extensiones");
+                        string extension = string.Empty;
+                        string pages = string.Empty;
 
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+                        string ruta = AppDomain.CurrentDomain.BaseDirectory;
 
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda, out pages);
+                        string carpetaTemporal = ruta + @"temp\";
 
-                        if (found)
+                        if (!Directory.Exists(carpetaTemporal))
+                            Directory.CreateDirectory(carpetaTemporal);
+
+                        dataTableExtensiones.Columns.Add("ID", typeof(int));
+                        dataTableExtensiones.Columns.Add("Extension", typeof(string));
+                        dataTableExtensiones.Columns.Add("Archivo", typeof(byte[]));
+                        dataTableExtensiones.Columns.Add("Nombre", typeof(string));
+                        dataTableExtensiones.Columns.Add("Observaciones", typeof(string));
+
+                        extension = "docx";
+
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
-
-                            if (filasEncontradas.Length > 0)
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                if (reader.HasRows)
                                 {
-                                    fila.Delete();
-                                }
-
-                                dt.AcceptChanges();
-                            }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "xlsx";
-
-                    dataTableExtensiones.Rows.Clear();
-                    pages = string.Empty;
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
-
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
-
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
-
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInExcelFile(ubicacionCompleta, busqueda, out pages);
-
-                        if (found)
+                        foreach (DataRow row in dataTableExtensiones.Rows)
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
 
-                            if (filasEncontradas.Length > 0)
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInWordDocument(ubicacionCompleta, busqueda, out pages);
+
+                            if (found)
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
                                 {
-                                    fila.Delete();
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
                                 }
 
-                                dt.AcceptChanges();
-                            }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "pptx";
-
-                    dataTableExtensiones.Rows.Clear();
-                    pages = string.Empty;
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+                        extension = "xlsx";
 
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
+                        dataTableExtensiones.Rows.Clear();
+                        pages = string.Empty;
 
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
 
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
-
-                        if (found)
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
-
-                            if (filasEncontradas.Length > 0)
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                if (reader.HasRows)
                                 {
-                                    fila.Delete();
-                                }
-
-                                dt.AcceptChanges();
-                            }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "ppsx";
-
-                    dataTableExtensiones.Rows.Clear();
-                    pages = string.Empty;
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
-
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
-
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
-
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
-
-                        if (found)
+                        foreach (DataRow row in dataTableExtensiones.Rows)
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
 
-                            if (filasEncontradas.Length > 0)
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInExcelFile(ubicacionCompleta, busqueda, out pages);
+
+                            if (found)
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
                                 {
-                                    fila.Delete();
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
                                 }
 
-                                dt.AcceptChanges();
-                            }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "pdf";
-
-                    dataTableExtensiones.Rows.Clear();
-                    pages = string.Empty;
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
-                                }
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
+                        extension = "pptx";
 
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
+                        dataTableExtensiones.Rows.Clear();
+                        pages = string.Empty;
 
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
 
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInPdf(ubicacionCompleta, busqueda, out pages);
-
-                        if (found)
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
-
-                            if (filasEncontradas.Length > 0)
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                if (reader.HasRows)
                                 {
-                                    fila.Delete();
-                                }
-
-                                dt.AcceptChanges();
-                            }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
-                        }
-                    }
-
-                    extension = "txt";
-
-                    dataTableExtensiones.Rows.Clear();
-                    pages = string.Empty;
-
-                    query = "SELECT " +
-                    "ID,Extension,Archivo,Nombre,Observaciones " +
-                    "FROM Archivos " +
-                    $"WHERE Extension LIKE '%.{extension}' " +
-                    "ORDER BY ID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    DataRow dataRow = dataTableExtensiones.NewRow();
-                                    dataRow["ID"] = reader.GetInt32("ID");
-                                    dataRow["Extension"] = reader.GetString("Extension");
-                                    dataRow["Archivo"] = (byte[])reader["Archivo"];
-                                    dataRow["Nombre"] = reader.GetString("Nombre");
-                                    dataRow["Observaciones"] = reader.GetString("Observaciones");
-                                    dataTableExtensiones.Rows.Add(dataRow);
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    foreach (DataRow row in dataTableExtensiones.Rows)
-                    {
-                        string ubicacionCompleta = carpetaTemporal + row["Extension"];
-
-                        if (File.Exists(ubicacionCompleta))
-                            File.Delete(ubicacionCompleta);
-
-                        File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
-
-                        //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
-                        bool found = SearchTextInTXT(ubicacionCompleta, busqueda);
-
-                        if (found)
+                        foreach (DataRow row in dataTableExtensiones.Rows)
                         {
-                            DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
 
-                            if (filasEncontradas.Length > 0)
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+
+                            if (found)
                             {
-                                foreach (DataRow fila in filasEncontradas)
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
                                 {
-                                    fila.Delete();
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
                                 }
 
-                                dt.AcceptChanges();
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
                             }
-
-                            DataRow dataRow = dt.NewRow();
-                            dataRow["ID"] = row["ID"];
-                            dataRow["Nombre"] = row["Nombre"];
-                            dataRow["Observaciones"] = row["Observaciones"];
-                            dataRow["Paginas"] = pages;
-                            dt.Rows.Add(dataRow);
                         }
+
+                        extension = "ppsx";
+
+                        dataTableExtensiones.Rows.Clear();
+                        pages = string.Empty;
+
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (DataRow row in dataTableExtensiones.Rows)
+                        {
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInPowerPointFile(ubicacionCompleta, busqueda, out pages);
+
+                            if (found)
+                            {
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
+                                {
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
+                                }
+
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
+                            }
+                        }
+
+                        extension = "pdf";
+
+                        dataTableExtensiones.Rows.Clear();
+                        pages = string.Empty;
+
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (DataRow row in dataTableExtensiones.Rows)
+                        {
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInPdf(ubicacionCompleta, busqueda, out pages);
+
+                            if (found)
+                            {
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
+                                {
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
+                                }
+
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
+                            }
+                        }
+
+                        extension = "txt";
+
+                        dataTableExtensiones.Rows.Clear();
+                        pages = string.Empty;
+
+                        query = "SELECT " +
+                        "ID,Extension,Archivo,Nombre,Observaciones " +
+                        "FROM Archivos " +
+                        $"WHERE Extension LIKE '%.{extension}' " +
+                        "ORDER BY ID";
+
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.CommandTimeout = 1000;
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.HasRows)
+                                {
+                                    while (reader.Read())
+                                    {
+                                        DataRow dataRow = dataTableExtensiones.NewRow();
+                                        dataRow["ID"] = reader.GetInt32("ID");
+                                        dataRow["Extension"] = reader.GetString("Extension");
+                                        dataRow["Archivo"] = (byte[])reader["Archivo"];
+                                        dataRow["Nombre"] = reader.GetString("Nombre");
+                                        dataRow["Observaciones"] = reader.GetString("Observaciones");
+                                        dataTableExtensiones.Rows.Add(dataRow);
+                                    }
+                                }
+                            }
+                        }
+
+                        foreach (DataRow row in dataTableExtensiones.Rows)
+                        {
+                            string ubicacionCompleta = carpetaTemporal + row["Extension"];
+
+                            if (File.Exists(ubicacionCompleta))
+                                File.Delete(ubicacionCompleta);
+
+                            File.WriteAllBytes(ubicacionCompleta, (byte[])row["Archivo"]);
+
+                            //Abrir el documento, leerlo y ver si hay alguna expresión según la búsqueda que se escribió
+                            bool found = SearchTextInTXT(ubicacionCompleta, busqueda);
+
+                            if (found)
+                            {
+                                DataRow[] filasEncontradas = dt.Select($"Nombre = '{row["Nombre"]}'");
+
+                                if (filasEncontradas.Length > 0)
+                                {
+                                    foreach (DataRow fila in filasEncontradas)
+                                    {
+                                        fila.Delete();
+                                    }
+
+                                    dt.AcceptChanges();
+                                }
+
+                                DataRow dataRow = dt.NewRow();
+                                dataRow["ID"] = row["ID"];
+                                dataRow["Nombre"] = row["Nombre"];
+                                dataRow["Observaciones"] = row["Observaciones"];
+                                dataRow["Paginas"] = pages;
+                                dt.Rows.Add(dataRow);
+                            }
+                        }
+
+                        ///////////////////////////////////////////////////////////////////////////////////
+
                     }
-
-                    ///////////////////////////////////////////////////////////////////////////////////
-
                 }
+
+                return dt;
+
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-            return dt;
-
+                return dt;
+            }
         }
         #endregion
 
@@ -734,22 +769,34 @@ namespace KBBWinForms
         {
             System.Data.DataTable dt = new System.Data.DataTable();
 
-            using (SqlCommand comandoSql = new SqlCommand())
+            try
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText = "SELECT * FROM Archivos WHERE ID = @id";
-                comandoSql.Connection = conexionDB;
 
-                comandoSql.Parameters.AddWithValue("@id", Id);
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandTimeout = 1000;
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText = "SELECT * FROM Archivos WHERE ID = @id";
+                    comandoSql.Connection = conexionDB;
 
-                conexionDB.Open();
+                    comandoSql.Parameters.AddWithValue("@id", Id);
 
-                SqlDataReader reader = comandoSql.ExecuteReader();
+                    conexionDB.Open();
 
-                if (reader.HasRows) dt.Load(reader);
+                    SqlDataReader reader = comandoSql.ExecuteReader();
 
-                reader.Close();
-                conexionDB.Close();
+                    if (reader.HasRows) dt.Load(reader);
+
+                    reader.Close();
+                    conexionDB.Close();
+
+                    return dt;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return dt;
             }
@@ -763,18 +810,29 @@ namespace KBBWinForms
 
             var infoArchivo = new List<Archivos>();
 
-            foreach (DataRow item in tabla.Rows)
+            try
             {
-                infoArchivo.Add(new Archivos
-                {
-                    Id = Convert.ToInt32(item[0]),
-                    Nombre = item[1].ToString(),
-                    Archivo = (byte[])item[2],
-                    Extension = item[3].ToString()
-                });
-            }
 
-            return infoArchivo;
+                foreach (DataRow item in tabla.Rows)
+                {
+                    infoArchivo.Add(new Archivos
+                    {
+                        Id = Convert.ToInt32(item[0]),
+                        Nombre = item[1].ToString(),
+                        Archivo = (byte[])item[2],
+                        Extension = item[3].ToString()
+                    });
+                }
+
+                return infoArchivo;
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                return infoArchivo;
+            }
         }
         #endregion
 
@@ -782,58 +840,70 @@ namespace KBBWinForms
         public long CantidadTotalArchivos(string categoria, string busqueda)
         {
             int total = 0;
-            if (busqueda == string.Empty && categoria != string.Empty)
+
+            try
             {
-                using (SqlCommand comandoSql = new SqlCommand())
+
+                if (busqueda == string.Empty && categoria != string.Empty)
                 {
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText = $"SELECT COUNT(*) FROM ArchivosCategorias WHERE CategoriaID = {idCategoria}";
-                    comandoSql.Connection = conexionDB;
-
-                    conexionDB.Open();
-
-                    SqlDataReader reader = comandoSql.ExecuteReader();
-
-                    if (reader.HasRows)
+                    using (SqlCommand comandoSql = new SqlCommand())
                     {
-                        while (reader.Read())
-                        {
-                            total = reader.GetInt32(0);
-                        }
-                    }
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText = $"SELECT COUNT(*) FROM ArchivosCategorias WHERE CategoriaID = {idCategoria}";
+                        comandoSql.Connection = conexionDB;
 
-                    reader.Close();
-                    conexionDB.Close();
+                        conexionDB.Open();
+
+                        SqlDataReader reader = comandoSql.ExecuteReader();
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                total = reader.GetInt32(0);
+                            }
+                        }
+
+                        reader.Close();
+                        conexionDB.Close();
+                    }
                 }
+                else if (busqueda != string.Empty && categoria == string.Empty)
+                {
+                    using (SqlCommand comandoSql = new SqlCommand())
+                    {
+                        comandoSql.CommandType = CommandType.Text;
+                        comandoSql.CommandText = $"SELECT COUNT(*) FROM Archivos " +
+                            "WHERE Nombre LIKE '%" + busqueda + "%' " +
+                            "OR Observaciones LIKE '%" + busqueda + "%'";
+                        comandoSql.Connection = conexionDB;
+
+                        conexionDB.Open();
+
+                        SqlDataReader reader = comandoSql.ExecuteReader();
+
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                total = reader.GetInt32(0);
+                            }
+                        }
+
+                        reader.Close();
+                        conexionDB.Close();
+                    }
+                }
+
+                return total;
+
             }
-            else if (busqueda != string.Empty && categoria == string.Empty)
+            catch (Exception ex)
             {
-                using (SqlCommand comandoSql = new SqlCommand())
-                {
-                    comandoSql.CommandType = CommandType.Text;
-                    comandoSql.CommandText = $"SELECT COUNT(*) FROM Archivos " +
-                        "WHERE Nombre LIKE '%" + busqueda + "%' " +
-                        "OR Observaciones LIKE '%" + busqueda + "%'";
-                    comandoSql.Connection = conexionDB;
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                    conexionDB.Open();
-
-                    SqlDataReader reader = comandoSql.ExecuteReader();
-
-                    if (reader.HasRows)
-                    {
-                        while (reader.Read())
-                        {
-                            total = reader.GetInt32(0);
-                        }
-                    }
-
-                    reader.Close();
-                    conexionDB.Close();
-                }
+                return total;
             }
-
-            return total;
         }
         #endregion
 
@@ -1320,33 +1390,44 @@ namespace KBBWinForms
         #region EliminarDocumento
         public string EliminarDocumento(int id)
         {
-            conexionDB.Open();
-
-            using (SqlCommand comandoSql = new SqlCommand())
+            try
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText =
-                    "DELETE FROM Archivos " +
-                    $"WHERE ID = {id}";
-                comandoSql.Connection = conexionDB;
 
-                comandoSql.ExecuteNonQuery();
+                conexionDB.Open();
+
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "DELETE FROM Archivos " +
+                        $"WHERE ID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.ExecuteNonQuery();
+                }
+
+                using (SqlCommand comandoSql = new SqlCommand())
+                {
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText =
+                        "DELETE FROM ArchivosCategorias " +
+                        $"WHERE ArchivoID = {id}";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.ExecuteNonQuery();
+                }
+
+                conexionDB.Close();
+
+                return "Archivo eliminado con éxito";
+
             }
-
-            using (SqlCommand comandoSql = new SqlCommand())
+            catch (Exception ex)
             {
-                comandoSql.CommandType = CommandType.Text;
-                comandoSql.CommandText =
-                    "DELETE FROM ArchivosCategorias " +
-                    $"WHERE ArchivoID = {id}";
-                comandoSql.Connection = conexionDB;
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                comandoSql.ExecuteNonQuery();
+                return "ERROR";
             }
-
-            conexionDB.Close();
-
-            return "Archivo eliminado con éxito";
         }
         #endregion
     }

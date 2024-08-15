@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ControlArchivos));
             dgvDocumentos = new DataGridView();
             ID = new DataGridViewTextBoxColumn();
             Nombre = new DataGridViewTextBoxColumn();
@@ -383,10 +384,10 @@
             Controls.Add(btnAgregar);
             Controls.Add(dgvDocumentos);
             Font = new Font("Century Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ControlArchivos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Control Archivos";
-            WindowState = FormWindowState.Maximized;
             Load += ControlArchivos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
             ResumeLayout(false);

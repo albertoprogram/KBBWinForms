@@ -89,82 +89,100 @@ namespace KBBWinForms
         #region LlenarData
         private void LlenarData()
         {
-            if (cmbCantidadRegistrosXPagina.Text.Length == 0)
-                cmbCantidadRegistrosXPagina.Text = "25";
-
-            dgvDocumentos.Rows.Clear();
-
-            string pagina = txtPagina.Text;
-            string cantidadRegistros = cmbCantidadRegistrosXPagina.Text;
-
-            DataTable dt = new DataTable();
-            dt = archivo.ListarArchivos(pagina, cantidadRegistros, categoria, busqueda);
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                foreach (DataRow dr in dt.Rows)
+
+                if (cmbCantidadRegistrosXPagina.Text.Length == 0)
+                    cmbCantidadRegistrosXPagina.Text = "25";
+
+                dgvDocumentos.Rows.Clear();
+
+                string pagina = txtPagina.Text;
+                string cantidadRegistros = cmbCantidadRegistrosXPagina.Text;
+
+                DataTable dt = new DataTable();
+                dt = archivo.ListarArchivos(pagina, cantidadRegistros, categoria, busqueda);
+
+                if (dt.Rows.Count > 0)
                 {
-                    dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(),
-                        dr["Observaciones"].ToString(), dr["Paginas"].ToString());
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        dgvDocumentos.Rows.Add(dr["ID"].ToString(), dr["Nombre"].ToString(),
+                            dr["Observaciones"].ToString(), dr["Paginas"].ToString());
+                    }
                 }
+
+                txtTotalRegistros.Text = archivo.CantidadTotalArchivos(categoria, busqueda).ToString();
+
+                if ((short.Parse(txtTotalRegistros.Text) % short.Parse(cmbCantidadRegistrosXPagina.Text)) == 0)
+                {
+                    txtTotalPaginas.Text = (short.Parse(txtTotalRegistros.Text) / short.Parse(cmbCantidadRegistrosXPagina.Text)).ToString();
+                }
+                else
+                {
+                    txtTotalPaginas.Text = ((short.Parse(txtTotalRegistros.Text) / short.Parse(cmbCantidadRegistrosXPagina.Text)) + 1).ToString();
+                }
+
+                ControlBotonesPaginado();
+
             }
-
-            txtTotalRegistros.Text = archivo.CantidadTotalArchivos(categoria, busqueda).ToString();
-
-            if ((short.Parse(txtTotalRegistros.Text) % short.Parse(cmbCantidadRegistrosXPagina.Text)) == 0)
+            catch (Exception ex)
             {
-                txtTotalPaginas.Text = (short.Parse(txtTotalRegistros.Text) / short.Parse(cmbCantidadRegistrosXPagina.Text)).ToString();
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else
-            {
-                txtTotalPaginas.Text = ((short.Parse(txtTotalRegistros.Text) / short.Parse(cmbCantidadRegistrosXPagina.Text)) + 1).ToString();
-            }
-
-            ControlBotonesPaginado();
         }
         #endregion
 
         #region btnVer_Click
         private void btnVer_Click(object sender, EventArgs e)
         {
-            if (dgvDocumentos.SelectedRows.Count > 0)
+            try
             {
-                int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
-                archivo.Id = id;
 
-                var lista = new List<Archivos>();
-                lista = archivo.FiltroArchivos();
-
-                foreach (Archivos archivo in lista)
+                if (dgvDocumentos.SelectedRows.Count > 0)
                 {
-                    string ruta = AppDomain.CurrentDomain.BaseDirectory;
+                    int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
+                    archivo.Id = id;
 
-                    string carpetaTemporal = ruta + @"temp\";
+                    var lista = new List<Archivos>();
+                    lista = archivo.FiltroArchivos();
 
-                    string ubicacionCompleta = carpetaTemporal + archivo.Extension;
-
-                    if (!Directory.Exists(carpetaTemporal))
-                        Directory.CreateDirectory(carpetaTemporal);
-
-                    if (File.Exists(ubicacionCompleta))
-                        File.Delete(ubicacionCompleta);
-
-                    File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
-
-                    var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
+                    foreach (Archivos archivo in lista)
                     {
-                        UseShellExecute = true
-                    };
+                        string ruta = AppDomain.CurrentDomain.BaseDirectory;
 
-                    Process.Start(processStartInfo);
+                        string carpetaTemporal = ruta + @"temp\";
+
+                        string ubicacionCompleta = carpetaTemporal + archivo.Extension;
+
+                        if (!Directory.Exists(carpetaTemporal))
+                            Directory.CreateDirectory(carpetaTemporal);
+
+                        if (File.Exists(ubicacionCompleta))
+                            File.Delete(ubicacionCompleta);
+
+                        File.WriteAllBytes(ubicacionCompleta, archivo.Archivo);
+
+                        var processStartInfo = new ProcessStartInfo(ubicacionCompleta)
+                        {
+                            UseShellExecute = true
+                        };
+
+                        Process.Start(processStartInfo);
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("No hay algún archivo seleccionado",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("No hay algún archivo seleccionado",
-                    ElementosGlobales.NombreSistema,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -172,16 +190,25 @@ namespace KBBWinForms
         #region btnSiguiente_Click
         private void btnSiguiente_Click(object sender, EventArgs e)
         {
-            if (txtPagina.Text.Length > 0)
+            try
             {
-                short pagina = short.Parse(txtPagina.Text);
-                pagina += 1;
 
-                txtPagina.Text = pagina.ToString();
+                if (txtPagina.Text.Length > 0)
+                {
+                    short pagina = short.Parse(txtPagina.Text);
+                    pagina += 1;
 
-                LlenarData();
+                    txtPagina.Text = pagina.ToString();
 
-                ControlBotonesPaginado();
+                    LlenarData();
+
+                    ControlBotonesPaginado();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -189,16 +216,23 @@ namespace KBBWinForms
         #region btnAnterior_Click
         private void btnAnterior_Click(object sender, EventArgs e)
         {
-            if (txtPagina.Text.Length > 0)
+            try
             {
-                short pagina = short.Parse(txtPagina.Text);
-                pagina -= 1;
+                if (txtPagina.Text.Length > 0)
+                {
+                    short pagina = short.Parse(txtPagina.Text);
+                    pagina -= 1;
 
-                txtPagina.Text = pagina.ToString();
+                    txtPagina.Text = pagina.ToString();
 
-                LlenarData();
+                    LlenarData();
 
-                ControlBotonesPaginado();
+                    ControlBotonesPaginado();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -206,44 +240,53 @@ namespace KBBWinForms
         #region ControlBotonesPaginado
         private void ControlBotonesPaginado()
         {
-            if (txtPagina.Text == "1")
+            try
             {
-                btnAnterior.Enabled = false;
-                btnInicio.Enabled = false;
-                btnSiguiente.Enabled = true;
-                btnFin.Enabled = true;
-            }
 
-            if (txtPagina.Text != "1")
-            {
-                btnAnterior.Enabled = true;
-                btnInicio.Enabled = true;
-                btnSiguiente.Enabled = true;
-                btnFin.Enabled = true;
-            }
+                if (txtPagina.Text == "1")
+                {
+                    btnAnterior.Enabled = false;
+                    btnInicio.Enabled = false;
+                    btnSiguiente.Enabled = true;
+                    btnFin.Enabled = true;
+                }
 
-            if (txtPagina.Text == txtTotalPaginas.Text)
-            {
-                btnAnterior.Enabled = true;
-                btnInicio.Enabled = true;
-                btnSiguiente.Enabled = false;
-                btnFin.Enabled = false;
-            }
+                if (txtPagina.Text != "1")
+                {
+                    btnAnterior.Enabled = true;
+                    btnInicio.Enabled = true;
+                    btnSiguiente.Enabled = true;
+                    btnFin.Enabled = true;
+                }
 
-            if (txtPagina.Text == "1" && txtTotalPaginas.Text == "1")
-            {
-                btnAnterior.Enabled = false;
-                btnInicio.Enabled = false;
-                btnSiguiente.Enabled = false;
-                btnFin.Enabled = false;
-            }
+                if (txtPagina.Text == txtTotalPaginas.Text)
+                {
+                    btnAnterior.Enabled = true;
+                    btnInicio.Enabled = true;
+                    btnSiguiente.Enabled = false;
+                    btnFin.Enabled = false;
+                }
 
-            if (txtTotalPaginas.Text == "0")
+                if (txtPagina.Text == "1" && txtTotalPaginas.Text == "1")
+                {
+                    btnAnterior.Enabled = false;
+                    btnInicio.Enabled = false;
+                    btnSiguiente.Enabled = false;
+                    btnFin.Enabled = false;
+                }
+
+                if (txtTotalPaginas.Text == "0")
+                {
+                    btnAnterior.Enabled = false;
+                    btnInicio.Enabled = false;
+                    btnSiguiente.Enabled = false;
+                    btnFin.Enabled = false;
+                }
+
+            }
+            catch (Exception ex)
             {
-                btnAnterior.Enabled = false;
-                btnInicio.Enabled = false;
-                btnSiguiente.Enabled = false;
-                btnFin.Enabled = false;
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -251,75 +294,119 @@ namespace KBBWinForms
         #region cmbCantidadRegistrosXPagina_SelectedIndexChanged
         private void cmbCantidadRegistrosXPagina_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtPagina.Text = "1";
+            try
+            {
 
-            LlenarData();
+                txtPagina.Text = "1";
 
-            ControlBotonesPaginado();
+                LlenarData();
+
+                ControlBotonesPaginado();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region txtPagina_TextChanged
         private void txtPagina_TextChanged(object sender, EventArgs e)
         {
+            try
+            {
 
-            if (txtPagina.Text.Length > 0 && short.Parse(txtPagina.Text) > short.Parse(txtTotalPaginas.Text) ||
+                if (txtPagina.Text.Length > 0 && short.Parse(txtPagina.Text) > short.Parse(txtTotalPaginas.Text) ||
                 txtPagina.Text.Length > 0 && txtPagina.Text == "0")
-            {
-                txtPagina.Text = "1";
-                return;
-            }
+                {
+                    txtPagina.Text = "1";
+                    return;
+                }
 
-            if (txtPagina.Text.Length > 0)
-            {
-                LlenarData();
+                if (txtPagina.Text.Length > 0)
+                {
+                    LlenarData();
 
-                ControlBotonesPaginado();
-            }
-            else
-            {
-                btnSiguiente.Enabled = false;
-                btnAnterior.Enabled = false;
-            }
+                    ControlBotonesPaginado();
+                }
+                else
+                {
+                    btnSiguiente.Enabled = false;
+                    btnAnterior.Enabled = false;
+                }
 
-            txtPagina.Select(0, txtPagina.Text.Length);
-            txtPagina.Focus();
+                txtPagina.Select(0, txtPagina.Text.Length);
+                txtPagina.Focus();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region btnInicio_Click
         private void btnInicio_Click(object sender, EventArgs e)
         {
-            txtPagina.Text = "1";
+            try
+            {
 
-            LlenarData();
+                txtPagina.Text = "1";
 
-            ControlBotonesPaginado();
+                LlenarData();
+
+                ControlBotonesPaginado();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region btnFin_Click
         private void btnFin_Click(object sender, EventArgs e)
         {
-            txtPagina.Text = txtTotalPaginas.Text;
+            try
+            {
 
-            LlenarData();
+                txtPagina.Text = txtTotalPaginas.Text;
 
-            ControlBotonesPaginado();
+                LlenarData();
+
+                ControlBotonesPaginado();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region txtPagina_KeyPress
         private void txtPagina_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            try
             {
-                e.Handled = true;
-            }
 
-            if (e.KeyChar == 22)
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+
+                if (e.KeyChar == 22)
+                {
+                    e.Handled = true;
+                }
+
+            }
+            catch (Exception ex)
             {
-                e.Handled = true;
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -327,44 +414,71 @@ namespace KBBWinForms
         #region ControlArchivos_Load
         private void ControlArchivos_Load(object sender, EventArgs e)
         {
-            var blankContextMenu = new ContextMenuStrip();
-            txtPagina.ContextMenuStrip = blankContextMenu;
+            try
+            {
 
-            ListarCategorias();
+                var blankContextMenu = new ContextMenuStrip();
+                txtPagina.ContextMenuStrip = blankContextMenu;
+
+                ListarCategorias();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region txtPagina_Click
         private void txtPagina_Click(object sender, EventArgs e)
         {
-            txtPagina.Select(0, txtPagina.Text.Length);
+            try
+            {
+
+                txtPagina.Select(0, txtPagina.Text.Length);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         #endregion
 
         #region ListarCategorias
         private void ListarCategorias()
         {
-            tvCategorias.Nodes.Clear();
-
-            string query = "SELECT Categoria FROM Categorias ORDER BY Categoria";
-
-            using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+            try
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    connection.Open();
 
-                    using (SqlDataReader reader = command.ExecuteReader())
+                tvCategorias.Nodes.Clear();
+
+                string query = "SELECT Categoria FROM Categorias ORDER BY Categoria";
+
+                using (SqlConnection connection = new SqlConnection(ConexionDB.cadenaConexionSQLServer))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        if (reader.HasRows)
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                tvCategorias.Nodes.Add(reader.GetString(0));
+                                while (reader.Read())
+                                {
+                                    tvCategorias.Nodes.Add(reader.GetString(0));
+                                }
                             }
                         }
                     }
                 }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -372,34 +486,43 @@ namespace KBBWinForms
         #region btnBuscar_Click
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (txtBusqueda.Text.Trim().Length > 0)
+            try
             {
-                categoria = string.Empty;
-                busqueda = txtBusqueda.Text.Trim();
 
-                lblStatus.ForeColor = Color.White;
-                lblStatus.Text = "                                          Buscando...                                          ";
-                lblStatus.Visible = true;
-                this.Enabled = false;
+                if (txtBusqueda.Text.Trim().Length > 0)
+                {
+                    categoria = string.Empty;
+                    busqueda = txtBusqueda.Text.Trim();
 
-                //LockForm();
+                    lblStatus.ForeColor = Color.White;
+                    lblStatus.Text = "                                          Buscando...                                          ";
+                    lblStatus.Visible = true;
+                    this.Enabled = false;
 
-                LlenarData();
+                    //LockForm();
 
-                lblStatus.Visible = false;
-                this.Enabled = true;
+                    LlenarData();
 
-                //UnlockForm();
+                    lblStatus.Visible = false;
+                    this.Enabled = true;
+
+                    //UnlockForm();
+                }
+                else
+                {
+                    MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+
+                    txtBusqueda.Focus();
+                    txtBusqueda.SelectAll();
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Ingrese una palabra o frase a buscar en el cuadro de texto",
-                    ElementosGlobales.NombreSistema,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-
-                txtBusqueda.Focus();
-                txtBusqueda.SelectAll();
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -407,13 +530,22 @@ namespace KBBWinForms
         #region tvCategorias_AfterSelect
         private void tvCategorias_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (tvCategorias.SelectedNode != null)
+            try
             {
-                txtBusqueda.Text = string.Empty;
-                busqueda = string.Empty;
-                categoria = tvCategorias.SelectedNode.Text;
 
-                LlenarData();
+                if (tvCategorias.SelectedNode != null)
+                {
+                    txtBusqueda.Text = string.Empty;
+                    busqueda = string.Empty;
+                    categoria = tvCategorias.SelectedNode.Text;
+
+                    LlenarData();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -421,24 +553,33 @@ namespace KBBWinForms
         #region LockForm
         private void LockForm()
         {
-            if (overlayPanel == null)
+            try
             {
-                // Create and configure the overlay panel
-                overlayPanel = new Panel
+
+                if (overlayPanel == null)
                 {
-                    BackColor = Color.FromArgb(128, 0, 0, 0), // Adjust the alpha value for transparency
-                    Size = this.ClientSize,
-                    Location = this.Location,
-                    Visible = true
-                };
+                    // Create and configure the overlay panel
+                    overlayPanel = new Panel
+                    {
+                        BackColor = Color.FromArgb(128, 0, 0, 0), // Adjust the alpha value for transparency
+                        Size = this.ClientSize,
+                        Location = this.Location,
+                        Visible = true
+                    };
 
-                // Add the overlay panel to the MDI parent form
-                this.mdiParentForm.Controls.Add(overlayPanel);
-                overlayPanel.BringToFront();
+                    // Add the overlay panel to the MDI parent form
+                    this.mdiParentForm.Controls.Add(overlayPanel);
+                    overlayPanel.BringToFront();
 
-                //Attach event handlers to keep overlay panel in sync with main form
-                this.LocationChanged += MainForm_LocationChanged;
-                this.SizeChanged += MainForm_SizeChanged;
+                    //Attach event handlers to keep overlay panel in sync with main form
+                    this.LocationChanged += MainForm_LocationChanged;
+                    this.SizeChanged += MainForm_SizeChanged;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -446,16 +587,25 @@ namespace KBBWinForms
         #region UnlockForm
         private void UnlockForm()
         {
-            if (overlayPanel != null)
+            try
             {
-                // Remove the overlay panel from the MDI parent form
-                this.mdiParentForm.Controls.Remove(overlayPanel);
-                overlayPanel.Dispose();
-                overlayPanel = null;
 
-                // Detach event handlers
-                this.LocationChanged -= MainForm_LocationChanged;
-                this.SizeChanged -= MainForm_SizeChanged;
+                if (overlayPanel != null)
+                {
+                    // Remove the overlay panel from the MDI parent form
+                    this.mdiParentForm.Controls.Remove(overlayPanel);
+                    overlayPanel.Dispose();
+                    overlayPanel = null;
+
+                    // Detach event handlers
+                    this.LocationChanged -= MainForm_LocationChanged;
+                    this.SizeChanged -= MainForm_SizeChanged;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -463,9 +613,18 @@ namespace KBBWinForms
         #region MainForm_LocationChanged
         private void MainForm_LocationChanged(object sender, EventArgs e)
         {
-            if (overlayPanel != null)
+            try
             {
-                UpdateOverlayForm();
+
+                if (overlayPanel != null)
+                {
+                    UpdateOverlayForm();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -473,9 +632,18 @@ namespace KBBWinForms
         #region MainForm_SizeChanged
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
-            if (overlayPanel != null)
+            try
             {
-                UpdateOverlayForm();
+
+                if (overlayPanel != null)
+                {
+                    UpdateOverlayForm();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -483,10 +651,19 @@ namespace KBBWinForms
         #region UpdateOverlayForm
         private void UpdateOverlayForm()
         {
-            if (overlayPanel != null)
+            try
             {
-                overlayPanel.Size = this.ClientSize;
-                overlayPanel.Location = this.Location;
+
+                if (overlayPanel != null)
+                {
+                    overlayPanel.Size = this.ClientSize;
+                    overlayPanel.Location = this.Location;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -494,20 +671,29 @@ namespace KBBWinForms
         #region btnEditar_Click
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (dgvDocumentos.SelectedRows.Count > 0)
+            try
             {
-                int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
 
-                SubirArchivo frmSubirArchivo = new SubirArchivo(id);
-                frmSubirArchivo.ShowDialog();
-                LlenarData();
+                if (dgvDocumentos.SelectedRows.Count > 0)
+                {
+                    int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
+
+                    SubirArchivo frmSubirArchivo = new SubirArchivo(id);
+                    frmSubirArchivo.ShowDialog();
+                    LlenarData();
+                }
+                else
+                {
+                    MessageBox.Show("No hay algún archivo seleccionado",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("No hay algún archivo seleccionado",
-                    ElementosGlobales.NombreSistema,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
@@ -515,23 +701,32 @@ namespace KBBWinForms
         #region btnEliminar_Click
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (dgvDocumentos.SelectedRows.Count > 0)
+            try
             {
-                int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
 
-                if (MessageBox.Show($"Está seguro de eliminar el archivo de ID: {id}", ElementosGlobales.NombreSistema, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (dgvDocumentos.SelectedRows.Count > 0)
                 {
-                    MessageBox.Show(archivo.EliminarDocumento(id), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    int id = Convert.ToInt32(dgvDocumentos.CurrentRow.Cells[0].Value);
 
-                    LlenarData();
+                    if (MessageBox.Show($"Está seguro de eliminar el archivo de ID: {id}", ElementosGlobales.NombreSistema, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        MessageBox.Show(archivo.EliminarDocumento(id), ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        LlenarData();
+                    }
                 }
+                else
+                {
+                    MessageBox.Show("No hay algún archivo seleccionado",
+                        ElementosGlobales.NombreSistema,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation);
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("No hay algún archivo seleccionado",
-                    ElementosGlobales.NombreSistema,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
+                MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         #endregion
