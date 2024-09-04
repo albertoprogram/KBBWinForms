@@ -158,7 +158,15 @@ namespace KBBWinForms
 
                 for (int i = 0; i < categorias.Length; i++)
                 {
-                    categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
+                    string item = lbCategorias.Items[i].ToString();
+
+                    int guionPos = item.IndexOf('-');
+
+                    string valor = item.Substring(0, guionPos);
+
+                    categorias[i] = Convert.ToInt16(valor);
+
+                    //categorias[i] = Convert.ToInt16(lbCategorias.Items[i].ToString().Substring(0, 1));
                 }
 
                 if (idArchivo == 0)
@@ -308,6 +316,13 @@ namespace KBBWinForms
             {
                 MessageBox.Show("ERROR: " + ex.Message + " Detalle: " + ex.StackTrace, ElementosGlobales.NombreSistema, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        #endregion
+
+        #region btnCancelar_Click
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+
         }
         #endregion
     }

@@ -82,6 +82,7 @@ namespace KBBWinForms
         {
             SubirArchivo frmSubirArchivo = new SubirArchivo(0);
             frmSubirArchivo.ShowDialog();
+            ListarCategorias();
             LlenarData();
         }
         #endregion

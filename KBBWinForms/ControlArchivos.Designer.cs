@@ -76,7 +76,7 @@
             dgvDocumentos.RowTemplate.DefaultCellStyle.SelectionBackColor = Color.FromArgb(39, 76, 119);
             dgvDocumentos.RowTemplate.DefaultCellStyle.SelectionForeColor = Color.FromArgb(231, 236, 239);
             dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDocumentos.Size = new Size(1323, 576);
+            dgvDocumentos.Size = new Size(906, 540);
             dgvDocumentos.TabIndex = 0;
             // 
             // ID
@@ -115,7 +115,7 @@
             // 
             btnAgregar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnAgregar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnAgregar.Location = new Point(1237, 727);
+            btnAgregar.Location = new Point(820, 691);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(118, 30);
             btnAgregar.TabIndex = 1;
@@ -127,7 +127,7 @@
             // 
             btnEditar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnEditar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnEditar.Location = new Point(1485, 727);
+            btnEditar.Location = new Point(1068, 691);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(118, 30);
             btnEditar.TabIndex = 2;
@@ -139,7 +139,7 @@
             // 
             btnVer.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnVer.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnVer.Location = new Point(1361, 727);
+            btnVer.Location = new Point(944, 691);
             btnVer.Name = "btnVer";
             btnVer.Size = new Size(118, 30);
             btnVer.TabIndex = 3;
@@ -151,7 +151,7 @@
             // 
             lblPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblPagina.AutoSize = true;
-            lblPagina.Location = new Point(408, 680);
+            lblPagina.Location = new Point(-9, 644);
             lblPagina.Name = "lblPagina";
             lblPagina.Size = new Size(68, 21);
             lblPagina.TabIndex = 4;
@@ -161,7 +161,7 @@
             // txtPagina
             // 
             txtPagina.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            txtPagina.Location = new Point(481, 677);
+            txtPagina.Location = new Point(64, 641);
             txtPagina.Name = "txtPagina";
             txtPagina.Size = new Size(107, 28);
             txtPagina.TabIndex = 5;
@@ -175,7 +175,7 @@
             // 
             lblCantidadRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblCantidadRegistros.AutoSize = true;
-            lblCantidadRegistros.Location = new Point(409, 708);
+            lblCantidadRegistros.Location = new Point(-8, 672);
             lblCantidadRegistros.Name = "lblCantidadRegistros";
             lblCantidadRegistros.Size = new Size(293, 21);
             lblCantidadRegistros.TabIndex = 6;
@@ -185,7 +185,7 @@
             // btnAnterior
             // 
             btnAnterior.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAnterior.Location = new Point(1477, 677);
+            btnAnterior.Location = new Point(1060, 641);
             btnAnterior.Name = "btnAnterior";
             btnAnterior.Size = new Size(68, 30);
             btnAnterior.TabIndex = 8;
@@ -197,7 +197,7 @@
             // btnSiguiente
             // 
             btnSiguiente.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnSiguiente.Location = new Point(1551, 677);
+            btnSiguiente.Location = new Point(1134, 641);
             btnSiguiente.Name = "btnSiguiente";
             btnSiguiente.Size = new Size(67, 30);
             btnSiguiente.TabIndex = 9;
@@ -210,7 +210,7 @@
             // 
             lblTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblTotalRegistros.AutoSize = true;
-            lblTotalRegistros.Location = new Point(807, 680);
+            lblTotalRegistros.Location = new Point(390, 644);
             lblTotalRegistros.Name = "lblTotalRegistros";
             lblTotalRegistros.Size = new Size(156, 21);
             lblTotalRegistros.TabIndex = 10;
@@ -220,7 +220,7 @@
             // txtTotalRegistros
             // 
             txtTotalRegistros.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            txtTotalRegistros.Location = new Point(969, 677);
+            txtTotalRegistros.Location = new Point(552, 641);
             txtTotalRegistros.Name = "txtTotalRegistros";
             txtTotalRegistros.ReadOnly = true;
             txtTotalRegistros.Size = new Size(144, 28);
@@ -231,7 +231,7 @@
             // txtTotalPaginas
             // 
             txtTotalPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            txtTotalPaginas.Location = new Point(969, 711);
+            txtTotalPaginas.Location = new Point(552, 675);
             txtTotalPaginas.Name = "txtTotalPaginas";
             txtTotalPaginas.ReadOnly = true;
             txtTotalPaginas.Size = new Size(144, 28);
@@ -243,7 +243,7 @@
             // 
             lblTotalPaginas.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblTotalPaginas.AutoSize = true;
-            lblTotalPaginas.Location = new Point(807, 713);
+            lblTotalPaginas.Location = new Point(390, 677);
             lblTotalPaginas.Name = "lblTotalPaginas";
             lblTotalPaginas.Size = new Size(149, 21);
             lblTotalPaginas.TabIndex = 12;
@@ -257,7 +257,7 @@
             cmbCantidadRegistrosXPagina.Enabled = false;
             cmbCantidadRegistrosXPagina.FormattingEnabled = true;
             cmbCantidadRegistrosXPagina.Items.AddRange(new object[] { "2", "3", "5", "10", "15", "20", "25" });
-            cmbCantidadRegistrosXPagina.Location = new Point(708, 705);
+            cmbCantidadRegistrosXPagina.Location = new Point(291, 669);
             cmbCantidadRegistrosXPagina.Name = "cmbCantidadRegistrosXPagina";
             cmbCantidadRegistrosXPagina.Size = new Size(93, 29);
             cmbCantidadRegistrosXPagina.TabIndex = 14;
@@ -267,7 +267,7 @@
             // btnInicio
             // 
             btnInicio.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnInicio.Location = new Point(1384, 677);
+            btnInicio.Location = new Point(967, 641);
             btnInicio.Name = "btnInicio";
             btnInicio.Size = new Size(83, 30);
             btnInicio.TabIndex = 15;
@@ -279,7 +279,7 @@
             // btnFin
             // 
             btnFin.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnFin.Location = new Point(1624, 677);
+            btnFin.Location = new Point(1207, 641);
             btnFin.Name = "btnFin";
             btnFin.Size = new Size(80, 30);
             btnFin.TabIndex = 16;
@@ -295,7 +295,7 @@
             tvCategorias.ForeColor = Color.FromArgb(39, 76, 119);
             tvCategorias.Location = new Point(16, 93);
             tvCategorias.Name = "tvCategorias";
-            tvCategorias.Size = new Size(382, 577);
+            tvCategorias.Size = new Size(382, 541);
             tvCategorias.TabIndex = 17;
             tvCategorias.AfterSelect += tvCategorias_AfterSelect;
             // 
@@ -314,14 +314,14 @@
             txtBusqueda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtBusqueda.Location = new Point(481, 33);
             txtBusqueda.Name = "txtBusqueda";
-            txtBusqueda.Size = new Size(986, 28);
+            txtBusqueda.Size = new Size(569, 28);
             txtBusqueda.TabIndex = 19;
             // 
             // btnBuscar
             // 
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnBuscar.Location = new Point(1477, 33);
+            btnBuscar.Location = new Point(1060, 33);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(229, 30);
             btnBuscar.TabIndex = 20;
@@ -336,7 +336,7 @@
             lblStatus.BackColor = Color.FromArgb(255, 255, 192);
             lblStatus.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblStatus.ForeColor = Color.Black;
-            lblStatus.Location = new Point(481, 64);
+            lblStatus.Location = new Point(64, 64);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(74, 19);
             lblStatus.TabIndex = 21;
@@ -347,7 +347,7 @@
             // 
             btnEliminar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnEliminar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnEliminar.Location = new Point(1609, 727);
+            btnEliminar.Location = new Point(1192, 691);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(118, 30);
             btnEliminar.TabIndex = 22;
@@ -360,7 +360,7 @@
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1743, 769);
+            ClientSize = new Size(1326, 733);
             Controls.Add(btnEliminar);
             Controls.Add(lblStatus);
             Controls.Add(btnBuscar);
@@ -388,6 +388,7 @@
             Name = "ControlArchivos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Control Archivos";
+            WindowState = FormWindowState.Maximized;
             Load += ControlArchivos_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).EndInit();
             ResumeLayout(false);
