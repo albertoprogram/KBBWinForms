@@ -48,6 +48,26 @@ namespace KBBWinForms
             {
                 using (SqlCommand comandoSql = new SqlCommand())
                 {
+                    conexionDB.Open();
+
+                    comandoSql.CommandType = CommandType.Text;
+                    comandoSql.CommandText = "SELECT ID FROM Archivos WHERE Nombre = @Nombre";
+                    comandoSql.Connection = conexionDB;
+
+                    comandoSql.Parameters.AddWithValue("@Nombre", Nombre);
+
+                    object result = comandoSql.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        int id = Convert.ToInt32(result);
+                        if (id > 0)
+                        {
+                            conexionDB.Close();
+                            return "Archivo ya existe";
+                        }
+                    }
+
                     comandoSql.CommandType = CommandType.Text;
                     comandoSql.CommandText =
                         "INSERT INTO Archivos " +
@@ -60,8 +80,6 @@ namespace KBBWinForms
                     comandoSql.Parameters.AddWithValue("@Archivo", Archivo);
                     comandoSql.Parameters.AddWithValue("@Extension", Extension);
                     comandoSql.Parameters.AddWithValue("@Observaciones", Observaciones);
-
-                    conexionDB.Open();
 
                     int identityValue = Convert.ToInt32(comandoSql.ExecuteScalar());
 
