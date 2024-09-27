@@ -68,6 +68,8 @@ namespace KBBWinForms
                         }
                     }
 
+                    comandoSql.Parameters.Clear();
+
                     comandoSql.CommandType = CommandType.Text;
                     comandoSql.CommandText =
                         "INSERT INTO Archivos " +
@@ -85,6 +87,8 @@ namespace KBBWinForms
 
                     foreach (short categoria in categorias)
                     {
+                        comandoSql.Parameters.Clear();
+
                         comandoSql.CommandText =
                         "INSERT INTO ArchivosCategorias " +
                         "(ArchivoID,CategoriaID) " +
