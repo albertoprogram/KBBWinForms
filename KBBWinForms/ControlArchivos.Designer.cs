@@ -55,6 +55,7 @@
             btnBuscar = new Button();
             lblStatus = new Label();
             btnEliminar = new Button();
+            btnBuscarGeneral = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvDocumentos).BeginInit();
             SuspendLayout();
             // 
@@ -303,7 +304,7 @@
             // 
             lblBusqueda.AutoSize = true;
             lblBusqueda.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblBusqueda.Location = new Point(409, 37);
+            lblBusqueda.Location = new Point(411, 18);
             lblBusqueda.Name = "lblBusqueda";
             lblBusqueda.Size = new Size(64, 19);
             lblBusqueda.TabIndex = 18;
@@ -312,7 +313,7 @@
             // txtBusqueda
             // 
             txtBusqueda.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtBusqueda.Location = new Point(481, 33);
+            txtBusqueda.Location = new Point(481, 12);
             txtBusqueda.Name = "txtBusqueda";
             txtBusqueda.Size = new Size(569, 28);
             txtBusqueda.TabIndex = 19;
@@ -321,7 +322,7 @@
             // 
             btnBuscar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBuscar.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnBuscar.Location = new Point(1060, 33);
+            btnBuscar.Location = new Point(1060, 12);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(229, 30);
             btnBuscar.TabIndex = 20;
@@ -355,12 +356,25 @@
             btnEliminar.UseVisualStyleBackColor = true;
             btnEliminar.Click += btnEliminar_Click;
             // 
+            // btnBuscarGeneral
+            // 
+            btnBuscarGeneral.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBuscarGeneral.Font = new Font("Century Gothic", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnBuscarGeneral.Location = new Point(1058, 48);
+            btnBuscarGeneral.Name = "btnBuscarGeneral";
+            btnBuscarGeneral.Size = new Size(229, 30);
+            btnBuscarGeneral.TabIndex = 23;
+            btnBuscarGeneral.Text = "Búsqueda General";
+            btnBuscarGeneral.UseVisualStyleBackColor = true;
+            btnBuscarGeneral.Click += btnBuscarGeneral_Click;
+            // 
             // ControlArchivos
             // 
             AutoScaleDimensions = new SizeF(10F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1326, 733);
+            Controls.Add(btnBuscarGeneral);
             Controls.Add(btnEliminar);
             Controls.Add(lblStatus);
             Controls.Add(btnBuscar);
@@ -423,5 +437,6 @@
         private DataGridViewTextBoxColumn Paginas;
         private Label lblStatus;
         private Button btnEliminar;
+        private Button btnBuscarGeneral;
     }
 }

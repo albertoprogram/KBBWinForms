@@ -731,5 +731,56 @@ namespace KBBWinForms
             }
         }
         #endregion
+
+        #region btnBuscarGeneral_Click
+
+        private void btnBuscarGeneral_Click(object sender, EventArgs e)
+        {
+            // Cadena de conexión a la base de datos
+            string connectionString = ConexionDB.cadenaConexionSQLServer;
+
+            // Consulta SQL para obtener los datos ordenados por ID de forma descendente
+            string query = "SELECT ID, Nombre, Observaciones FROM Archivos ORDER BY ID DESC";
+
+            // Crear la conexión a la base de datos
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    // Abrir la conexión
+                    connection.Open();
+
+                    // Crear el comando SQL
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        // Ejecutar el comando y obtener el SqlDataReader
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            // Limpiar el DataGridView antes de llenarlo
+                            dgvDocumentos.Rows.Clear();
+
+                            // Recorrer el SqlDataReader y agregar filas al DataGridView
+                            while (reader.Read())
+                            {
+                                // Obtener los valores de cada columna
+                                int id = reader.GetInt32(reader.GetOrdinal("ID"));
+                                string nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                                string observaciones = reader.GetString(reader.GetOrdinal("Observaciones"));
+
+                                // Agregar una nueva fila al DataGridView
+                                dgvDocumentos.Rows.Add(id, nombre, observaciones);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier excepción que ocurra
+                    MessageBox.Show("Error al cargar los datos: " + ex.Message);
+                }
+            }
+        }
+
+        #endregion
     }
 }
